@@ -5,6 +5,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int normalize_overlap()
+{
+  size_t count;
+  char result[FILENAME_MAX];
+  char *input, *expected;
+
+  input = "/var/./logs/.//test/..//..//////";
+  strcpy(result, input);
+  expected = "/var";
+  count = cwk_path_normalize(result, result, sizeof(result));
+  if (count != strlen(expected) || strcmp(result, expected) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int normalize_mixed()
 {
   size_t count;
@@ -64,8 +81,9 @@ int normalize_terminated()
   expected = "/var";
   for (i = 0; i < 7; ++i) {
     count = cwk_path_normalize(input, result, i);
-    if (count != strlen(expected) || strncmp(result, expected, i) != 0 ||
-        (i > 0 && result[i] != '\0')) {
+    if (count != strlen(expected) ||
+        (i > 0 &&
+          (strncmp(result, expected, i - 1) != 0 || result[i - 1] != '\0'))) {
       return EXIT_FAILURE;
     }
   }

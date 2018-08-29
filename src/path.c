@@ -35,7 +35,6 @@ static size_t cwk_path_output_sized(char *buffer, size_t buffer_size,
   // all times.
   if (amount_written > 0) {
     memmove(&buffer[position], str, amount_written);
-    buffer[position + amount_written] = '\0';
   }
 
   // Return the theoretical length which would have been written when everything
@@ -66,7 +65,7 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
 {
   // We just move back until we find a separator or reach the beginning of the
   // path, which will be our previous "stop".
-  while (c >= begin && !cwk_path_is_separator(c)) {
+  while (c > begin && !cwk_path_is_separator(c)) {
     --c;
   }
 
@@ -192,11 +191,11 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
 
   // We are guaranteed now that there is another segment, since we moved before
   // the previous separator and did not reach the segment path beginning.
-  segment->end = c;
-  segment->begin = cwk_path_find_previous_stop(segment->path, c);
+  segment->end = c + 1;
+  segment->begin = cwk_path_find_previous_stop(segment->path, c) + 1;
   segment->size = segment->end - segment->begin;
 
-  return 0;
+  return true;
 }
 
 static bool cwk_path_will_segment_be_dropped(const struct cwk_segment *segment)
@@ -272,6 +271,16 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     pos += cwk_path_output_sized(buffer, buffer_size, pos, segment.begin,
       segment.size);
   } while (cwk_path_get_next_segment(&segment));
+
+  // We must append a '\0' in any case, unless the buffer size is zero. If the
+  // buffer size is zero, which means we can not.
+  if (buffer_size > 0) {
+    if (pos >= buffer_size) {
+      buffer[buffer_size - 1] = '\0';
+    } else {
+      buffer[pos] = '\0';
+    }
+  }
 
   // And finally let our caller know about the total size of the normalized
   // path.
