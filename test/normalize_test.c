@@ -91,6 +91,22 @@ int normalize_terminated()
   return EXIT_SUCCESS;
 }
 
+int normalize_navigate_too_far()
+{
+  size_t count;
+  char result[FILENAME_MAX];
+  char *input, *expected;
+
+  input = "/var/logs/test/../../../../../../";
+  expected = "/";
+  count = cwk_path_normalize(input, result, sizeof(result));
+  if (count != strlen(expected) || strcmp(result, expected) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int normalize_navigate_back()
 {
   size_t count;

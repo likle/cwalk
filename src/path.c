@@ -73,6 +73,87 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
   return c;
 }
 
+static bool cwk_path_segment_will_be_removed(const struct cwk_segment *segment)
+{
+  int counter;
+  enum cwk_segment_type type;
+  struct cwk_segment next;
+
+  // The counter determines how many segments are above our current segment,
+  // which will popped off before us. If the counter goes below zero it means
+  // that our segment will be popped as well.
+  counter = 0;
+
+  // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
+  // those will always be dropped.
+  type = cwk_path_get_segment_type(segment);
+  if (type == CWK_CURRENT || type == CWK_BACK) {
+    return true;
+  }
+
+  // We loop over all following segments until we either reach the end, which
+  // means our segment will not be dropped or the counter goes below zero.
+  next = *segment;
+  while (cwk_path_get_next_segment(&next)) {
+
+    // First, grab the type. The type determines whether we will increase or
+    // decrease the counter. We don't handle a CWK_CURRENT frame here since it
+    // has no influence.
+    type = cwk_path_get_segment_type(&next);
+    if (type == CWK_NORMAL) {
+      // This is a normal segment. The normal segment will increase the counter
+      // since it will be removed by a "../" before us.
+      ++counter;
+      continue;
+    } else if (type == CWK_BACK) {
+      // A CWK_BACK segment will reduce the counter by one. If we are below zero
+      // we can return immediately.
+      --counter;
+      if (counter < 0) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool cwk_path_get_extension(const char *path, const char **extension,
+  size_t *length)
+{
+  struct cwk_segment segment;
+  const char *c;
+
+  // We get the last segment of the path. The last segment will contain the
+  // extension if there is any.
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return false;
+  }
+
+  // Now we search for a dot within the segment. If there is a dot, we consider
+  // the rest of the segment the extension. We do this from the end towards the
+  // beginning, since we want to find the last dot.
+  for (c = segment.end; c >= segment.begin; ++c) {
+    if (*c == '.') {
+      // Okay, we found an extension. We can stop looking now.
+      *extension = c;
+      *length = segment.end - c;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool cwk_path_has_extension(const char *path)
+{
+  const char *extension;
+  size_t length;
+
+  // We just wrap the get_extension call which will then do the work for us.
+  return cwk_path_get_extension(path, &extension, &length);
+}
+
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 {
   // Let's remember the path. We will move the path pointer afterwards, that's
@@ -198,51 +279,6 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   return true;
 }
 
-static bool cwk_path_will_segment_be_dropped(const struct cwk_segment *segment)
-{
-  int counter;
-  enum cwk_segment_type type;
-  struct cwk_segment next;
-
-  // The counter determines how many segments are above our current segment,
-  // which will popped off before us. If the counter goes below zero it means
-  // that our segment will be popped as well.
-  counter = 0;
-
-  // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
-  // those will always be dropped.
-  type = cwk_path_get_segment_type(segment);
-  if (type == CWK_CURRENT || type == CWK_BACK) {
-    return true;
-  }
-
-  // We loop over all following segments until we either reach the end, which
-  // means our segment will not be dropped or the counter goes below zero.
-  next = *segment;
-  while (cwk_path_get_next_segment(&next)) {
-
-    // First, grab the type. The type determines whether we will increase or
-    // decrease the counter. We don't handle a CWK_CURRENT frame here since it
-    // has no influence.
-    type = cwk_path_get_segment_type(&next);
-    if (type == CWK_NORMAL) {
-      // This is a normal segment. The normal segment will increase the counter
-      // since it will be removed by a "../" before us.
-      ++counter;
-      continue;
-    } else if (type == CWK_BACK) {
-      // A CWK_BACK segment will reduce the counter by one. If we are below zero
-      // we can return immediately.
-      --counter;
-      if (counter < 0) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 {
   size_t pos;
@@ -260,7 +296,7 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
   do {
     // Check whether we have to drop this segment because of resolving a
     // relative path or because it is a CWK_CURRENT segment.
-    if (cwk_path_will_segment_be_dropped(&segment)) {
+    if (cwk_path_segment_will_be_removed(&segment)) {
       continue;
     }
 
@@ -271,6 +307,12 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     pos += cwk_path_output_sized(buffer, buffer_size, pos, segment.begin,
       segment.size);
   } while (cwk_path_get_next_segment(&segment));
+
+  // We might have removed all folders by navigating back too far. In that case
+  // we will output a single separator.
+  if (pos == 0) {
+    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+  }
 
   // We must append a '\0' in any case, unless the buffer size is zero. If the
   // buffer size is zero, which means we can not.

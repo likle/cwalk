@@ -34,6 +34,47 @@ enum cwk_segment_type
   CWK_BACK,
 };
 
+size_t cwk_path_get_absolute_path(const char *base, const char *path,
+  char *buffer, size_t buffer_size);
+
+void cwk_path_get_relative_path(const char *base, const char *path,
+  char *buffer, size_t buffer_size);
+
+size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
+  size_t buffer_size);
+
+/**
+ * @brief Gets the extension from a file path.
+ *
+ * This function extracts the extension portion from a file path. A pointer to
+ * the beginning of the extension will be returned through the extension
+ * parameter if an extension is found and true is returned. This pointer will be
+ * positioned on the dot. The length of the extension name will be returned
+ * through the length parameter. If no extension is found both parameters won't
+ * be touched and false will be returned.
+ *
+ * @param path The path which will be inspected.
+ * @param extension The output of the extension pointer.
+ * @param length The output of the length of the extension.
+ * @return Returns true if an extension is found or false otherwise.
+ */
+bool cwk_path_get_extension(const char *path, const char **extension,
+  size_t *length);
+
+/**
+ * @brief Determines whether the file path has an extension.
+ *
+ * This function determines whether the submitted file path has an extension.
+ * This will evaluate to true if the last segment of the path contains a dot.
+ *
+ * @param path The path which will be inspected.
+ * @return Returns true if the path has an extension or false otherwise.
+ */
+bool cwk_path_has_extension(const char *path);
+
+size_t cwk_path_set_extension(const char *path, const char *new_extension,
+  char *buffer, size_t buffer_size);
+
 /**
  * @brief Creates a normalized version of the path.
  *
@@ -42,7 +83,7 @@ enum cwk_segment_type
  * contain. However, the generated string is always null-terminated - even if
  * not the whole path is written out. The function returns the total number of
  * characters the complete buffer would have, even if it was not written out
- * completely. The path may overlap buffer.
+ * completely. The path may be the same memory address as the buffer.
  *
  * This function is currently only available for absolute paths.
  *
@@ -58,23 +99,6 @@ enum cwk_segment_type
  * @return The size which the complete normalized path has.
  */
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size);
-
-void cwk_path_get_absolute_path(const char *base, const char *path,
-  char *buffer, size_t buffer_size);
-
-void cwk_path_get_relative_path(const char *base, const char *path,
-  char *buffer, size_t buffer_size);
-
-size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
-  size_t buffer_size);
-
-bool cwk_path_has_extension(const char *path);
-
-size_t cwk_path_get_extension(const char *path, char *buffer,
-  size_t buffer_size);
-
-size_t cwk_path_set_extension(const char *path, const char *new_extension,
-  char *buffer, size_t buffer_size);
 
 size_t cwk_path_find_common(const char *path_a, const char *path_b);
 
@@ -144,6 +168,26 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment);
  */
 enum cwk_segment_type cwk_path_get_segment_type(
   const struct cwk_segment *segment);
+
+/**
+ * @brief Changes the content of a segment.
+ *
+ * This function overrides the content of a segment to the submitted value and
+ * outputs the whole new path to the submitted buffer. The result might require
+ * less or more space than before if the new value length differs from the
+ * original length. The output is truncated if the new path is larger than the
+ * submitted buffer size, but it is always null-terminated. The source of the
+ * segment and the submitted buffer may be the same.
+ *
+ * @param segment The segment which will be modifier.
+ * @param value The new content of the segment.
+ * @param buffer The buffer where the modified path will be written to.
+ * @param buffer_size The size of the output buffer.
+ * @return Returns the total size which would have been written if the output
+ * was not truncated.
+ */
+size_t cwk_path_change_segment(struct cwk_segment *segment, const char *value,
+  char *buffer, size_t buffer_size);
 
 /**
  * @brief Checks whether the submitted pointer points to a separator.

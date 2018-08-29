@@ -13,7 +13,7 @@ This is a work in progress and not yet ready to use.
  * Extract the basename of a path
  * Get the dirname of a path
  * Read extension from a file path
- * Normalize paths
+ * Normalize/cleanup paths
  * Resolve relative paths
  * Path segment iteration
  * Does not require any memory allocations
