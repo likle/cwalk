@@ -40,7 +40,12 @@ target_include_directories(${LIBRARY_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
 # add tests
 enable_testing()
-create_test(DEFAULT normalize simple)
+create_test(DEFAULT normalize do_nothing)
+create_test(DEFAULT normalize navigate_back)
+create_test(DEFAULT normalize terminated)
+create_test(DEFAULT normalize double_separator)
+create_test(DEFAULT normalize remove_current)
+create_test(DEFAULT normalize mixed)
 create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
 add_executable(${TEST_TARGET}

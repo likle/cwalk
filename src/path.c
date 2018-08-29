@@ -205,7 +205,7 @@ static bool cwk_path_will_segment_be_dropped(const struct cwk_segment *segment)
   enum cwk_segment_type type;
   struct cwk_segment next;
 
-  // The counter determines how many segemnts are above our current segment,
+  // The counter determines how many segments are above our current segment,
   // which will popped off before us. If the counter goes below zero it means
   // that our segment will be popped as well.
   counter = 0;
