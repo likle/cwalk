@@ -133,7 +133,7 @@ bool cwk_path_get_extension(const char *path, const char **extension,
   // Now we search for a dot within the segment. If there is a dot, we consider
   // the rest of the segment the extension. We do this from the end towards the
   // beginning, since we want to find the last dot.
-  for (c = segment.end; c >= segment.begin; ++c) {
+  for (c = segment.end; c >= segment.begin; --c) {
     if (*c == '.') {
       // Okay, we found an extension. We can stop looking now.
       *extension = c;

@@ -40,6 +40,13 @@ target_include_directories(${LIBRARY_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
 # add tests
 enable_testing()
+create_test(DEFAULT extension get_simple)
+create_test(DEFAULT extension get_without)
+create_test(DEFAULT extension get_first)
+create_test(DEFAULT extension get_last)
+create_test(DEFAULT extension get_multiple)
+create_test(DEFAULT extension check_simple)
+create_test(DEFAULT extension check_without)
 create_test(DEFAULT normalize do_nothing)
 create_test(DEFAULT normalize navigate_back)
 create_test(DEFAULT normalize navigate_too_far)
@@ -57,6 +64,7 @@ create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
 add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/main.c"
+  "${TEST_DIRECTORY}/extension_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
   "${TEST_DIRECTORY}/segment_test.c")
 target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})
