@@ -1,0 +1,29 @@
+---
+BasedOnStyle: LLVM
+AlignAfterOpenBracket: DontAlign
+BinPackArguments: 'true'
+BinPackParameters: 'true'
+BreakBeforeBraces: Mozilla
+IndentWidth: '2'
+ContinuationIndentWidth: '2'
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortCaseLabelsOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: 'false'
+AllowShortIfStatementsOnASingleLine: 'false'
+AllowShortLoopsOnASingleLine: 'false'
+PenaltyBreakAssignment: 10000
+PenaltyBreakBeforeFirstCallParameter: 100000
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false
+  AfterEnum: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  AfterFunction: true
+  IndentBraces: false
+  BeforeElse: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
