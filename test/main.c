@@ -2,6 +2,7 @@
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * This is just a small macro which calculates the size of an array.

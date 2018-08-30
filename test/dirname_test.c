@@ -4,7 +4,7 @@
 
 int dirname_root()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "/";
@@ -19,7 +19,7 @@ int dirname_root()
 
 int dirname_special_directories()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "..";
@@ -41,7 +41,7 @@ int dirname_special_directories()
 
 int dirname_no_separators()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "file_name";
@@ -56,7 +56,7 @@ int dirname_no_separators()
 
 int dirname_trailing_separators()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "/my/path.txt////";
@@ -71,7 +71,7 @@ int dirname_trailing_separators()
 
 int dirname_trailing_separator()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "/my/path.txt/";
@@ -86,7 +86,7 @@ int dirname_trailing_separator()
 
 int dirname_empty()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "";
@@ -101,7 +101,7 @@ int dirname_empty()
 
 int dirname_simple()
 {
-  const char *path, *dirname;
+  const char *path;
   size_t length;
 
   path = "/my/path.txt";

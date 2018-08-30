@@ -1,6 +1,7 @@
 #include <cwalk.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <string.h>
 
 int extension_check_without()
 {
