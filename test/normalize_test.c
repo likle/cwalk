@@ -75,15 +75,25 @@ int normalize_terminated()
   size_t count;
   char result[FILENAME_MAX];
   char *input, *expected;
-  size_t i;
+  size_t i, expected_size, n;
 
   input = "/var/logs/test/../../";
   expected = "/var";
+  expected_size = strlen(expected);
+
+  memset(result, 1, sizeof(result));
+
   for (i = 0; i < 7; ++i) {
     count = cwk_path_normalize(input, result, i);
+
+    if (i != 0 && expected_size < i) {
+      n = expected_size;
+    } else {
+      n = i - 1;
+    }
+
     if (count != strlen(expected) ||
-        (i > 0 &&
-          (strncmp(result, expected, i - 1) != 0 || result[i - 1] != '\0'))) {
+        (i > 0 && (strncmp(result, expected, n) != 0 || result[n] != '\0'))) {
       return EXIT_FAILURE;
     }
   }
@@ -98,7 +108,7 @@ int normalize_navigate_too_far()
   char *input, *expected;
 
   input = "/var/logs/test/../../../../../../";
-  expected = "/";
+  expected = "/../../..";
   count = cwk_path_normalize(input, result, sizeof(result));
   if (count != strlen(expected) || strcmp(result, expected) != 0) {
     return EXIT_FAILURE;

@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <cwalk.h>
+#include <stdarg.h>
 #include <string.h>
 
 #if defined(WIN32) || defined(_WIN32) ||                                       \
@@ -12,6 +13,18 @@
 #else
 #define CWK_PATH_SEPARATOR "/"
 #endif
+
+/**
+ * A joined path represents multiple path strings which are concatenated, but
+ * not (necessarily) stored in contiguous memory. The joined path allows to
+ * iterate over the segments as if it was one piece of path.
+ */
+struct cwk_segment_joined
+{
+  struct cwk_segment segment;
+  const char **paths;
+  size_t path_index;
+};
 
 static size_t cwk_path_output_sized(char *buffer, size_t buffer_size,
   size_t position, const char *str, size_t length)
@@ -73,39 +86,160 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
   return c;
 }
 
-static bool cwk_path_segment_will_be_removed(const struct cwk_segment *segment)
+static bool cwk_path_get_first_segment_joined(const char **paths,
+  struct cwk_segment_joined *sj)
 {
-  int counter;
+  bool result;
+
+  // Prepare the first segment. We position the joined segment on the first path
+  // and assign the path array to the struct.
+  sj->path_index = 0;
+  sj->paths = paths;
+
+  // We loop through all paths until we find one which has a segment. The result
+  // is stored in a variable, so we can let the caller know whether we found one
+  // or not.
+  result = false;
+  while (paths[sj->path_index] != NULL &&
+         (result = cwk_path_get_first_segment(paths[sj->path_index],
+            &sj->segment)) == false) {
+    ++sj->path_index;
+  }
+
+  return result;
+}
+
+static bool cwk_path_get_next_segment_joined(struct cwk_segment_joined *sj)
+{
+  bool result;
+
+  if (sj->paths[sj->path_index] == NULL) {
+    // We reached already the end of all paths, so there is no other segment
+    // left.
+    return false;
+  } else if (cwk_path_get_next_segment(&sj->segment)) {
+    // There was another segment on the current path, so we are good to
+    // continue.
+    return true;
+  }
+
+  // We try to move to the next path which has a segment available. We must at
+  // least move one further since the current path reached the end.
+  result = false;
+
+  do {
+    ++sj->path_index;
+
+    // And we obviously have to stop this loop if there are no more paths left.
+    if (sj->paths[sj->path_index] == NULL) {
+      break;
+    }
+
+    // Grab the first segment of the next path and determine whether this path
+    // has anything useful in it.
+    result = cwk_path_get_first_segment(sj->paths[sj->path_index],
+      &sj->segment);
+
+  } while (!result);
+
+  // Finally, report the result back to the caller.
+  return result;
+}
+
+static bool cwk_path_get_previous_segment_joined(struct cwk_segment_joined *pj)
+{
+  bool result;
+
+  if (*pj->paths == NULL) {
+    // It's possible that there is no initialized segment available in the
+    // struct since there are no paths. In that case we can return false, since
+    // there is no previous segment.
+    return false;
+  } else if (cwk_path_get_previous_segment(&pj->segment)) {
+    // Now we try to get the previous segment from the current path. If we can
+    // do that successfully, we can let the caller know that we found one.
+    return true;
+  }
+
+  result = false;
+
+  do {
+    if (pj->path_index == 0) {
+      break;
+    }
+
+    result = cwk_path_get_last_segment(pj->paths[--pj->path_index],
+      &pj->segment);
+  } while (!result);
+
+  return result;
+}
+
+static bool cwk_path_segment_back_will_be_removed(struct cwk_segment_joined *pj)
+{
   enum cwk_segment_type type;
-  struct cwk_segment next;
+  int counter;
+
+  // We are handling back segments here. We must verify how many back segments
+  // and how many normal segments come before this one to decide whether we keep
+  // or remove it.
+
+  // The counter determines how many normal segments are our current segment,
+  // which will popped off before us. If the counter goes above zero it means
+  // that our segment will be popped as well.
+  counter = 0;
+
+  // We loop over all previous segments until we either reach the beginning,
+  // which means our segment will not be dropped or the counter goes above zero.
+  while (cwk_path_get_previous_segment_joined(pj)) {
+
+    // Now grab the type. The type determines whether we will increase or
+    // decrease the counter. We don't handle a CWK_CURRENT frame here since it
+    // has no influence.
+    type = cwk_path_get_segment_type(&pj->segment);
+    if (type == CWK_NORMAL) {
+      // This is a normal segment. The normal segment will increase the counter
+      // since it neutralizes one back segment. If we go above zero we can
+      // return immediately.
+      ++counter;
+      if (counter > 0) {
+        return true;
+      }
+    } else if (type == CWK_BACK) {
+      // A CWK_BACK segment will reduce the counter by one. We can not remove a
+      // back segment as long we are not above zero since we don't have the
+      // opposite normal segment which we would remove.
+      --counter;
+    }
+  }
+
+  // We never got a count larger than zero, so we will keep this segment alive.
+  return false;
+}
+
+static bool cwk_path_segment_normal_will_be_removed(
+  struct cwk_segment_joined *pj)
+{
+  enum cwk_segment_type type;
+  int counter;
 
   // The counter determines how many segments are above our current segment,
   // which will popped off before us. If the counter goes below zero it means
   // that our segment will be popped as well.
   counter = 0;
 
-  // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
-  // those will always be dropped.
-  type = cwk_path_get_segment_type(segment);
-  if (type == CWK_CURRENT || type == CWK_BACK) {
-    // TODO type back must be verified.
-    return true;
-  }
-
   // We loop over all following segments until we either reach the end, which
   // means our segment will not be dropped or the counter goes below zero.
-  next = *segment;
-  while (cwk_path_get_next_segment(&next)) {
+  while (cwk_path_get_next_segment_joined(pj)) {
 
     // First, grab the type. The type determines whether we will increase or
     // decrease the counter. We don't handle a CWK_CURRENT frame here since it
     // has no influence.
-    type = cwk_path_get_segment_type(&next);
+    type = cwk_path_get_segment_type(&pj->segment);
     if (type == CWK_NORMAL) {
       // This is a normal segment. The normal segment will increase the counter
       // since it will be removed by a "../" before us.
       ++counter;
-      continue;
     } else if (type == CWK_BACK) {
       // A CWK_BACK segment will reduce the counter by one. If we are below zero
       // we can return immediately.
@@ -116,7 +250,29 @@ static bool cwk_path_segment_will_be_removed(const struct cwk_segment *segment)
     }
   }
 
+  // We never got a negative count, so we will keep this segment alive.
   return false;
+}
+
+static bool cwk_path_segment_will_be_removed(
+  const struct cwk_segment_joined *pj)
+{
+  enum cwk_segment_type type;
+  struct cwk_segment_joined pjc;
+
+  // We copy the joined path so we don't need to modify it.
+  pjc = *pj;
+
+  // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
+  // those will always be dropped.
+  type = cwk_path_get_segment_type(&pj->segment);
+  if (type == CWK_CURRENT) {
+    return true;
+  } else if (type == CWK_BACK) {
+    return cwk_path_segment_back_will_be_removed(&pjc);
+  } else {
+    return cwk_path_segment_normal_will_be_removed(&pjc);
+  }
 }
 
 void cwk_path_get_basename(const char *path, const char **basename,
@@ -197,21 +353,27 @@ bool cwk_path_has_extension(const char *path)
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 {
   size_t pos;
-  struct cwk_segment segment;
+  struct cwk_segment_joined pj;
+  const char *paths[2];
 
   // We initialize the position to zero, since that's where we start at.
   pos = 0;
 
+  // Now we initialize the paths which we will normalize. Since this function
+  // only supports submitting a single path, we will only add that one.
+  paths[0] = path;
+  paths[1] = NULL;
+
   // So we just grab the first segment. If there is no segment we will always
   // output a "/", since we currently only support absolute paths here.
-  if (!cwk_path_get_first_segment(path, &segment)) {
+  if (!cwk_path_get_first_segment_joined(paths, &pj)) {
     return cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
   }
 
   do {
     // Check whether we have to drop this segment because of resolving a
     // relative path or because it is a CWK_CURRENT segment.
-    if (cwk_path_segment_will_be_removed(&segment)) {
+    if (cwk_path_segment_will_be_removed(&pj)) {
       continue;
     }
 
@@ -219,9 +381,9 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     // buffer size limitations. That's why we use the path output functions
     // here.
     pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
-    pos += cwk_path_output_sized(buffer, buffer_size, pos, segment.begin,
-      segment.size);
-  } while (cwk_path_get_next_segment(&segment));
+    pos += cwk_path_output_sized(buffer, buffer_size, pos, pj.segment.begin,
+      pj.segment.size);
+  } while (cwk_path_get_next_segment_joined(&pj));
 
   // We might have removed all folders by navigating back too far. In that case
   // we will output a single separator.

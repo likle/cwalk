@@ -34,12 +34,61 @@ enum cwk_segment_type
   CWK_BACK,
 };
 
+/**
+ * @brief Generates an absolute path based on a base.
+ *
+ * This function generates an absolute path based on a base path and a relative
+ * path. The result will be written to a buffer, which might be truncated if the
+ * buffer is not large enough to hold the full path. However, the truncated
+ * result will always be null-terminated. The returned value is the amount of
+ * characters which the resulting path would take if it was not truncated
+ * (excluding the null-terminating character).
+ *
+ * @param base The base path on which the relative path will be applied.
+ * @param path The relative path which will be applied on the base path.
+ * @param buffer The buffer where the result will be written to.
+ * @param buffer_size The size of the result buffer.
+ * @return Returns the total amount of characters of the full path.
+ */
 size_t cwk_path_get_absolute_path(const char *base, const char *path,
   char *buffer, size_t buffer_size);
 
-void cwk_path_get_relative_path(const char *base, const char *path,
+/**
+ * @brief Generates a relative path based on a base.
+ *
+ * This function generates a relative path based on a base path and another
+ * absolute path. The result will be written to a buffer, which might be
+ * truncated if the buffer is not large enough to hold the full path. However,
+ * the truncated result will always be null-terminated. The returned value is
+ * the amount of characters which the resulting path would take if it was not
+ * truncated (excluding the null-terminating character).
+ *
+ * @param base The base path from which the relative path will start.
+ * @param path The target path where the relative path will point to.
+ * @param buffer The buffer where the result will be written to.
+ * @param buffer_size The size of the result buffer.
+ * @return Returns the total amount of characters of the full path.
+ */
+size_t cwk_path_get_relative_path(const char *base, const char *path,
   char *buffer, size_t buffer_size);
 
+/**
+ * @brief Joins two paths together.
+ *
+ * This function generates a new path by combining the two submitted paths. It
+ * will remove double separators, but unlike the absolute path function it will
+ * not resolve relative back-links. The result will be written to a buffer,
+ * which might be truncated if the buffer is not large enough to hold the full
+ * path. However, the truncated result will always be null-terminated. The
+ * returned value is the amount of characters which the resulting path would
+ * take if it was not truncated (excluding the null-terminating character).
+ *
+ * @param path_a The first path which comes first.
+ * @param path_b The second path which comes after the first.
+ * @param buffer The buffer where the result will be written to.
+ * @param buffer_size The size of the result buffer.
+ * @return Returns the total amount of characters of the full path.
+ */
 size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
   size_t buffer_size);
 
