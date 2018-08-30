@@ -44,6 +44,22 @@ size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
   size_t buffer_size);
 
 /**
+ * @brief Gets the basename from a file path.
+ *
+ * This function gets the basename of a file path. A pointer to the beginning of
+ * the basename will be returned through the basename parameter. This pointer
+ * will be positioned on the first letter after the separator. The length of the
+ * file path will be returned through the length parameter. The length will be
+ * set to zero and the basename to NULL if there is no basename available.
+ *
+ * @param path The path which will be inspected.
+ * @param basename The output of the basename pointer.
+ * @param length The output of the length of the basename,
+ */
+void cwk_path_get_basename(const char *path, const char **basename,
+  size_t *length);
+
+/**
  * @brief Gets the extension from a file path.
  *
  * This function extracts the extension portion from a file path. A pointer to

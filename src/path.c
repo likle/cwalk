@@ -118,6 +118,27 @@ static bool cwk_path_segment_will_be_removed(const struct cwk_segment *segment)
   return false;
 }
 
+void cwk_path_get_basename(const char *path, const char **basename,
+  size_t *length)
+{
+  struct cwk_segment segment;
+
+  // We get the last segment of the path. The last segment will contain the
+  // basename if there is any. If there are no segments we will set the basename
+  // to NULL and the length to 0.
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    *basename = NULL;
+    *length = 0;
+    return;
+  }
+
+  // Now we can just output the segment contents, since that's our basename.
+  // There might be trailing separators after the basename, but the size does
+  // not include those.
+  *basename = segment.begin;
+  *length = segment.size;
+}
+
 bool cwk_path_get_extension(const char *path, const char **extension,
   size_t *length)
 {
@@ -142,6 +163,7 @@ bool cwk_path_get_extension(const char *path, const char **extension,
     }
   }
 
+  // We couldn't find any extension.
   return false;
 }
 

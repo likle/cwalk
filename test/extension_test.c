@@ -4,10 +4,16 @@
 
 int extension_check_without()
 {
-  const char *path;
+  if (cwk_path_has_extension("/my/path")) {
+    return EXIT_FAILURE;
+  }
 
-  path = "/my/path";
-  if (cwk_path_has_extension(path)) {
+  return EXIT_SUCCESS;
+}
+
+int extension_check_empty()
+{
+  if (cwk_path_has_extension("")) {
     return EXIT_FAILURE;
   }
 
@@ -16,10 +22,7 @@ int extension_check_without()
 
 int extension_check_simple()
 {
-  const char *path;
-
-  path = "/my/path.txt";
-  if (!cwk_path_has_extension(path)) {
+  if (!cwk_path_has_extension("/my/path.txt")) {
     return EXIT_FAILURE;
   }
 
@@ -28,8 +31,7 @@ int extension_check_simple()
 
 int extension_get_multiple()
 {
-  const char *path;
-  const char *extension;
+  const char *path, *extension;
   size_t length;
 
   path = "/my/path.abc.txt.tests";
@@ -50,8 +52,7 @@ int extension_get_multiple()
 
 int extension_get_last()
 {
-  const char *path;
-  const char *extension;
+  const char *path, *extension;
   size_t length;
 
   path = "/my/path.";
@@ -72,8 +73,7 @@ int extension_get_last()
 
 int extension_get_first()
 {
-  const char *path;
-  const char *extension;
+  const char *path, *extension;
   size_t length;
 
   path = "/my/.path";
@@ -94,8 +94,7 @@ int extension_get_first()
 
 int extension_get_without()
 {
-  const char *path;
-  const char *extension;
+  const char *path, *extension;
   size_t length;
 
   path = "/my/path";
@@ -108,8 +107,7 @@ int extension_get_without()
 
 int extension_get_simple()
 {
-  const char *path;
-  const char *extension;
+  const char *path, *extension;
   size_t length;
 
   path = "/my/path.txt";
