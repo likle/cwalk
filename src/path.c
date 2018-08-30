@@ -194,6 +194,90 @@ bool cwk_path_has_extension(const char *path)
   return cwk_path_get_extension(path, &extension, &length);
 }
 
+size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
+{
+  size_t pos;
+  struct cwk_segment segment;
+
+  // We initialize the position to zero, since that's where we start at.
+  pos = 0;
+
+  // So we just grab the first segment. If there is no segment we will always
+  // output a "/", since we currently only support absolute paths here.
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+  }
+
+  do {
+    // Check whether we have to drop this segment because of resolving a
+    // relative path or because it is a CWK_CURRENT segment.
+    if (cwk_path_segment_will_be_removed(&segment)) {
+      continue;
+    }
+
+    // Write out the segment but keep in mind that we need to follow the
+    // buffer size limitations. That's why we use the path output functions
+    // here.
+    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+    pos += cwk_path_output_sized(buffer, buffer_size, pos, segment.begin,
+      segment.size);
+  } while (cwk_path_get_next_segment(&segment));
+
+  // We might have removed all folders by navigating back too far. In that case
+  // we will output a single separator.
+  if (pos == 0) {
+    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+  }
+
+  // We must append a '\0' in any case, unless the buffer size is zero. If the
+  // buffer size is zero, which means we can not.
+  if (buffer_size > 0) {
+    if (pos >= buffer_size) {
+      buffer[buffer_size - 1] = '\0';
+    } else {
+      buffer[pos] = '\0';
+    }
+  }
+
+  // And finally let our caller know about the total size of the normalized
+  // path.
+  return pos;
+}
+
+size_t cwk_path_get_intersection(const char *path_main, const char *path_other)
+{
+  const char *end;
+  struct cwk_segment main, other;
+
+  // So we get the first segment of both paths. If one of those paths don't have
+  // any segment, we will return 0.
+  if (!cwk_path_get_first_segment(path_main, &main) ||
+      !cwk_path_get_first_segment(path_other, &other)) {
+    return 0;
+  }
+
+  // We must keep track of the end of the previous segment. Initially, this is
+  // set to the beginning of the path. This means that 0 is returned if the
+  // first segment is not equal.
+  end = path_main;
+
+  // Now we loop over both segments until one of them reaches the end or their
+  // contents are not equal.
+  do {
+    if (strncmp(main.begin, other.begin, main.size) != 0) {
+      // So the content of those two segments are not equal. We will return the
+      // size up to the beginning.
+      return end - path_main;
+    }
+
+    // Remember the end of the previous segment before we go to the next one.
+    end = main.end;
+  } while (cwk_path_get_next_segment(&main) &&
+           cwk_path_get_next_segment(&other));
+
+  return end - path_main;
+}
+
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 {
   // Let's remember the path. We will move the path pointer afterwards, that's
@@ -317,56 +401,6 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   segment->size = segment->end - segment->begin;
 
   return true;
-}
-
-size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
-{
-  size_t pos;
-  struct cwk_segment segment;
-
-  // We initialize the position to zero, since that's where we start at.
-  pos = 0;
-
-  // So we just grab the first segment. If there is no segment we will always
-  // output a "/", since we currently only support absolute paths here.
-  if (!cwk_path_get_first_segment(path, &segment)) {
-    return cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
-  }
-
-  do {
-    // Check whether we have to drop this segment because of resolving a
-    // relative path or because it is a CWK_CURRENT segment.
-    if (cwk_path_segment_will_be_removed(&segment)) {
-      continue;
-    }
-
-    // Write out the segment but keep in mind that we need to follow the
-    // buffer size limitations. That's why we use the path output functions
-    // here.
-    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
-    pos += cwk_path_output_sized(buffer, buffer_size, pos, segment.begin,
-      segment.size);
-  } while (cwk_path_get_next_segment(&segment));
-
-  // We might have removed all folders by navigating back too far. In that case
-  // we will output a single separator.
-  if (pos == 0) {
-    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
-  }
-
-  // We must append a '\0' in any case, unless the buffer size is zero. If the
-  // buffer size is zero, which means we can not.
-  if (buffer_size > 0) {
-    if (pos >= buffer_size) {
-      buffer[buffer_size - 1] = '\0';
-    } else {
-      buffer[pos] = '\0';
-    }
-  }
-
-  // And finally let our caller know about the total size of the normalized
-  // path.
-  return pos;
 }
 
 bool cwk_path_is_separator(const char *str)

@@ -129,7 +129,18 @@ size_t cwk_path_set_extension(const char *path, const char *new_extension,
  */
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size);
 
-size_t cwk_path_find_common(const char *path_a, const char *path_b);
+/**
+ * @brief Finds common portions in two paths.
+ *
+ * This function finds common portions in two paths and returns the number
+ * characters from the beginning of the main path which are equal to the other
+ * path.
+ *
+ * @param path_main The main path which will be compared with the other path.
+ * @param path_other The other path which will compared with the main path.
+ * @return Returns the number of characters which are common in the main path.
+ */
+size_t cwk_path_get_intersection(const char *path_main, const char *path_other);
 
 /**
  * @brief Gets the first segment of a path.

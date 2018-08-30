@@ -62,6 +62,10 @@ create_test(DEFAULT extension get_multiple)
 create_test(DEFAULT extension check_simple)
 create_test(DEFAULT extension check_empty)
 create_test(DEFAULT extension check_without)
+create_test(DEFAULT intersection simple)
+create_test(DEFAULT intersection trailing_separator)
+create_test(DEFAULT intersection double_separator)
+create_test(DEFAULT intersection empty)
 create_test(DEFAULT normalize do_nothing)
 create_test(DEFAULT normalize navigate_back)
 create_test(DEFAULT normalize navigate_too_far)
@@ -82,6 +86,7 @@ add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/basename_test.c"
   "${TEST_DIRECTORY}/dirname_test.c"
   "${TEST_DIRECTORY}/extension_test.c"
+  "${TEST_DIRECTORY}/intersection_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
   "${TEST_DIRECTORY}/segment_test.c")
 target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})
