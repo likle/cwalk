@@ -88,6 +88,7 @@ static bool cwk_path_segment_will_be_removed(const struct cwk_segment *segment)
   // those will always be dropped.
   type = cwk_path_get_segment_type(segment);
   if (type == CWK_CURRENT || type == CWK_BACK) {
+    // TODO type back must be verified.
     return true;
   }
 
@@ -137,6 +138,23 @@ void cwk_path_get_basename(const char *path, const char **basename,
   // not include those.
   *basename = segment.begin;
   *length = segment.size;
+}
+
+void cwk_path_get_dirname(const char *path, size_t *length)
+{
+  struct cwk_segment segment;
+
+  // We get the last segment of the path. The last segment will contain the
+  // basename if there is any. If there are no segments we will set the length
+  // to 0.
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    *length = 0;
+    return;
+  }
+
+  // We can now return the length from the beginning of the string up to the
+  // beginning of the last segment.
+  *length = segment.begin - path;
 }
 
 bool cwk_path_get_extension(const char *path, const char **extension,

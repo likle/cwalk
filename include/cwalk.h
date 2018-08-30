@@ -60,6 +60,19 @@ void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length);
 
 /**
+ * @brief Gets the dirname of a file path.
+ *
+ * This function determines the dirname of a file path and returns the length up
+ * to which character is considered to be part of it. If no dirname is found,
+ * the length will be set to zero. The beginning of the dirname is always equal
+ * to the submitted path pointer.
+ *
+ * @param path The path which will be inspected.
+ * @param length The length of the dirname.
+ */
+void cwk_path_get_dirname(const char *path, size_t *length);
+
+/**
  * @brief Gets the extension from a file path.
  *
  * This function extracts the extension portion from a file path. A pointer to

@@ -46,6 +46,14 @@ create_test(DEFAULT basename trailing_separator)
 create_test(DEFAULT basename trailing_separators)
 create_test(DEFAULT basename no_separators)
 create_test(DEFAULT basename special_directories)
+create_test(DEFAULT basename root)
+create_test(DEFAULT dirname simple)
+create_test(DEFAULT dirname empty)
+create_test(DEFAULT dirname trailing_separator)
+create_test(DEFAULT dirname trailing_separators)
+create_test(DEFAULT dirname no_separators)
+create_test(DEFAULT dirname special_directories)
+create_test(DEFAULT dirname root)
 create_test(DEFAULT extension get_simple)
 create_test(DEFAULT extension get_without)
 create_test(DEFAULT extension get_first)
@@ -72,6 +80,7 @@ create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/main.c"
   "${TEST_DIRECTORY}/basename_test.c"
+  "${TEST_DIRECTORY}/dirname_test.c"
   "${TEST_DIRECTORY}/extension_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
   "${TEST_DIRECTORY}/segment_test.c")

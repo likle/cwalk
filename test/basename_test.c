@@ -2,6 +2,25 @@
 #include <memory.h>
 #include <stdlib.h>
 
+int basename_root()
+{
+  const char *path, *basename;
+  size_t length;
+
+  path = "/";
+  cwk_path_get_basename(path, &basename, &length);
+
+  if (length != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (basename != NULL) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int basename_special_directories()
 {
   const char *path, *basename;
@@ -34,17 +53,17 @@ int basename_special_directories()
 
 int basename_no_separators()
 {
-  const char *path, *extension;
+  const char *path, *basename;
   size_t length;
 
   path = "file_name";
-  cwk_path_get_basename(path, &extension, &length);
+  cwk_path_get_basename(path, &basename, &length);
 
   if (length != 9) {
     return EXIT_FAILURE;
   }
 
-  if (strncmp(extension, "file_name", length) != 0) {
+  if (strncmp(basename, "file_name", length) != 0) {
     return EXIT_FAILURE;
   }
 
@@ -53,17 +72,17 @@ int basename_no_separators()
 
 int basename_trailing_separators()
 {
-  const char *path, *extension;
+  const char *path, *basename;
   size_t length;
 
   path = "/my/path.txt////";
-  cwk_path_get_basename(path, &extension, &length);
+  cwk_path_get_basename(path, &basename, &length);
 
   if (length != 8) {
     return EXIT_FAILURE;
   }
 
-  if (strncmp(extension, "path.txt", length) != 0) {
+  if (strncmp(basename, "path.txt", length) != 0) {
     return EXIT_FAILURE;
   }
 
@@ -72,17 +91,17 @@ int basename_trailing_separators()
 
 int basename_trailing_separator()
 {
-  const char *path, *extension;
+  const char *path, *basename;
   size_t length;
 
   path = "/my/path.txt/";
-  cwk_path_get_basename(path, &extension, &length);
+  cwk_path_get_basename(path, &basename, &length);
 
   if (length != 8) {
     return EXIT_FAILURE;
   }
 
-  if (strncmp(extension, "path.txt", length) != 0) {
+  if (strncmp(basename, "path.txt", length) != 0) {
     return EXIT_FAILURE;
   }
 
