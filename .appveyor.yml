@@ -24,6 +24,6 @@ before_build:
 build:
   project: c:\projects\cwalk\build.win\cwalk.sln
   verbosity: minimal
-  
+
 test_script:
   - cmd: c:\projects\cwalk\build.win\Release\cwalktest.exe

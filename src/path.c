@@ -472,6 +472,7 @@ bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
   // And finally, calculate the size of the segment by subtracting the position
   // from the end.
   segment->size = path - segment->begin;
+  segment->end = path;
 
   // Tell the caller that we found a segment.
   return true;
