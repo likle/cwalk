@@ -32,7 +32,7 @@ static int call_test(struct cwk_test *test)
   size_t i;
 
   printf(" Running '%s' ", test->full_name);
-  for (i = strlen(test->full_name); i < 30; ++i) {
+  for (i = strlen(test->full_name); i < 40; ++i) {
     fputs(".", stdout);
   }
 

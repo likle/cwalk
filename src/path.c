@@ -244,14 +244,14 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
   return pos;
 }
 
-size_t cwk_path_get_intersection(const char *path_main, const char *path_other)
+size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
 {
   const char *end;
-  struct cwk_segment main, other;
+  struct cwk_segment base, other;
 
   // So we get the first segment of both paths. If one of those paths don't have
   // any segment, we will return 0.
-  if (!cwk_path_get_first_segment(path_main, &main) ||
+  if (!cwk_path_get_first_segment(path_base, &base) ||
       !cwk_path_get_first_segment(path_other, &other)) {
     return 0;
   }
@@ -259,23 +259,23 @@ size_t cwk_path_get_intersection(const char *path_main, const char *path_other)
   // We must keep track of the end of the previous segment. Initially, this is
   // set to the beginning of the path. This means that 0 is returned if the
   // first segment is not equal.
-  end = path_main;
+  end = path_base;
 
   // Now we loop over both segments until one of them reaches the end or their
   // contents are not equal.
   do {
-    if (strncmp(main.begin, other.begin, main.size) != 0) {
+    if (strncmp(base.begin, other.begin, base.size) != 0) {
       // So the content of those two segments are not equal. We will return the
       // size up to the beginning.
-      return end - path_main;
+      return end - path_base;
     }
 
     // Remember the end of the previous segment before we go to the next one.
-    end = main.end;
-  } while (cwk_path_get_next_segment(&main) &&
+    end = base.end;
+  } while (cwk_path_get_next_segment(&base) &&
            cwk_path_get_next_segment(&other));
 
-  return end - path_main;
+  return end - path_base;
 }
 
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
