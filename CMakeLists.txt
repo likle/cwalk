@@ -22,9 +22,6 @@ set(INCLUDE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
 
-# generate constants
-# configure_file("${SOURCE_DIRECTORY}/constants.h.in" "${SOURCE_DIRECTORY}/constants.h")
-
 # enable coverage if requested
 if(ENABLE_COVERAGE)
   message("-- Coverage enabled")

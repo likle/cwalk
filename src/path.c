@@ -569,7 +569,7 @@ bool cwk_path_is_separator(const char *str)
 {
 #if defined(CWK_WINDOWS)
   // Windows supports both path separators.
-  return *str == '\\' || *str == '/'
+  return *str == '\\' || *str == '/';
 #else
   return *str == '/';
 #endif
