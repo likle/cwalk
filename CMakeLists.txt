@@ -39,7 +39,7 @@ endif()
 # add the main executable
 add_library(${LIBRARY_TARGET}
   "${INCLUDE_DIRECTORY}/cwalk.h"
-  "${SOURCE_DIRECTORY}/path.c")
+  "${SOURCE_DIRECTORY}/cwalk.c")
 target_include_directories(${LIBRARY_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
 # add tests

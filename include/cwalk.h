@@ -147,7 +147,7 @@ bool cwk_path_is_relative(const char *path);
  *
  * @param path The path which will be inspected.
  * @param basename The output of the basename pointer.
- * @param length The output of the length of the basename,
+ * @param length The output of the length of the basename.
  */
 void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length);
@@ -207,8 +207,6 @@ size_t cwk_path_set_extension(const char *path, const char *new_extension,
  * characters the complete buffer would have, even if it was not written out
  * completely. The path may be the same memory address as the buffer.
  *
- * This function is currently only available for absolute paths.
- *
  * The following will be true for the normalized path:
  * 1) "../" will be resolved.
  * 2) "./" will be removed.
@@ -218,7 +216,8 @@ size_t cwk_path_set_extension(const char *path, const char *new_extension,
  * @param path The path which will be normalized.
  * @param buffer The buffer where the new path is written to.
  * @param buffer_size The size of the buffer.
- * @return The size which the complete normalized path has.
+ * @return The size which the complete normalized path has if it was not
+ * truncated.
  */
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size);
 
@@ -341,10 +340,10 @@ bool cwk_path_is_separator(const char *str);
  * This function configures which path style is used. The following styles are
  * currently supported.
  *
- * CWK_WINDOWS: Use backslashes as a separator and volume for the root.
- * CWK_UNIX: Use slashes as a separator and a slash for the root.
+ * CWK_STYLE_WINDOWS: Use backslashes as a separator and volume for the root.
+ * CWK_STYLE_UNIX: Use slashes as a separator and a slash for the root.
  *
- * @param str
+ * @param style The style which will be used from now on.
  */
 void cwk_path_set_style(enum cwk_path_style style);
 
@@ -354,7 +353,7 @@ void cwk_path_set_style(enum cwk_path_style style);
  * This function gets the style configuration which is currently used for the
  * paths. This configuration determines how paths are parsed and generated.
  *
- * @return Returns the path style configuration.
+ * @return Returns the current path style configuration.
  */
 enum cwk_path_style cwk_path_get_style(void);
 

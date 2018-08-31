@@ -560,6 +560,8 @@ bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
   // why this has to be done first.
   segment->path = path;
 
+  // TODO skip root
+
   // Now let's check whether this is an empty string. An empty string has no
   // segment it could use.
   if (*path == '\0') {
