@@ -35,6 +35,16 @@ enum cwk_segment_type
 };
 
 /**
+ * @brief Determines the style which is used for the path parsing and
+ * generation.
+ */
+enum cwk_path_style
+{
+  CWK_WINDOWS,
+  CWK_UNIX
+};
+
+/**
  * @brief Generates an absolute path based on a base.
  *
  * This function generates an absolute path based on a base path and a relative
@@ -290,5 +300,28 @@ size_t cwk_path_change_segment(struct cwk_segment *segment, const char *value,
  * @return Returns true if it is a separator, or false otherwise.
  */
 bool cwk_path_is_separator(const char *str);
+
+/**
+ * @brief Configures which path style is used.
+ *
+ * This function configures which path style is used. The following styles are
+ * currently supported.
+ *
+ * CWK_WINDOWS: Use backslashes as a separator and volume for the root.
+ * CWK_UNIX: Use slashes as a separator and a slash for the root.
+ *
+ * @param str
+ */
+void cwk_path_set_style(enum cwk_path_style style);
+
+/**
+ * @brief Gets the path style configuration.
+ *
+ * This function gets the style configuration which is currently used for the
+ * paths. This configuration determines how paths are parsed and generated.
+ *
+ * @return Returns the path style configuration.
+ */
+enum cwk_path_style cwk_path_get_style(void);
 
 #endif

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <cwalk.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
 #if defined(WIN32) || defined(_WIN32) ||                                       \
@@ -9,10 +10,17 @@
 #endif
 
 #if defined(CWK_WINDOWS)
-#define CWK_PATH_SEPARATOR "\\"
+static enum cwk_path_style path_style = CWK_WINDOWS;
 #else
-#define CWK_PATH_SEPARATOR "/"
+static enum cwk_path_style path_style = CWK_UNIX;
 #endif
+
+/**
+ * This is a list of separators used in different styles. Windows can read
+ * multiple separators, but it generally outputs just a backslash. The output
+ * will always use the first character for the output.
+ */
+static const char *separators[] = {[CWK_WINDOWS] = "\\/", [CWK_UNIX] = "/"};
 
 /**
  * A joined path represents multiple path strings which are concatenated, but
@@ -55,11 +63,12 @@ static size_t cwk_path_output_sized(char *buffer, size_t buffer_size,
   return length;
 }
 
-static size_t cwk_path_output(char *buffer, size_t buffer_size, size_t position,
-  const char *str)
+static size_t cwk_path_output_separator(char *buffer, size_t buffer_size,
+  size_t position)
 {
-  // We just forward this case to the sized output.
-  return cwk_path_output_sized(buffer, buffer_size, position, str, strlen(str));
+  // We output a separator, which is a single character..
+  return cwk_path_output_sized(buffer, buffer_size, position,
+    separators[path_style], 1);
 }
 
 static const char *cwk_path_find_next_stop(const char *c)
@@ -367,7 +376,7 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
   // So we just grab the first segment. If there is no segment we will always
   // output a "/", since we currently only support absolute paths here.
   if (!cwk_path_get_first_segment_joined(paths, &pj)) {
-    return cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+    return cwk_path_output_separator(buffer, buffer_size, pos);
   }
 
   do {
@@ -380,7 +389,7 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     // Write out the segment but keep in mind that we need to follow the
     // buffer size limitations. That's why we use the path output functions
     // here.
-    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+    pos += cwk_path_output_separator(buffer, buffer_size, pos);
     pos += cwk_path_output_sized(buffer, buffer_size, pos, pj.segment.begin,
       pj.segment.size);
   } while (cwk_path_get_next_segment_joined(&pj));
@@ -388,7 +397,7 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
   // We might have removed all folders by navigating back too far. In that case
   // we will output a single separator.
   if (pos == 0) {
-    pos += cwk_path_output(buffer, buffer_size, pos, CWK_PATH_SEPARATOR);
+    pos += cwk_path_output_separator(buffer, buffer_size, pos);
   }
 
   // We must append a '\0' in any case, unless the buffer size is zero. If the
@@ -565,17 +574,6 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
 
   return true;
 }
-
-bool cwk_path_is_separator(const char *str)
-{
-#if defined(CWK_WINDOWS)
-  // Windows supports both path separators.
-  return *str == '\\' || *str == '/';
-#else
-  return *str == '/';
-#endif
-}
-
 enum cwk_segment_type cwk_path_get_segment_type(
   const struct cwk_segment *segment)
 {
@@ -588,4 +586,35 @@ enum cwk_segment_type cwk_path_get_segment_type(
   }
 
   return CWK_NORMAL;
+}
+
+bool cwk_path_is_separator(const char *str)
+{
+  const char *c;
+
+  // We loop over all characetrs in the read symbols.
+  c = separators[path_style];
+  while (*c) {
+    if (*c == *str) {
+      return true;
+    }
+
+    ++c;
+  }
+
+  return false;
+}
+
+void cwk_path_set_style(enum cwk_path_style style)
+{
+  // We can just set the global path style variable and then the behaviour for
+  // all functions will change accordingly.
+  assert(style == CWK_UNIX || style == CWK_WINDOWS);
+  path_style = style;
+}
+
+enum cwk_path_style cwk_path_get_style(void)
+{
+  // Simply return the path style which we store in a global variable.
+  return path_style;
 }

@@ -17,3 +17,6 @@ This is a work in progress and not yet ready to use.
  * Resolve relative paths
  * Path segment iteration
  * Does not require any memory allocations
+ 
+ ## Documentation
+ Check the [wiki](https://github.com/likle/cwalk/wiki) for more information.
