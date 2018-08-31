@@ -103,6 +103,29 @@ size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
   size_t buffer_size);
 
 /**
+ * @brief Determines the root of a path.
+ *
+ * This function determines the root of a path by finding it's length. The root
+ * always starts at the submitted path. If the path has no root, the length will
+ * be set to zero.
+ *
+ * @param path The path which will be inspected.
+ * @param length The output of the root length.
+ */
+void cwk_path_get_root(const char *path, size_t *length);
+
+/**
+ * @brief Determine whether the path is absolute or not.
+ *
+ * This function checks whether the path is an absolute path or not. A path is
+ * considered to be absolute if it has a root.
+ *
+ * @param path The path which will be checked.
+ * @return Returns true if the path is absolute or false otherwise.
+ */
+bool cwk_path_is_absolute(const char *path);
+
+/**
  * @brief Gets the basename from a file path.
  *
  * This function gets the basename of a file path. A pointer to the beginning of

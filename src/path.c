@@ -4,12 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * We try to default to a different path style depending on the operating
+ * system. So this should detect whether we should use windows or unix paths.
+ */
 #if defined(WIN32) || defined(_WIN32) ||                                       \
   defined(__WIN32) && !defined(__CYGWIN__)
-#define CWK_WINDOWS
-#endif
-
-#if defined(CWK_WINDOWS)
 static enum cwk_path_style path_style = CWK_STYLE_WINDOWS;
 #else
 static enum cwk_path_style path_style = CWK_STYLE_UNIX;
@@ -20,7 +20,8 @@ static enum cwk_path_style path_style = CWK_STYLE_UNIX;
  * multiple separators, but it generally outputs just a backslash. The output
  * will always use the first character for the output.
  */
-static const char *separators[] = {[CWK_STYLE_WINDOWS] = "\\/", [CWK_STYLE_UNIX] = "/"};
+static const char *separators[] = {[CWK_STYLE_WINDOWS] = "\\/",
+  [CWK_STYLE_UNIX] = "/"};
 
 /**
  * A joined path represents multiple path strings which are concatenated, but
@@ -284,6 +285,103 @@ static bool cwk_path_segment_will_be_removed(
   }
 }
 
+static void cwk_path_get_root_windows(const char *path, size_t *length)
+{
+  const char *c;
+
+  // We can not determine the root if this is an empty string. So we set the
+  // root to NULL and the length to zero and cancel the whole thing.
+  c = path;
+  *length = 0;
+  if (!*c) {
+    return;
+  }
+
+  // Now we have to verify whether this is a windows network path (UNC), which
+  // we will consider our root.
+  if (cwk_path_is_separator(c)) {
+    ++c;
+
+    // Check whether the path starts with a single back slash, which means this
+    // is not a network path - just a normal path starting with a backslash.
+    if (!cwk_path_is_separator(c)) {
+      // Okay, this is not a network path but we still use the backslash as a
+      // root.
+      ++(*length);
+      return;
+    }
+
+    // Yes, this is a network path. Skip the previous separator. We will grab
+    // anything up to the next stop. The next top might be a '\0' or another
+    // separator.
+    ++c;
+    c = cwk_path_find_next_stop(c);
+
+    // If this is a separator and not the end of a string we wil have to include
+    // it. However, if this is a '\0' we must not skip it.
+    if (cwk_path_is_separator(c)) {
+      ++c;
+    }
+
+    // Finally, calculate the size of the root.
+    *length = c - path;
+    return;
+  }
+
+  // Move to the next and check whether this is a colon.
+  if (*++c == ':') {
+    *length = 2;
+  }
+
+  // Now check whether this is a backslash (or slash). If it is not, we could
+  // assume that the next character is a '\0' if it is a valid path. However,
+  // we will not assume that - since ':' is not valid in a path it must be a
+  // mistake by the caller than. We will try to understand it anyway.
+  if (cwk_path_is_separator(++c)) {
+    *length = 3;
+  }
+}
+
+static void cwk_path_get_root_unix(const char *path, size_t *length)
+{
+  // The slash of the unix path represents the root. There is no root if there
+  // is no slash.
+  if (cwk_path_is_separator(path)) {
+    *length = 1;
+  } else {
+    *length = 0;
+  }
+}
+
+void cwk_path_get_root(const char *path, size_t *length)
+{
+  // We use a different implementation here based on the configuration of the
+  // library.
+  if (path_style == CWK_STYLE_WINDOWS) {
+    cwk_path_get_root_windows(path, length);
+  } else {
+    cwk_path_get_root_unix(path, length);
+  }
+}
+
+bool cwk_path_is_absolute(const char *path)
+{
+  size_t length;
+
+  // We grab the root of the path. This root does not include the first
+  // separator of a path.
+  cwk_path_get_root(path, &length);
+
+  // This is definitely no root if there is no root.
+  if (length == 0) {
+    return false;
+  }
+
+  // If there is a separator at the end of the root, we can safely consider this
+  // to be an absolute path.
+  return cwk_path_is_separator(&path[length - 1]);
+}
+
 void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length)
 {
@@ -362,11 +460,14 @@ bool cwk_path_has_extension(const char *path)
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 {
   size_t pos;
-  struct cwk_segment_joined pj;
+  struct cwk_segment_joined sj;
   const char *paths[2];
 
-  // We initialize the position to zero, since that's where we start at.
-  pos = 0;
+  // We initialize the position after the root, which should get us started.
+  cwk_path_get_root(path, &pos);
+
+  // First copy the root to the output. We will not modify the root.
+  cwk_path_output_sized(buffer, buffer_size, 0, path, pos);
 
   // Now we initialize the paths which we will normalize. Since this function
   // only supports submitting a single path, we will only add that one.
@@ -375,30 +476,28 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 
   // So we just grab the first segment. If there is no segment we will always
   // output a "/", since we currently only support absolute paths here.
-  if (!cwk_path_get_first_segment_joined(paths, &pj)) {
-    return cwk_path_output_separator(buffer, buffer_size, pos);
+  if (!cwk_path_get_first_segment_joined(paths, &sj)) {
+    return pos;
   }
 
   do {
     // Check whether we have to drop this segment because of resolving a
     // relative path or because it is a CWK_CURRENT segment.
-    if (cwk_path_segment_will_be_removed(&pj)) {
+    if (cwk_path_segment_will_be_removed(&sj)) {
       continue;
     }
 
     // Write out the segment but keep in mind that we need to follow the
     // buffer size limitations. That's why we use the path output functions
     // here.
+    pos += cwk_path_output_sized(buffer, buffer_size, pos, sj.segment.begin,
+      sj.segment.size);
     pos += cwk_path_output_separator(buffer, buffer_size, pos);
-    pos += cwk_path_output_sized(buffer, buffer_size, pos, pj.segment.begin,
-      pj.segment.size);
-  } while (cwk_path_get_next_segment_joined(&pj));
+  } while (cwk_path_get_next_segment_joined(&sj));
 
-  // We might have removed all folders by navigating back too far. In that case
-  // we will output a single separator.
-  if (pos == 0) {
-    pos += cwk_path_output_separator(buffer, buffer_size, pos);
-  }
+  // Remove the trailing slash. At this point we must have at least one slash
+  // from a segment, which we will remove.
+  --pos;
 
   // We must append a '\0' in any case, unless the buffer size is zero. If the
   // buffer size is zero, which means we can not.
