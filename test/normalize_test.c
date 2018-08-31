@@ -12,7 +12,7 @@ int normalize_overlap()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/./logs/.//test/..//..//////";
   strcpy(result, input);
@@ -31,7 +31,7 @@ int normalize_mixed()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/./logs/.//test/..//..//////";
   expected = "/var";
@@ -49,7 +49,7 @@ int normalize_remove_current()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/././././";
   expected = "/var";
@@ -67,7 +67,7 @@ int normalize_double_separator()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var////logs//test/";
   expected = "/var/logs/test";
@@ -86,7 +86,7 @@ int normalize_terminated()
   char *input, *expected;
   size_t i, expected_size, n;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/logs/test/../../";
   expected = "/var";
@@ -118,7 +118,7 @@ int normalize_navigate_too_far()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/logs/test/../../../../../../";
   expected = "/../../..";
@@ -136,7 +136,7 @@ int normalize_navigate_back()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/logs/test/../../";
   expected = "/var";
@@ -154,7 +154,7 @@ int normalize_do_nothing()
   char result[FILENAME_MAX];
   char *input, *expected;
 
-  cwk_path_set_style(CWK_UNIX);
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var";
   expected = "/var";

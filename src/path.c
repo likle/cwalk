@@ -10,9 +10,9 @@
 #endif
 
 #if defined(CWK_WINDOWS)
-static enum cwk_path_style path_style = CWK_WINDOWS;
+static enum cwk_path_style path_style = CWK_STYLE_WINDOWS;
 #else
-static enum cwk_path_style path_style = CWK_UNIX;
+static enum cwk_path_style path_style = CWK_STYLE_UNIX;
 #endif
 
 /**
@@ -20,7 +20,7 @@ static enum cwk_path_style path_style = CWK_UNIX;
  * multiple separators, but it generally outputs just a backslash. The output
  * will always use the first character for the output.
  */
-static const char *separators[] = {[CWK_WINDOWS] = "\\/", [CWK_UNIX] = "/"};
+static const char *separators[] = {[CWK_STYLE_WINDOWS] = "\\/", [CWK_STYLE_UNIX] = "/"};
 
 /**
  * A joined path represents multiple path strings which are concatenated, but
@@ -609,7 +609,7 @@ void cwk_path_set_style(enum cwk_path_style style)
 {
   // We can just set the global path style variable and then the behaviour for
   // all functions will change accordingly.
-  assert(style == CWK_UNIX || style == CWK_WINDOWS);
+  assert(style == CWK_STYLE_UNIX || style == CWK_STYLE_WINDOWS);
   path_style = style;
 }
 

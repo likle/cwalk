@@ -40,8 +40,8 @@ enum cwk_segment_type
  */
 enum cwk_path_style
 {
-  CWK_WINDOWS,
-  CWK_UNIX
+  CWK_STYLE_WINDOWS,
+  CWK_STYLE_UNIX
 };
 
 /**
