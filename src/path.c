@@ -382,6 +382,12 @@ bool cwk_path_is_absolute(const char *path)
   return cwk_path_is_separator(&path[length - 1]);
 }
 
+bool cwk_path_is_relative(const char *path)
+{
+  // The path is relative if it is not absolute.
+  return !cwk_path_is_absolute(path);
+}
+
 void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length)
 {
@@ -642,7 +648,6 @@ bool cwk_path_get_next_segment(struct cwk_segment *segment)
   // Tell the caller that we found a segment.
   return true;
 }
-
 bool cwk_path_get_previous_segment(struct cwk_segment *segment)
 {
   const char *c;
@@ -673,6 +678,7 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
 
   return true;
 }
+
 enum cwk_segment_type cwk_path_get_segment_type(
   const struct cwk_segment *segment)
 {

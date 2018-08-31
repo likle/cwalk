@@ -118,12 +118,23 @@ void cwk_path_get_root(const char *path, size_t *length);
  * @brief Determine whether the path is absolute or not.
  *
  * This function checks whether the path is an absolute path or not. A path is
- * considered to be absolute if it has a root.
+ * considered to be absolute if the root ends with a separator.
  *
  * @param path The path which will be checked.
  * @return Returns true if the path is absolute or false otherwise.
  */
 bool cwk_path_is_absolute(const char *path);
+
+/**
+ * @brief Determine whether the path is relative or not.
+ *
+ * This function checks whether the path is a relative path or not. A path is
+ * considered to be relative if the root does not end with a separator.
+ *
+ * @param path The path which will be checked.
+ * @return Returns true if the path is relative or false otherwise.
+ */
+bool cwk_path_is_relative(const char *path);
 
 /**
  * @brief Gets the basename from a file path.
