@@ -264,8 +264,9 @@ static bool cwk_path_segment_normal_will_be_removed(
   return false;
 }
 
-static bool cwk_path_segment_will_be_removed(
-  const struct cwk_segment_joined *pj)
+static bool
+cwk_path_segment_will_be_removed(const struct cwk_segment_joined *pj,
+  bool absolute)
 {
   enum cwk_segment_type type;
   struct cwk_segment_joined pjc;
@@ -277,6 +278,8 @@ static bool cwk_path_segment_will_be_removed(
   // those will always be dropped.
   type = cwk_path_get_segment_type(&pj->segment);
   if (type == CWK_CURRENT) {
+    return true;
+  } else if (type == CWK_BACK && absolute) {
     return true;
   } else if (type == CWK_BACK) {
     return cwk_path_segment_back_will_be_removed(&pjc);
@@ -353,6 +356,18 @@ static void cwk_path_get_root_unix(const char *path, size_t *length)
   }
 }
 
+static bool cwk_path_is_root_absolute(const char *path, size_t length)
+{
+  // This is definitely no root if there is no root.
+  if (length == 0) {
+    return false;
+  }
+
+  // If there is a separator at the end of the root, we can safely consider this
+  // to be an absolute path.
+  return cwk_path_is_separator(&path[length - 1]);
+}
+
 void cwk_path_get_root(const char *path, size_t *length)
 {
   // We use a different implementation here based on the configuration of the
@@ -372,14 +387,8 @@ bool cwk_path_is_absolute(const char *path)
   // separator of a path.
   cwk_path_get_root(path, &length);
 
-  // This is definitely no root if there is no root.
-  if (length == 0) {
-    return false;
-  }
-
-  // If there is a separator at the end of the root, we can safely consider this
-  // to be an absolute path.
-  return cwk_path_is_separator(&path[length - 1]);
+  // Now we can determine whether the root is absolute or not.
+  return cwk_path_is_root_absolute(path, length);
 }
 
 bool cwk_path_is_relative(const char *path)
@@ -466,11 +475,16 @@ bool cwk_path_has_extension(const char *path)
 size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 {
   size_t pos;
+  bool absolute, has_segment_output;
   struct cwk_segment_joined sj;
   const char *paths[2];
 
   // We initialize the position after the root, which should get us started.
   cwk_path_get_root(path, &pos);
+
+  // Determine whether the path is absolute or not. We need that to determine
+  // later on whether we can remove superfluous "../" or not.
+  absolute = cwk_path_is_root_absolute(path, pos);
 
   // First copy the root to the output. We will not modify the root.
   cwk_path_output_sized(buffer, buffer_size, 0, path, pos);
@@ -486,12 +500,21 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     return pos;
   }
 
+  // Let's assume that we don't have any segment output for now. We will toggle
+  // this flag once there is some output.
+  has_segment_output = false;
+
   do {
     // Check whether we have to drop this segment because of resolving a
     // relative path or because it is a CWK_CURRENT segment.
-    if (cwk_path_segment_will_be_removed(&sj)) {
+    if (cwk_path_segment_will_be_removed(&sj, absolute)) {
       continue;
     }
+
+    // Remember that we have segment output, so we can handle the trailing slash
+    // later on. This is necessary since we might have segments but they are all
+    // removed.
+    has_segment_output = true;
 
     // Write out the segment but keep in mind that we need to follow the
     // buffer size limitations. That's why we use the path output functions
@@ -501,9 +524,11 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
     pos += cwk_path_output_separator(buffer, buffer_size, pos);
   } while (cwk_path_get_next_segment_joined(&sj));
 
-  // Remove the trailing slash. At this point we must have at least one slash
-  // from a segment, which we will remove.
-  --pos;
+  // Remove the trailing slash, but only if we have segment output. We don't
+  // want to remove anything from the root.
+  if (has_segment_output) {
+    --pos;
+  }
 
   // We must append a '\0' in any case, unless the buffer size is zero. If the
   // buffer size is zero, which means we can not.
@@ -556,11 +581,16 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
 
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 {
+  size_t length;
+
   // Let's remember the path. We will move the path pointer afterwards, that's
   // why this has to be done first.
   segment->path = path;
 
-  // TODO skip root
+  // We skip the root since that's not part of the first segment. The root is
+  // treated as a separate entity.
+  cwk_path_get_root(path, &length);
+  path += length;
 
   // Now let's check whether this is an empty string. An empty string has no
   // segment it could use.

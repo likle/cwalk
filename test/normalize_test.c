@@ -112,7 +112,25 @@ int normalize_terminated()
   return EXIT_SUCCESS;
 }
 
-int normalize_navigate_too_far()
+int normalize_relative_too_far()
+{
+  size_t count;
+  char result[FILENAME_MAX];
+  char *input, *expected;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  input = "rel/../../";
+  expected = "..";
+  count = cwk_path_normalize(input, result, sizeof(result));
+  if (count != strlen(expected) || strcmp(result, expected) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int normalize_absolute_too_far()
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -121,7 +139,7 @@ int normalize_navigate_too_far()
   cwk_path_set_style(CWK_STYLE_UNIX);
 
   input = "/var/logs/test/../../../../../../";
-  expected = "/../../..";
+  expected = "/";
   count = cwk_path_normalize(input, result, sizeof(result));
   if (count != strlen(expected) || strcmp(result, expected) != 0) {
     return EXIT_FAILURE;
