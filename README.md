@@ -1,8 +1,7 @@
 [![Travis Build](https://img.shields.io/travis/likle/cwalk/master.svg?maxAge=2592000&label=Linux%20%26%20MacOS)](https://travis-ci.org/likle/cwalk)
-[![Appveyor Build](https://img.shields.io/appveyor/ci/likle/cwalk/master.svg?label=Windows)](https://travis-ci.org/likle/cwalk) 
+[![Appveyor Build](https://img.shields.io/appveyor/ci/likle/cwalk/master.svg?label=Windows)](https://ci.appveyor.com/project/likle/cwalk) 
 [![codecov](https://img.shields.io/codecov/c/github/likle/cwalk/master.svg?label=Coverage)](https://codecov.io/gh/likle/cwalk)
 [![Language Grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/likle/cwalk.svg?label=Code%20Quality)](https://lgtm.com/projects/g/likle/cwalk/context:cpp)
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg?label=License)](https://github.com/likle/cwalk/blob/master/LICENSE)
 
 # libcwalk - path library for C/C++
 This library is intended to be a lighweight C path manipulation library. 
@@ -17,12 +16,13 @@ Please have a look at the **[reference](https://github.com/likle/cwalk/wiki/Refe
 Some features this library includes:
 
  * **cross-platform** on windows, linux and macOS
- * **simple [interface](https://github.com/likle/cwalk/wiki/Reference)** - just one header 
- * **[combine](https://github.com/likle/cwalk/wiki/cwk_path_join) paths** together
- * **[basename](https://github.com/likle/cwalk/wiki/cwk_path_get_basename), [dirname](https://github.com/likle/cwalk/wiki/cwk_path_get_dirname) and [extension](https://github.com/likle/cwalk/wiki/cwk_path_get_extension)** parsing
- * **[normalize](https://github.com/likle/cwalk/wiki/cwk_path_normalize) and cleanup** paths
- * **[resolve](https://github.com/likle/cwalk/wiki/cwk_path_get_absolute_path) and [generate](https://github.com/likle/cwalk/wiki/cwk_path_get_relative_path) relative** paths
- * **[iterate](https://github.com/likle/cwalk/wiki/cwk_path_get_next_segment) segments** of the path
+ * **simple interface** - just one header 
+ * **combine paths** together
+ * **basename, dirname and extension** parsing
+ * **normalize and cleanup** paths
+ * **resolve and generate relative** paths
+ * **iterate segments** of the path
+ * **and more** things...
  
  ## Building
  **[Building](https://github.com/likle/cwalk/wiki/Building)**, 
