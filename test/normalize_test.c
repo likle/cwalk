@@ -6,6 +6,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+int normalize_only_separators()
+{
+  size_t count;
+  char result[FILENAME_MAX];
+  char *input, *expected;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  input = "////";
+  strcpy(result, input);
+  expected = "/";
+  count = cwk_path_normalize(result, result, sizeof(result));
+  if (count != strlen(expected) || strcmp(result, expected) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int normalize_empty()
 {
   size_t count;

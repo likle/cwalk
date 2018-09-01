@@ -480,7 +480,7 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
   // So we just grab the first segment. If there is no segment we will always
   // output a "/", since we currently only support absolute paths here.
   if (!cwk_path_get_first_segment_joined(paths, &sj)) {
-    return pos;
+    goto done;
   }
 
   // Let's assume that we don't have any segment output for now. We will toggle
@@ -521,6 +521,7 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
 
   // We must append a '\0' in any case, unless the buffer size is zero. If the
   // buffer size is zero, which means we can not.
+done:
   if (buffer_size > 0) {
     if (pos >= buffer_size) {
       buffer[buffer_size - 1] = '\0';
@@ -534,7 +535,7 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
   return pos;
 }
 
-size_t cwk_path_get_absolute_path(const char *base, const char *path,
+size_t cwk_path_get_absolute(const char *base, const char *path,
   char *buffer, size_t buffer_size)
 {
   size_t i;

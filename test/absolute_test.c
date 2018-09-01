@@ -10,7 +10,7 @@ int absolute_too_far()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("/hello/there", "../../../../../", buffer,
+  length = cwk_path_get_absolute("/hello/there", "../../../../../", buffer,
     sizeof(buffer));
 
   if (length != 1) {
@@ -30,7 +30,7 @@ int absolute_normalization()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("/hello//../there", "test//thing", buffer,
+  length = cwk_path_get_absolute("/hello//../there", "test//thing", buffer,
     sizeof(buffer));
 
   if (length != 17) {
@@ -50,7 +50,7 @@ int absolute_mixed()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("hello/there", "/test", buffer,
+  length = cwk_path_get_absolute("hello/there", "/test", buffer,
     sizeof(buffer));
 
   if (length != 5) {
@@ -70,7 +70,7 @@ int absolute_relative_base()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("hello/there", "test", buffer,
+  length = cwk_path_get_absolute("hello/there", "test", buffer,
     sizeof(buffer));
 
   if (length != 17) {
@@ -90,7 +90,7 @@ int absolute_absolute_path()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("/hello/there", "/test", buffer,
+  length = cwk_path_get_absolute("/hello/there", "/test", buffer,
     sizeof(buffer));
 
   if (length != 5) {
@@ -110,7 +110,7 @@ int absolute_simple()
   size_t length;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
-  length = cwk_path_get_absolute_path("/hello/there", "..", buffer,
+  length = cwk_path_get_absolute("/hello/there", "..", buffer,
     sizeof(buffer));
 
   if (length != 6) {

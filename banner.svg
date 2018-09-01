@@ -701,9 +701,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="309.96846"
-     inkscape:cy="94.127192"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="461.05643"
+     inkscape:cy="9.8466849"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -802,9 +802,11 @@
          id="tspan1120"
          x="261.41824"
          y="250.22784"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:22.57777786px;font-family:'Montserrat Alternates';-inkscape-font-specification:'Montserrat Alternates Heavy';text-align:end;text-anchor:end;fill:#216778;stroke-width:0.26458332px">c<tspan
-   style="fill:#37abc8"
-   id="tspan1128">walk</tspan></tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:22.57777786px;font-family:'Montserrat Alternates';-inkscape-font-specification:'Montserrat Alternates Heavy';text-align:end;text-anchor:end;fill:#216778;stroke-width:0.26458332px"><tspan
+           style="fill:#217821"
+           id="tspan1784">c</tspan><tspan
+           style="fill:#5fd35f"
+           id="tspan1128">walk</tspan></tspan></text>
     <path
        style="opacity:1;fill:#37c871;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        d="m 24.321527,286.84376 4.625731,-8.012 4.633571,8.02558 z"
