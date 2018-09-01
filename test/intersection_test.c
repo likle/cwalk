@@ -3,6 +3,8 @@
 
 int intersection_empty()
 {
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
   if (cwk_path_get_intersection("/", "") != 0) {
     return EXIT_FAILURE;
   }
@@ -12,6 +14,7 @@ int intersection_empty()
 
 int intersection_double_separator()
 {
+  cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this///is/a//test", "/this//is/a///file") !=
       12) {
     return EXIT_FAILURE;
@@ -22,6 +25,7 @@ int intersection_double_separator()
 
 int intersection_trailing_separator()
 {
+  cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a/") != 10) {
     return EXIT_FAILURE;
   }
@@ -31,6 +35,7 @@ int intersection_trailing_separator()
 
 int intersection_truncated()
 {
+  cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a") != 10) {
     return EXIT_FAILURE;
   }
@@ -40,6 +45,7 @@ int intersection_truncated()
 
 int intersection_simple()
 {
+  cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a/string") != 10) {
     return EXIT_FAILURE;
   }

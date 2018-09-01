@@ -8,6 +8,8 @@ int segment_type()
   const char *path;
   struct cwk_segment segment;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
   path = "/a/./../.folder/..folder";
 
   if (!cwk_path_get_first_segment(path, &segment)) {
@@ -58,6 +60,8 @@ int segment_previous()
   const char *path;
   struct cwk_segment segment;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
   path = "/now/hello_world/abc/";
 
   if (!cwk_path_get_last_segment(path, &segment)) {
@@ -96,6 +100,8 @@ int segment_next()
   const char *path;
   struct cwk_segment segment;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
   path = "/hello_world/abc/";
 
   if (!cwk_path_get_first_segment(path, &segment)) {
@@ -126,6 +132,8 @@ int segment_last()
   const char *path;
   struct cwk_segment segment;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
   path = "/hello_world/abc";
 
   if (!cwk_path_get_last_segment(path, &segment)) {
@@ -153,6 +161,8 @@ int segment_first()
 {
   const char *path;
   struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
 
   path = "/hello_world/abc";
 

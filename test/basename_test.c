@@ -8,6 +8,7 @@ int basename_root()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -27,6 +28,7 @@ int basename_special_directories()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "..";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -57,6 +59,7 @@ int basename_no_separators()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "file_name";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -76,6 +79,7 @@ int basename_trailing_separators()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt////";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -95,6 +99,7 @@ int basename_trailing_separator()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt/";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -114,6 +119,7 @@ int basename_empty()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "";
   cwk_path_get_basename(path, &basename, &length);
 
@@ -133,6 +139,7 @@ int basename_simple()
   const char *path, *basename;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt";
   cwk_path_get_basename(path, &basename, &length);
 

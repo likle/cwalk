@@ -7,6 +7,7 @@ int dirname_root()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/";
   cwk_path_get_dirname(path, &length);
 
@@ -22,6 +23,7 @@ int dirname_special_directories()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "..";
   cwk_path_get_dirname(path, &length);
 
@@ -44,6 +46,7 @@ int dirname_no_separators()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "file_name";
   cwk_path_get_dirname(path, &length);
 
@@ -59,6 +62,7 @@ int dirname_trailing_separators()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt////";
   cwk_path_get_dirname(path, &length);
 
@@ -74,6 +78,7 @@ int dirname_trailing_separator()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt/";
   cwk_path_get_dirname(path, &length);
 
@@ -89,6 +94,7 @@ int dirname_empty()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "";
   cwk_path_get_dirname(path, &length);
 
@@ -104,6 +110,7 @@ int dirname_simple()
   const char *path;
   size_t length;
 
+  cwk_path_set_style(CWK_STYLE_UNIX);
   path = "/my/path.txt";
   cwk_path_get_dirname(path, &length);
 

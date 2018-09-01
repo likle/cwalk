@@ -84,6 +84,11 @@ create_test(DEFAULT segment last)
 create_test(DEFAULT segment next)
 create_test(DEFAULT segment previous)
 create_test(DEFAULT segment type)
+create_test(DEFAULT windows change_style)
+create_test(DEFAULT windows get_root)
+create_test(DEFAULT windows get_unc_root)
+create_test(DEFAULT windows get_root_separator)
+create_test(DEFAULT windows get_root_relative)
 create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
 add_executable(${TEST_TARGET}
@@ -93,7 +98,8 @@ add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/extension_test.c"
   "${TEST_DIRECTORY}/intersection_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
-  "${TEST_DIRECTORY}/segment_test.c")
+  "${TEST_DIRECTORY}/segment_test.c"
+  "${TEST_DIRECTORY}/windows_test.c")
 target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})
 target_include_directories(${TEST_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
