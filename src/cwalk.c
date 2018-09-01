@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <ctype.h>
 #include <cwalk.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -70,6 +71,33 @@ static size_t cwk_path_output_separator(char *buffer, size_t buffer_size,
   // We output a separator, which is a single character..
   return cwk_path_output_sized(buffer, buffer_size, position,
     separators[path_style], 1);
+}
+
+static bool cwk_path_is_string_equal(const char *first, const char *second,
+  size_t n)
+{
+  // If the path style is UNIX, we will compare case sensitively. This can be
+  // done easily using strncmp.
+  if (path_style == CWK_STYLE_UNIX) {
+    return strncmp(first, second, n) == 0;
+  }
+
+  // However, if this is windows we will have to compare case insensitively.
+  // Since there is no standard method to do that we will have to do it on our
+  // own.
+  while (*first && *second && n > 0) {
+    // We can consider the string to be not equal if the two lowercase
+    // characters are not equal.
+    if (tolower(*first++) != tolower(*second++)) {
+      return false;
+    }
+
+    --n;
+  }
+
+  // We can consider the string to be equal if we either reached n == 0 or both
+  // cursors point to a null character.
+  return n == 0 || (*first == '\0' && *second == '\0');
 }
 
 static const char *cwk_path_find_next_stop(const char *c)
@@ -265,18 +293,18 @@ static bool cwk_path_segment_normal_will_be_removed(
 }
 
 static bool
-cwk_path_segment_will_be_removed(const struct cwk_segment_joined *pj,
+cwk_path_segment_will_be_removed(const struct cwk_segment_joined *sj,
   bool absolute)
 {
   enum cwk_segment_type type;
   struct cwk_segment_joined pjc;
 
   // We copy the joined path so we don't need to modify it.
-  pjc = *pj;
+  pjc = *sj;
 
   // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
   // those will always be dropped.
-  type = cwk_path_get_segment_type(&pj->segment);
+  type = cwk_path_get_segment_type(&sj->segment);
   if (type == CWK_CURRENT) {
     return true;
   } else if (type == CWK_BACK && absolute) {
@@ -286,6 +314,19 @@ cwk_path_segment_will_be_removed(const struct cwk_segment_joined *pj,
   } else {
     return cwk_path_segment_normal_will_be_removed(&pjc);
   }
+}
+
+static bool
+cwk_path_segment_joined_skip_invisible(struct cwk_segment_joined *sj,
+  bool absolute)
+{
+  while (cwk_path_segment_will_be_removed(sj, absolute)) {
+    if (!cwk_path_get_next_segment_joined(sj)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 static void cwk_path_get_root_windows(const char *path, size_t *length)
@@ -547,35 +588,69 @@ size_t cwk_path_normalize(const char *path, char *buffer, size_t buffer_size)
 
 size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
 {
+  bool absolute;
+  size_t base_root_length, other_root_length;
   const char *end;
-  struct cwk_segment base, other;
+  const char *paths_base[2], *paths_other[2];
+  struct cwk_segment_joined base, other;
+
+  // We first compare the two roots. We just return zero if they are not equal.
+  // This will also happen to return zero if the paths are mixed relative and
+  // absolute.
+  cwk_path_get_root(path_base, &base_root_length);
+  cwk_path_get_root(path_other, &other_root_length);
+  if (!cwk_path_is_string_equal(path_base, path_other, base_root_length)) {
+    return 0;
+  }
+
+  // Configure our paths. We just have a single path in here for now.
+  paths_base[0] = path_base;
+  paths_base[1] = NULL;
+  paths_other[0] = path_other;
+  paths_other[1] = NULL;
 
   // So we get the first segment of both paths. If one of those paths don't have
   // any segment, we will return 0.
-  if (!cwk_path_get_first_segment(path_base, &base) ||
-      !cwk_path_get_first_segment(path_other, &other)) {
-    return 0;
+  if (!cwk_path_get_first_segment_joined(paths_base, &base) ||
+      !cwk_path_get_first_segment_joined(paths_other, &other)) {
+    return base_root_length;
   }
+
+  // We now determine whether the path is absolute or not. This is required
+  // because if will ignore removed segments, and this behaves differently if
+  // the path is absolute. However, we only need to check the base path because
+  // we are guaranteed that both paths are either relative or absolute.
+  absolute = cwk_path_is_root_absolute(path_base, base_root_length);
 
   // We must keep track of the end of the previous segment. Initially, this is
   // set to the beginning of the path. This means that 0 is returned if the
   // first segment is not equal.
-  end = path_base;
+  end = path_base + base_root_length;
 
   // Now we loop over both segments until one of them reaches the end or their
   // contents are not equal.
   do {
-    if (strncmp(base.begin, other.begin, base.size) != 0) {
+    // We skip all segments which will be removed in each path, since we want to
+    // know about the true path.
+    if (!cwk_path_segment_joined_skip_invisible(&base, absolute) ||
+        !cwk_path_segment_joined_skip_invisible(&other, absolute)) {
+      break;
+    }
+
+    if (!cwk_path_is_string_equal(base.segment.begin, other.segment.begin,
+          base.segment.size)) {
       // So the content of those two segments are not equal. We will return the
       // size up to the beginning.
       return end - path_base;
     }
 
     // Remember the end of the previous segment before we go to the next one.
-    end = base.end;
-  } while (cwk_path_get_next_segment(&base) &&
-           cwk_path_get_next_segment(&other));
+    end = base.segment.end;
+  } while (cwk_path_get_next_segment_joined(&base) &&
+           cwk_path_get_next_segment_joined(&other));
 
+  // Now we calculate the length up to the last point where our paths pointed to
+  // the same place.
   return end - path_base;
 }
 

@@ -3,6 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+int windows_intersection_case()
+{
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  if (cwk_path_get_intersection("C:\\MYFOLDER\\MYILE.TXT",
+        "c:\\myfolder\\myile.txt") != 21) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int windows_get_root_relative()
 {
   size_t size;

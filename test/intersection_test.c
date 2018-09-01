@@ -1,6 +1,62 @@
 #include <cwalk.h>
 #include <stdlib.h>
 
+int intersection_relative()
+{
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  if (cwk_path_get_intersection("/test/abc/../foo/bar", "/test/foo/har") !=
+      16) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int intersection_one_root_only()
+{
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  if (cwk_path_get_intersection("C:/abc/test.txt", "C:/") != 3) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int intersection_same_roots()
+{
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  if (cwk_path_get_intersection("C:/abc/test.txt", "C:/def/test.txt") != 3) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int intersection_relative_absolute_mix()
+{
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  if (cwk_path_get_intersection("/test/abc.txt", "test/abc.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int intersection_unequal_roots()
+{
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  if (cwk_path_get_intersection("C:/test/abc.txt", "D:/test/abc.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int intersection_empty()
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
