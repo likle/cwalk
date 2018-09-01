@@ -44,6 +44,12 @@ target_include_directories(${LIBRARY_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
 # add tests
 enable_testing()
+create_test(DEFAULT absolute simple)
+create_test(DEFAULT absolute absolute_path)
+create_test(DEFAULT absolute relative_base)
+create_test(DEFAULT absolute mixed)
+create_test(DEFAULT absolute normalization)
+create_test(DEFAULT absolute too_far)
 create_test(DEFAULT basename simple)
 create_test(DEFAULT basename empty)
 create_test(DEFAULT basename trailing_separator)
@@ -76,6 +82,11 @@ create_test(DEFAULT intersection same_roots)
 create_test(DEFAULT intersection one_root_only)
 create_test(DEFAULT intersection relative_base)
 create_test(DEFAULT intersection relative_other)
+create_test(DEFAULT join simple)
+create_test(DEFAULT join navigate_back)
+create_test(DEFAULT join empty)
+create_test(DEFAULT join two_absolute)
+create_test(DEFAULT join two_unc)
 create_test(DEFAULT normalize do_nothing)
 create_test(DEFAULT normalize navigate_back)
 create_test(DEFAULT normalize relative_too_far)
@@ -85,6 +96,7 @@ create_test(DEFAULT normalize double_separator)
 create_test(DEFAULT normalize remove_current)
 create_test(DEFAULT normalize mixed)
 create_test(DEFAULT normalize overlap)
+create_test(DEFAULT normalize empty)
 create_test(DEFAULT segment first)
 create_test(DEFAULT segment last)
 create_test(DEFAULT segment next)
@@ -100,10 +112,12 @@ create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
 add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/main.c"
+  "${TEST_DIRECTORY}/absolute_test.c"
   "${TEST_DIRECTORY}/basename_test.c"
   "${TEST_DIRECTORY}/dirname_test.c"
   "${TEST_DIRECTORY}/extension_test.c"
   "${TEST_DIRECTORY}/intersection_test.c"
+  "${TEST_DIRECTORY}/join_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
   "${TEST_DIRECTORY}/segment_test.c"
   "${TEST_DIRECTORY}/windows_test.c")
