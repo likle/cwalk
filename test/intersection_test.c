@@ -12,7 +12,7 @@ int intersection_empty()
 
 int intersection_double_separator()
 {
-  if (cwk_path_get_intersection("/this///is/a//test", "//this//is/a///file") !=
+  if (cwk_path_get_intersection("/this///is/a//test", "/this//is/a///file") !=
       12) {
     return EXIT_FAILURE;
   }
