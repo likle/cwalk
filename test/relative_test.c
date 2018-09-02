@@ -45,6 +45,25 @@ int relative_different_roots()
   return EXIT_SUCCESS;
 }
 
+int relative_skip_all()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/../../", "/../../", result, sizeof(result));
+  if (length != 1) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, ".") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_target_div_skipped_end()
 {
   char result[FILENAME_MAX];
