@@ -3,6 +3,32 @@
 #include <stdlib.h>
 #include <string.h>
 
+int windows_root_empty()
+{
+  size_t size;
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  cwk_path_get_root("", &size);
+  if (size != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int windows_root_backslash()
+{
+  size_t size;
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  cwk_path_get_root("\\no_network_path\\hello", &size);
+  if (size != 1) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int windows_intersection_case()
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);

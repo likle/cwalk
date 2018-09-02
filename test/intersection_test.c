@@ -1,6 +1,17 @@
 #include <cwalk.h>
 #include <stdlib.h>
 
+int intersection_skipped_end()
+{
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  if (cwk_path_get_intersection("/test/foo/har/../", "/test/foo/ho") != 9) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int intersection_relative_other()
 {
   cwk_path_set_style(CWK_STYLE_UNIX);

@@ -86,6 +86,38 @@ int segment_type()
   return EXIT_SUCCESS;
 }
 
+int segment_previous_too_far()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  path = "/now/hello_world/abc/";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int segment_previous_relative()
 {
   const char *path;
@@ -160,6 +192,34 @@ int segment_previous_absolute()
   }
 
   if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_next_too_far()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  path = "/hello_world/abc/";
+
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_next_segment(&segment)) {
     return EXIT_FAILURE;
   }
 

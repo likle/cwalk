@@ -1,7 +1,7 @@
 #include <cwalk.h>
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -30,6 +30,101 @@ int relative_check()
   return EXIT_SUCCESS;
 }
 
+int relative_different_roots()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  length = cwk_path_get_relative("C:/path/same", "D:/path/same", result,
+    sizeof(result));
+  if (length != 0) {
+    return EXIT_FAILURE;
+  }
+  return EXIT_SUCCESS;
+}
+
+int relative_target_div_skipped_end()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/path/same", "/path/not_same/ho/..", result,
+    sizeof(result));
+  if (length != 11) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "../not_same") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int relative_base_div_skipped_end()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/path/not_same/ho/..", "/path/same", result,
+    sizeof(result));
+  if (length != 7) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "../same") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int relative_target_skipped_end()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/path/same", "/path/same/ho/..", result,
+    sizeof(result));
+  if (length != 1) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, ".") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int relative_base_skipped_end()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/path/same/ho/..", "/path/same", result,
+    sizeof(result));
+  if (length != 1) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, ".") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_equal()
 {
   char result[FILENAME_MAX];
@@ -37,13 +132,13 @@ int relative_equal()
 
   cwk_path_set_style(CWK_STYLE_UNIX);
 
-  length = cwk_path_get_relative("/path/same", "/path/same",
-    result, sizeof(result));
-  if(length != 1) {
+  length = cwk_path_get_relative("/path/same", "/path/same", result,
+    sizeof(result));
+  if (length != 1) {
     return EXIT_FAILURE;
   }
 
-  if(strcmp(result, ".") != 0){
+  if (strcmp(result, ".") != 0) {
     return EXIT_FAILURE;
   }
 
@@ -57,13 +152,13 @@ int relative_long_target()
 
   cwk_path_set_style(CWK_STYLE_UNIX);
 
-  length = cwk_path_get_relative("/path/long/one", "/path/long/one/two",
-    result, sizeof(result));
-  if(length != 3) {
+  length = cwk_path_get_relative("/path/long/one", "/path/long/one/two", result,
+    sizeof(result));
+  if (length != 3) {
     return EXIT_FAILURE;
   }
 
-  if(strcmp(result, "two") != 0){
+  if (strcmp(result, "two") != 0) {
     return EXIT_FAILURE;
   }
 
@@ -77,13 +172,13 @@ int relative_long_base()
 
   cwk_path_set_style(CWK_STYLE_UNIX);
 
-  length = cwk_path_get_relative("/path/long/one/two", "/path/long/one",
-    result, sizeof(result));
-  if(length != 2) {
+  length = cwk_path_get_relative("/path/long/one/two", "/path/long/one", result,
+    sizeof(result));
+  if (length != 2) {
     return EXIT_FAILURE;
   }
 
-  if(strcmp(result, "..") != 0){
+  if (strcmp(result, "..") != 0) {
     return EXIT_FAILURE;
   }
 
@@ -99,11 +194,11 @@ int relative_relative()
 
   length = cwk_path_get_relative("./this/is/path_one", "./this/is/path_two",
     result, sizeof(result));
-  if(length != 11) {
+  if (length != 11) {
     return EXIT_FAILURE;
   }
 
-  if(strcmp(result, "../path_two") != 0){
+  if (strcmp(result, "../path_two") != 0) {
     return EXIT_FAILURE;
   }
 
@@ -119,11 +214,11 @@ int relative_simple()
 
   length = cwk_path_get_relative("/this/is/path_one", "/this/is/path_two",
     result, sizeof(result));
-  if(length != 11) {
+  if (length != 11) {
     return EXIT_FAILURE;
   }
 
-  if(strcmp(result, "../path_two") != 0){
+  if (strcmp(result, "../path_two") != 0) {
     return EXIT_FAILURE;
   }
 
