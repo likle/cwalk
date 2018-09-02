@@ -128,13 +128,22 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
     --c;
   }
 
-  // Return the pointer to the previous stop.
-  return c;
+  // Return the pointer to the previous stop. We have to return the first
+  // character after the separator, not on the separator itself.
+  if (cwk_path_is_separator(c)) {
+    return c + 1;
+  } else {
+    return c;
+  }
 }
 
 static bool cwk_path_get_first_segment_at(const char *path,
   struct cwk_segment *segment)
 {
+  // Let's remember the path. We will move the path pointer afterwards, that's
+  // why this has to be done first.
+  segment->segments = path;
+
   // Now let's check whether this is an empty string. An empty string has no
   // segment it could use.
   if (*path == '\0') {
@@ -219,15 +228,9 @@ static bool cwk_path_get_next_segment_joined(struct cwk_segment_joined *sj)
     // Grab the first segment of the next path and determine whether this path
     // has anything useful in it. There is one more thing we have to consider
     // here - for the first time we do this we want to skip the root, but
-    // afterwards we will consider that to be part of the segments. So let's
-    // check what to do here...
-    if (sj->path_index == 0) {
-      result = cwk_path_get_first_segment(sj->paths[sj->path_index],
-        &sj->segment);
-    } else {
-      result = cwk_path_get_first_segment_at(sj->paths[sj->path_index],
-        &sj->segment);
-    }
+    // afterwards we will consider that to be part of the segments.
+    result = cwk_path_get_first_segment_at(sj->paths[sj->path_index],
+      &sj->segment);
 
   } while (!result);
 
@@ -535,8 +538,8 @@ done:
   return pos;
 }
 
-size_t cwk_path_get_absolute(const char *base, const char *path,
-  char *buffer, size_t buffer_size)
+size_t cwk_path_get_absolute(const char *base, const char *path, char *buffer,
+  size_t buffer_size)
 {
   size_t i;
   const char *paths[4];
@@ -778,10 +781,6 @@ bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 {
   size_t length;
 
-  // Let's remember the path. We will move the path pointer afterwards, that's
-  // why this has to be done first.
-  segment->path = path;
-
   // We skip the root since that's not part of the first segment. The root is
   // treated as a separate entity.
   cwk_path_get_root(path, &length);
@@ -856,7 +855,7 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   // The current position might point to the first character of the path, which
   // means there are no previous segments available.
   c = segment->begin;
-  if (c <= segment->path) {
+  if (c <= segment->segments) {
     return false;
   }
 
@@ -864,7 +863,7 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   // beginning or the character is no separator anymore.
   do {
     --c;
-    if (c <= segment->path) {
+    if (c <= segment->segments) {
       // So we reached the beginning here and there is no segment. So we return
       // false and don't change the segment structure submitted by the caller.
       return false;
@@ -874,7 +873,7 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   // We are guaranteed now that there is another segment, since we moved before
   // the previous separator and did not reach the segment path beginning.
   segment->end = c + 1;
-  segment->begin = cwk_path_find_previous_stop(segment->path, c) + 1;
+  segment->begin = cwk_path_find_previous_stop(segment->segments, c);
   segment->size = segment->end - segment->begin;
 
   return true;

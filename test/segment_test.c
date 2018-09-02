@@ -3,6 +3,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+int segment_back_with_root()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\path";
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "path", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "this", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int segment_type()
 {
   const char *path;
@@ -55,7 +86,47 @@ int segment_type()
   return EXIT_SUCCESS;
 }
 
-int segment_previous()
+int segment_previous_relative()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  path = "now/hello_world/abc/";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "abc", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "hello_world", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "now", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_previous_absolute()
 {
   const char *path;
   struct cwk_segment segment;
