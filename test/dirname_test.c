@@ -2,6 +2,38 @@
 #include <memory.h>
 #include <stdlib.h>
 
+int dirname_relative()
+{
+  const char *path;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  path = "../one/two.txt";
+  cwk_path_get_dirname(path, &length);
+
+  if (length != 7) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int dirname_three_segments()
+{
+  const char *path;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  path = "/one/two/three.txt";
+  cwk_path_get_dirname(path, &length);
+
+  if (length != 9) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int dirname_root()
 {
   const char *path;

@@ -3,6 +3,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+int basename_windows()
+{
+  const char *path, *basename;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  path = "C:\\path\\test.txt";
+  cwk_path_get_basename(path, &basename, &length);
+
+  if (length != 8) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(basename, "test.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int basename_root()
 {
   const char *path, *basename;

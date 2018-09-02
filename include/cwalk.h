@@ -106,6 +106,26 @@ size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
   size_t buffer_size);
 
 /**
+ * @brief Joins multiple paths together.
+ *
+ * This function generates a new path by joining multiple paths together. It
+ * will remove double separators, and unlike cwk_path_get_absolute it permits
+ * the use of multiple relative paths to combine. The last path of the submitted
+ * string array must be set to NULL. The result will be written to a buffer,
+ * which might be truncated if the buffer is not large enough to hold the full
+ * path. However, the truncated result will always be null-terminated. The
+ * returned value is the amount of characters which the resulting path would
+ * take if it was not truncated (excluding the null-terminating character).
+ *
+ * @param paths An array of paths which will be joined.
+ * @param buffer The buffer where the result will be written to.
+ * @param buffer_size The size of the result buffer.
+ * @return Returns the total amount of characters of the full, combined path.
+ */
+size_t cwk_path_join_multiple(const char **paths, char *buffer,
+  size_t buffer_size);
+
+/**
  * @brief Determines the root of a path.
  *
  * This function determines the root of a path by finding it's length. The root

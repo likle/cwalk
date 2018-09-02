@@ -453,12 +453,22 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
 
     // Yes, this is a network path. Skip the previous separator. We will grab
     // anything up to the next stop. The next top might be a '\0' or another
-    // separator.
+    // separator. That will be the server name.
     ++c;
     c = cwk_path_find_next_stop(c);
 
     // If this is a separator and not the end of a string we wil have to include
     // it. However, if this is a '\0' we must not skip it.
+    while (cwk_path_is_separator(c)) {
+      ++c;
+    }
+
+    // We are now skipping the shared folder name, which will end after the next
+    // stop.
+    c = cwk_path_find_next_stop(c);
+
+    // Then there might be a separator at the end. We will include that as well,
+    // it will mark the path as absolute.
     if (cwk_path_is_separator(c)) {
       ++c;
     }
@@ -471,14 +481,14 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
   // Move to the next and check whether this is a colon.
   if (*++c == ':') {
     *length = 2;
-  }
 
-  // Now check whether this is a backslash (or slash). If it is not, we could
-  // assume that the next character is a '\0' if it is a valid path. However,
-  // we will not assume that - since ':' is not valid in a path it must be a
-  // mistake by the caller than. We will try to understand it anyway.
-  if (cwk_path_is_separator(++c)) {
-    *length = 3;
+    // Now check whether this is a backslash (or slash). If it is not, we could
+    // assume that the next character is a '\0' if it is a valid path. However,
+    // we will not assume that - since ':' is not valid in a path it must be a
+    // mistake by the caller than. We will try to understand it anyway.
+    if (cwk_path_is_separator(++c)) {
+      *length = 3;
+    }
   }
 }
 
@@ -495,7 +505,7 @@ static void cwk_path_get_root_unix(const char *path, size_t *length)
 
 static bool cwk_path_is_root_absolute(const char *path, size_t length)
 {
-  // This is definitely no root if there is no root.
+  // This is definitely not absolute if there is no root.
   if (length == 0) {
     return false;
   }
@@ -772,6 +782,14 @@ size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
 
   // And then call the join and normalize function which will do the hard work
   // for us.
+  return cwk_path_join_and_normalize_multiple(paths, buffer, buffer_size);
+}
+
+size_t cwk_path_join_multiple(const char **paths, char *buffer,
+  size_t buffer_size)
+{
+  // We can just call the internal join and normalize function for this one,
+  // since it will handle everything.
   return cwk_path_join_and_normalize_multiple(paths, buffer, buffer_size);
 }
 
@@ -1079,7 +1097,7 @@ bool cwk_path_is_separator(const char *str)
 {
   const char *c;
 
-  // We loop over all characetrs in the read symbols.
+  // We loop over all characters in the read symbols.
   c = separators[path_style];
   while (*c) {
     if (*c == *str) {

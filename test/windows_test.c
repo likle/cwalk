@@ -74,7 +74,7 @@ int windows_get_unc_root()
   cwk_path_set_style(CWK_STYLE_WINDOWS);
   cwk_path_get_root("\\\\server\\share\\test.txt", &size);
 
-  if (size != 9) {
+  if (size != 15) {
     return EXIT_FAILURE;
   }
 
