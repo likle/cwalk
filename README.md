@@ -10,12 +10,10 @@ This library is intended to be a lighweight C path manipulation library.
 It is currently compiled and tested under **Windows**, **MacOS** and **Linux**. 
 It supports UNIX and Windows path styles on all platforms.
 
-## WARNING
-This is a work in progress and not yet ready to use.
-
 ## Features
-Please have a look at the **[reference](https://github.com/likle/cwalk/wiki/Reference)** for detailed information.
-Some features this library includes:
+Please have a look at the 
+**[reference](https://github.com/likle/cwalk/wiki/Reference)** for detailed 
+information. Some features this library includes:
 
  * **cross-platform** on windows, linux and macOS
  * **simple interface** - just one header 
@@ -29,8 +27,9 @@ Some features this library includes:
  ## Building
  **[Building](https://github.com/likle/cwalk/wiki/Building)**, 
  **[embedding](https://github.com/likle/cwalk/wiki/Embedding)** and 
- **[testing](https://github.com/likle/cwalk/wiki/Testing)** 
- instructions are available in the documentation (it's very easy).
+ **[testing](https://github.com/likle/cwalk/wiki/Testing)** instructions are 
+ available in the documentation (it's very easy).
  
  ## Docs
- All the documentation is available in the **[wiki](https://github.com/likle/cwalk/wiki)** of this repository.
+ All the documentation is available in the 
+ **[wiki](https://github.com/likle/cwalk/wiki)** of this repository.
