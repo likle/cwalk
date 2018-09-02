@@ -33,7 +33,7 @@ endif()
 if(ENABLE_SANITIZER)
   message("-- Sanitizer enabled")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=${ENABLE_SANITIZER}")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
 endif()
 
 # add the main executable
@@ -50,6 +50,7 @@ create_test(DEFAULT absolute relative_base)
 create_test(DEFAULT absolute mixed)
 create_test(DEFAULT absolute normalization)
 create_test(DEFAULT absolute too_far)
+create_test(DEFAULT absolute check)
 create_test(DEFAULT basename simple)
 create_test(DEFAULT basename empty)
 create_test(DEFAULT basename trailing_separator)
@@ -101,6 +102,12 @@ create_test(DEFAULT normalize overlap)
 create_test(DEFAULT normalize empty)
 create_test(DEFAULT normalize only_separators)
 create_test(DEFAULT normalize back_after_root)
+create_test(DEFAULT relative simple)
+create_test(DEFAULT relative relative)
+create_test(DEFAULT relative long_base)
+create_test(DEFAULT relative long_target)
+create_test(DEFAULT relative equal)
+create_test(DEFAULT relative check)
 create_test(DEFAULT segment first)
 create_test(DEFAULT segment last)
 create_test(DEFAULT segment next)
@@ -125,6 +132,7 @@ add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/intersection_test.c"
   "${TEST_DIRECTORY}/join_test.c"
   "${TEST_DIRECTORY}/normalize_test.c"
+  "${TEST_DIRECTORY}/relative_test.c"
   "${TEST_DIRECTORY}/segment_test.c"
   "${TEST_DIRECTORY}/windows_test.c")
 target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})

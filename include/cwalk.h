@@ -69,20 +69,21 @@ size_t cwk_path_get_absolute(const char *base, const char *path, char *buffer,
  * @brief Generates a relative path based on a base.
  *
  * This function generates a relative path based on a base path and another
- * absolute path. The result will be written to a buffer, which might be
- * truncated if the buffer is not large enough to hold the full path. However,
- * the truncated result will always be null-terminated. The returned value is
- * the amount of characters which the resulting path would take if it was not
+ * path. It determines how to get to the submitted path, starting from the base
+ * directory. The result will be written to a buffer, which might be truncated
+ * if the buffer is not large enough to hold the full path. However, the
+ * truncated result will always be null-terminated. The returned value is the
+ * amount of characters which the resulting path would take if it was not
  * truncated (excluding the null-terminating character).
  *
- * @param base The base path from which the relative path will start.
+ * @param base_directory The base path from which the relative path will start.
  * @param path The target path where the relative path will point to.
  * @param buffer The buffer where the result will be written to.
  * @param buffer_size The size of the result buffer.
  * @return Returns the total amount of characters of the full path.
  */
-size_t cwk_path_get_relative(const char *base, const char *path, char *buffer,
-  size_t buffer_size);
+size_t cwk_path_get_relative(const char *base_directory, const char *path,
+  char *buffer, size_t buffer_size);
 
 /**
  * @brief Joins two paths together.
