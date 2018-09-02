@@ -4,6 +4,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+int join_relative_back_after_root()
+{
+  char buffer[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  length = cwk_path_join("this\\", "C:\\..\\..\\is\\a\\test\\", buffer,
+    sizeof(buffer));
+
+  if (length != 9) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "is\\a\\test") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int join_back_after_root()
 {
   char buffer[FILENAME_MAX];

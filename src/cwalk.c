@@ -137,7 +137,7 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
   }
 }
 
-static bool cwk_path_get_first_segment_at(const char *path,
+static bool cwk_path_get_first_segment_without_root(const char *path,
   struct cwk_segment *segment)
 {
   // Let's remember the path. We will move the path pointer afterwards, that's
@@ -173,6 +173,26 @@ static bool cwk_path_get_first_segment_at(const char *path,
   segment->end = path;
 
   // Tell the caller that we found a segment.
+  return true;
+}
+
+static bool cwk_path_get_last_segment_without_root(const char *path,
+  struct cwk_segment *segment)
+{
+  // Now this is fairly similar to the normal algorithm, however, it will assume
+  // that there is no root in the path. So we grab the first segment at this
+  // position, assuming there is no root.
+  if (!cwk_path_get_first_segment_without_root(path, segment)) {
+    return false;
+  }
+
+  // Now we find our last segment. The segment struct of the caller
+  // will contain the last segment, since the function we call here will not
+  // change the segment struct when it reaches the end.
+  while (cwk_path_get_next_segment(segment)) {
+    // We just loop until there is no other segment left.
+  }
+
   return true;
 }
 
@@ -229,7 +249,7 @@ static bool cwk_path_get_next_segment_joined(struct cwk_segment_joined *sj)
     // has anything useful in it. There is one more thing we have to consider
     // here - for the first time we do this we want to skip the root, but
     // afterwards we will consider that to be part of the segments.
-    result = cwk_path_get_first_segment_at(sj->paths[sj->path_index],
+    result = cwk_path_get_first_segment_without_root(sj->paths[sj->path_index],
       &sj->segment);
 
   } while (!result);
@@ -256,12 +276,26 @@ static bool cwk_path_get_previous_segment_joined(struct cwk_segment_joined *pj)
   result = false;
 
   do {
+    // We are done once we reached index 0. In that case there are no more
+    // segments left.
     if (pj->path_index == 0) {
       break;
     }
 
-    result = cwk_path_get_last_segment(pj->paths[--pj->path_index],
-      &pj->segment);
+    // There is another path which we have to inspect. So we decrease the path
+    // index.
+    --pj->path_index;
+
+    // If this is the first path we will have to consider that this path might
+    // include a root, otherwise we just treat is as a segment.
+    if (pj->path_index == 0) {
+      result = cwk_path_get_last_segment(pj->paths[pj->path_index],
+        &pj->segment);
+    } else {
+      result = cwk_path_get_last_segment_without_root(pj->paths[pj->path_index],
+        &pj->segment);
+    }
+
   } while (!result);
 
   return result;
@@ -788,7 +822,7 @@ bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 
   // Now, after we skipped the root we can continue and find the actual segment
   // content.
-  return cwk_path_get_first_segment_at(path, segment);
+  return cwk_path_get_first_segment_without_root(path, segment);
 }
 
 bool cwk_path_get_last_segment(const char *path, struct cwk_segment *segment)
