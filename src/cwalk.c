@@ -428,6 +428,11 @@ cwk_path_segment_joined_skip_invisible(struct cwk_segment_joined *sj,
 static void cwk_path_get_root_windows(const char *path, size_t *length)
 {
   const char *c;
+  bool is_device_path;
+
+  // A device path is a path which starts with "\\." or "\\?". A device path can
+  // be a UNC path as well, in which case it will take up one more segment.
+  is_device_path = false;
 
   // We can not determine the root if this is an empty string. So we set the
   // root to NULL and the length to zero and cancel the whole thing.
@@ -451,10 +456,22 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
       return;
     }
 
-    // Yes, this is a network path. Skip the previous separator. We will grab
-    // anything up to the next stop. The next top might be a '\0' or another
-    // separator. That will be the server name.
+    // Yes, this is a network or device path. Skip the previous separator. Now
+    // we need to determine whether this is a device path. We might advance one
+    // character here if the server name starts with a '?' or a '.', but that's
+    // fine since we will search for a separator afterwards anyway.
     ++c;
+    is_device_path = (*c == '?' || *c == '.') && cwk_path_is_separator(++c);
+    if (is_device_path) {
+      // That's a device path, and the root must be either "\\.\" or "\\?\"
+      // which is 4 characters long. (at least that's how Windows
+      // GetFullPathName behaves.)
+      *length = 4;
+      return;
+    }
+
+    // We will grab anything up to the next stop. The next top might be a '\0'
+    // or another separator. That will be the server name.
     c = cwk_path_find_next_stop(c);
 
     // If this is a separator and not the end of a string we wil have to include
@@ -463,8 +480,8 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
       ++c;
     }
 
-    // We are now skipping the shared folder name, which will end after the next
-    // stop.
+    // We are now skipping the shared folder name, which will end after the
+    // next stop.
     c = cwk_path_find_next_stop(c);
 
     // Then there might be a separator at the end. We will include that as well,

@@ -29,6 +29,48 @@ int root_relative_drive()
   return EXIT_SUCCESS;
 }
 
+int root_device_question_mark()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  cwk_path_get_root("\\\\?\\mydevice\\test", &length);
+
+  if (length != 4) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int root_device_dot()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  cwk_path_get_root("\\\\.\\mydevice\\test", &length);
+
+  if (length != 4) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int root_device_unc()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  cwk_path_get_root("\\\\.\\UNC\\LOCALHOST\\c$\\temp\\test-file.txt", &length);
+
+  if (length != 4) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int root_unc()
 {
   size_t length;
