@@ -99,6 +99,63 @@ int root_absolute_drive()
   return EXIT_SUCCESS;
 }
 
+int root_unix_drive()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  cwk_path_get_root("C:\\test.txt", &length);
+
+  if (length != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int root_unix_backslash()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  cwk_path_get_root("\\folder\\", &length);
+
+  if (length != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int root_windows_slash()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  cwk_path_get_root("/test.txt", &length);
+
+  if (length != 1) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+
+int root_windows_backslash()
+{
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  cwk_path_get_root("\\test.txt", &length);
+
+  if (length != 1) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int root_relative()
 {
   size_t length;
