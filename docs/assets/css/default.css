@@ -60,6 +60,7 @@ a {
 }
 
 h1, h2 {
+  font-family: 'Ubuntu Mono';
   padding-bottom: 5px;
   border-bottom: 1px solid rgba(255,255,255,.2);
 }
@@ -74,6 +75,8 @@ h1, h2 {
 .highlight {
   padding: 10px;
   margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
 }
 
 .highlighter-rouge {
@@ -90,4 +93,20 @@ table th {
   background: rgb(100,100,100);
   border: 1px solid rgba(0,0,0,.2);
   padding: 5px 8px;
+}
+
+@media (max-width: 1000px) {
+  header {
+    text-align: center;
+  }
+  
+  header .logo {
+    display: block;
+    float: none;
+    margin-bottom: 10px;
+  }
+  
+  .content {
+    padding: 0 20px;
+  }
 }

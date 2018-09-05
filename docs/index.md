@@ -1,5 +1,5 @@
 ---
-title: Cross-Platform C Path Library
+title: Cross-Platform C/C++ Path Library
 description: cwalk is a lightweight C/C++ Path Library which focuses on file path manipulations. Using ``cwalk`` you can easily do things like combine paths, resolve relative paths, create relative paths based on absolute paths, canonicalize paths or read extension information from paths.
 ---
 
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
   // The following function cleans up the input path and writes it
   // to the result buffer.
-  cwk_path_normalize("/var/log/weird/////path/.././..///", result,
+  cwk_path_normalize( "/var/log/weird/////path/.././..///", result,
     sizeof(result));
   
   printf("%s\n", result);
