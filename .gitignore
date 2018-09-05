@@ -6,3 +6,4 @@ cmake-build-release
 build
 build.win
 .vs
+docs/_site
