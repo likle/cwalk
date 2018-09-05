@@ -1,6 +1,6 @@
 ---
 title: cwk_path_get_relative
-Generates a relative path based on a base.
+description: Generates a relative path based on a base.
 ---
 
 _(since v1.0.0)_  
