@@ -1,6 +1,6 @@
 ---
 title: Building
-description: A guide on how to build the cwalk path library for C.
+description: A guide on how to build the cwalk path library for C/C++.
 ---
 
 In order to get the source, you will have to download it. You can do so using git (or download it from [here](https://github.com/likle/cwalk/archive/stable.zip)).

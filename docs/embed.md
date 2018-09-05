@@ -1,6 +1,6 @@
 ---
 title: Embedding
-description: A guide on how to embed the cwalk path library for C.
+description: A guide on how to embed the cwalk path library for C/C++.
 ---
 
 Before you embed `cwalk` you might have to [build]({{ site.baseurl }}{% link build.md %}) it first.

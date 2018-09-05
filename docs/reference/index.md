@@ -1,6 +1,6 @@
 ---
 title: Reference
-description: A complete reference of the cwalk path library for C.
+description: A complete reference of the cwalk path library for C/C++.
 ---
 
 ## Basics
