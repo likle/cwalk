@@ -36,7 +36,7 @@ Returns the style which is most likely used for the path.
 | ``C:/.test``                | ``CWK_STYLE_WINDOWS`` |
 | ``C:/folder/.test``         | ``CWK_STYLE_WINDOWS`` |
 | ``\directory\other``        | ``CWK_STYLE_WINDOWS`` |
-| ``\\directory\\.other``     | ``CWK_STYLE_WINDOWS`` |
+| ``\directory\.other``       | ``CWK_STYLE_WINDOWS`` |
 | ``myfile.txt``              | ``CWK_STYLE_WINDOWS`` |
 | ``/directory``              | ``CWK_STYLE_UNIX``    |
 | ``/directory/other``        | ``CWK_STYLE_UNIX``    |
