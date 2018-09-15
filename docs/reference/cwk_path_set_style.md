@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   size_t length;
   
   cwk_path_set_style(CWK_STYLE_WINDOWS);
-  cwk_path_get_root("C:\test.txt", &length);
+  cwk_path_get_root("C:\\test.txt", &length);
   printf("The root length is '%zu'.", length);
   return EXIT_SUCCESS;
 }

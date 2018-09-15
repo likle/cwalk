@@ -11,7 +11,7 @@ Moves to the previous segment.
 bool cwk_path_get_previous_segment(struct cwk_segment *segment);
 ```
 
-This function moves the current segment to the previous segment. If the current segment is the first one, the submitted segment structure will stay unchanged and false is returned. The segment should be either initialized using **[[cwk_path_get_first_segment]]** or **[[cwk_path_get_last_segment]]**.
+This function moves the current segment to the previous segment. If the current segment is the first one, the submitted segment structure will stay unchanged and false is returned. The segment should be either initialized using **[cwk_path_get_first_segment]({{ site.baseurl }}{% link reference/cwk_path_get_first_segment.md %})** or **[cwk_path_get_last_segment]({{ site.baseurl }}{% link reference/cwk_path_get_last_segment.md %})**.
 
 ## Parameters
  * **segment**: The current segment which will be moved to the previous one.

@@ -12,7 +12,7 @@ size_t cwk_path_join(const char *path_a, const char *path_b, char *buffer,
   size_t buffer_size);
 ```
 
-This function generates a new path by combining the two submitted paths. It will remove double separators, and unlike [[cwk_path_get_absolute]] it permits the use of two relative paths to combine. The result will be written to a buffer, which might be truncated if the buffer is not large enough to hold the full path. However, the truncated result will always be null-terminated. The returned value is the amount of characters which the resulting path would take if it was not truncated (excluding the null-terminating character).
+This function generates a new path by combining the two submitted paths. It will remove double separators, and unlike [cwk_path_get_absolute]({{ site.baseurl }}{% link reference/cwk_path_get_absolute.md %}) it permits the use of two relative paths to combine. The result will be written to a buffer, which might be truncated if the buffer is not large enough to hold the full path. However, the truncated result will always be null-terminated. The returned value is the amount of characters which the resulting path would take if it was not truncated (excluding the null-terminating character).
 
 ## Parameters
  * **path_a**: The first path which comes first.

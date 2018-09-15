@@ -11,7 +11,7 @@ Advances to the next segment.
 bool cwk_path_get_next_segment(struct cwk_segment *segment);
 ```
 
-This function advances the current segment to the next segment. If there are no more segments left, the submitted segment structure will stay unchanged and false is returned. The segment should be either initialized using **[[cwk_path_get_first_segment]]** or **[[cwk_path_get_last_segment]]**.
+This function advances the current segment to the next segment. If there are no more segments left, the submitted segment structure will stay unchanged and false is returned. The segment should be either initialized using **[cwk_path_get_first_segment]({{ site.baseurl }}{% link reference/cwk_path_get_first_segment.md %})** or **[cwk_path_get_last_segment]({{ site.baseurl }}{% link reference/cwk_path_get_last_segment.md %})**.
 
 ## Parameters
  * **segment**: The current segment which will be advanced to the next one.
