@@ -3,7 +3,7 @@ title: Building
 description: A guide on how to build the cwalk path library for C/C++.
 ---
 
-In order to get the source, you will have to download it. You can do so using git (or download it from [here](https://github.com/likle/cwalk/archive/stable.zip)).
+In order to build the source, you will have to download it. You can do so using git (or download it from [here](https://github.com/likle/cwalk/archive/stable.zip)).
 ```bash
 git clone -b stable git@github.com:likle/cwalk.git
 ```
@@ -31,23 +31,13 @@ cmake ..
 make
 ```
 # Running Tests
+After building ``cwalk`` you can run tests to ensure everything is fine. In order to do that, make sure that you are in the build folder and then execute the test program:
 
-After [building](https://github.com/likle/cwalk/wiki/Building) ``cwalk`` you can run tests to ensure everything runs fine. In order to do that, make sure you are in the build folder and then use either CTest or the native test program.
-
-## Using CTest
-To run CTest run the following in the build folder:
-```bash
-make test
-```
-
-That's it!
-
-## Using the native test program
-CTest is slightly slower than the native test program since it starts a process for each test.
-If you want to run the native test program you can do so by running the following in the build folder:
 ```bash
 ./cwalktest
 ```
+
+That's it!
 
 You can even specify which tests to execute by optionally specifying the category and test name:
 ```bash
