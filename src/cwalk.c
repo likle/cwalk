@@ -861,6 +861,55 @@ void cwk_path_get_basename(const char *path, const char **basename,
   *length = segment.size;
 }
 
+size_t cwk_path_change_basename(const char *path, const char *new_basename,
+  char *buffer, size_t buffer_size)
+{
+  struct cwk_segment segment;
+  size_t pos, root_size, new_basename_size;
+
+  // First we try to get the last segment. We may only have a root without any
+  // segments, in which case we will create one.
+  if (!cwk_path_get_last_segment(path, &segment)) {
+
+    // So there is no segment in this path. First we grab the root and output
+    // that. We are not going to modify the root in any way.
+    cwk_path_get_root(path, &root_size);
+    pos = cwk_path_output_sized(buffer, buffer_size, 0, path, root_size);
+
+    // We have to trim the separators from the beginning of the new basename.
+    // This is quite easy to do.
+    while (cwk_path_is_separator(new_basename)) {
+      ++new_basename;
+    }
+
+    // Now we measure the length of the new basename, this is a two step
+    // process. First we find the '\0' character at the end of the string.
+    new_basename_size = 0;
+    while (new_basename[new_basename_size]) {
+      ++new_basename_size;
+    }
+
+    // And then we trim the separators at the end of the basename until we reach
+    // the first valid character.
+    while (new_basename_size > 0 &&
+           cwk_path_is_separator(&new_basename[new_basename_size - 1])) {
+      --new_basename_size;
+    }
+
+    // Now we will output the new basename after the root.
+    pos += cwk_path_output_sized(buffer, buffer_size, pos, new_basename,
+      new_basename_size);
+
+    // And finally terminate the output and return the total size of the path.
+    cwk_path_terminate_output(buffer, buffer_size, pos);
+    return pos;
+  }
+
+  // If there is a last segment we can just forward this call, which is fairly
+  // easy.
+  return cwk_path_change_segment(&segment, new_basename, buffer, buffer_size);
+}
+
 void cwk_path_get_dirname(const char *path, size_t *length)
 {
   struct cwk_segment segment;

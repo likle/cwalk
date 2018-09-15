@@ -10,6 +10,9 @@ These are some basic, helpful functions available in the library. The basename i
 * **[cwk_path_get_basename]({{ site.baseurl }}{% link reference/cwk_path_get_basename.md %})**  
 Gets the basename from a file path.
 
+* **[cwk_path_change_basename]({{ site.baseurl }}{% link reference/cwk_path_change_basename.md %})**  
+Changes the basename of a file path.
+
 * **[cwk_path_get_dirname]({{ site.baseurl }}{% link reference/cwk_path_get_dirname.md %})**  
 Gets the dirname of a file path.
 

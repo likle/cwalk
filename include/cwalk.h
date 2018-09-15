@@ -177,6 +177,27 @@ void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length);
 
 /**
+ * @brief Changes the basename of a file path.
+ *
+ * This function changes the basename of a file path. This function will not
+ * write out more than the specified buffer can contain. However, the generated
+ * string is always null-terminated - even if not the whole path is written out.
+ * The function returns the total number of characters the complete buffer would
+ * have, even if it was not written out completely. The path may be the same
+ * memory address as the buffer.
+ *
+ * @param path The original path which will be used for the modified path.
+ * @param new_basename The new basename which will replace the old one.
+ * @param buffer The buffer where the changed path will be written to.
+ * @param buffer_size The size of the result buffer where the changed path is
+ * written to.
+ * @return Returns the size which the complete new path would have if it was not
+ * truncated.
+ */
+size_t cwk_path_change_basename(const char *path, const char *new_basename,
+  char *buffer, size_t buffer_size);
+
+/**
  * @brief Gets the dirname of a file path.
  *
  * This function determines the dirname of a file path and returns the length up

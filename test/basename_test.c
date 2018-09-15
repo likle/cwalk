@@ -1,7 +1,145 @@
 #include <cwalk.h>
 #include <memory.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+int basename_change_trim_only_root()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  n = cwk_path_change_basename("/", "///another.txt///", buffer,
+    sizeof(buffer));
+  if (n != 12) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "/another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_trim()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  n = cwk_path_change_basename("/test.txt", "///another.txt///", buffer,
+    sizeof(buffer));
+  if (n != 12) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "/another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_relative()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  n = cwk_path_change_basename("../test.txt", "another.txt", buffer,
+    sizeof(buffer));
+  if (n != 14) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "../another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_empty_basename()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  n = cwk_path_change_basename("C:\\test.txt", "", buffer, sizeof(buffer));
+  if (n != 3) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "C:\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_only_root()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  n = cwk_path_change_basename("C:\\", "another.txt", buffer, sizeof(buffer));
+  if (n != 14) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "C:\\another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_empty_path()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  n = cwk_path_change_basename("", "another.txt", buffer, sizeof(buffer));
+  if (n != 11) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_change_simple()
+{
+  size_t n;
+  char buffer[FILENAME_MAX];
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  n = cwk_path_change_basename("C:\\test.txt", "another.txt", buffer,
+    sizeof(buffer));
+  if (n != 14) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "C:\\another.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
 
 int basename_windows()
 {
