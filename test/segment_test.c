@@ -1,7 +1,202 @@
 #include <cwalk.h>
 #include <memory.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+int segment_change_overlap()
+{
+  char buffer[FILENAME_MAX] = "C:\\this\\cool\\path\\";
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  if (!cwk_path_get_first_segment(buffer, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "longer_segment", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\longer_segment\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_with_separator()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other\\fancy", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\other\\fancy\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_empty()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_trim()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "//other/\\\\", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\other\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_last()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\cool\\other\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  path = "C:\\this\\cool\\path";
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\cool\\other") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_first()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\other\\cool\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  path = "this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "other\\cool\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_change_simple()
+{
+  const char *path;
+  char buffer[FILENAME_MAX];
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\this\\cool\\path\\";
+  if (!cwk_path_get_first_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_next_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_change_segment(&segment, "other", buffer, sizeof(buffer));
+
+  if (strcmp(buffer, "C:\\this\\other\\path\\") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
 
 int segment_back_with_root()
 {

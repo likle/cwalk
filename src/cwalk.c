@@ -146,39 +146,40 @@ static const char *cwk_path_find_previous_stop(const char *begin, const char *c)
 }
 
 static bool cwk_path_get_first_segment_without_root(const char *path,
-  struct cwk_segment *segment)
+  const char *segments, struct cwk_segment *segment)
 {
   // Let's remember the path. We will move the path pointer afterwards, that's
   // why this has to be done first.
-  segment->segments = path;
+  segment->path = path;
+  segment->segments = segments;
 
   // Now let's check whether this is an empty string. An empty string has no
   // segment it could use.
-  if (*path == '\0') {
+  if (*segments == '\0') {
     return false;
   }
 
   // If the string starts with separators, we will jump over those. If there is
   // only a slash and a '\0' after it, we can't determine the first segment
   // since there is none.
-  while (cwk_path_is_separator(path)) {
-    ++path;
-    if (*path == '\0') {
+  while (cwk_path_is_separator(segments)) {
+    ++segments;
+    if (*segments == '\0') {
       return false;
     }
   }
 
   // So this is the beginning of our segment.
-  segment->begin = path;
+  segment->begin = segments;
 
   // Now let's determine the end of the segment, which we do by moving the path
   // pointer further until we find a separator.
-  path = cwk_path_find_next_stop(path);
+  segments = cwk_path_find_next_stop(segments);
 
   // And finally, calculate the size of the segment by subtracting the position
   // from the end.
-  segment->size = path - segment->begin;
-  segment->end = path;
+  segment->size = segments - segment->begin;
+  segment->end = segments;
 
   // Tell the caller that we found a segment.
   return true;
@@ -190,7 +191,7 @@ static bool cwk_path_get_last_segment_without_root(const char *path,
   // Now this is fairly similar to the normal algorithm, however, it will assume
   // that there is no root in the path. So we grab the first segment at this
   // position, assuming there is no root.
-  if (!cwk_path_get_first_segment_without_root(path, segment)) {
+  if (!cwk_path_get_first_segment_without_root(path, path, segment)) {
     return false;
   }
 
@@ -258,7 +259,7 @@ static bool cwk_path_get_next_segment_joined(struct cwk_segment_joined *sj)
     // here - for the first time we do this we want to skip the root, but
     // afterwards we will consider that to be part of the segments.
     result = cwk_path_get_first_segment_without_root(sj->paths[sj->path_index],
-      &sj->segment);
+      sj->paths[sj->path_index], &sj->segment);
 
   } while (!result);
 
@@ -997,15 +998,16 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
 {
   size_t length;
+  const char *segments;
 
   // We skip the root since that's not part of the first segment. The root is
   // treated as a separate entity.
   cwk_path_get_root(path, &length);
-  path += length;
+  segments = path + length;
 
   // Now, after we skipped the root we can continue and find the actual segment
   // content.
-  return cwk_path_get_first_segment_without_root(path, segment);
+  return cwk_path_get_first_segment_without_root(path, segments, segment);
 }
 
 bool cwk_path_get_last_segment(const char *path, struct cwk_segment *segment)
@@ -1125,6 +1127,59 @@ bool cwk_path_is_separator(const char *str)
   }
 
   return false;
+}
+
+size_t cwk_path_change_segment(struct cwk_segment *segment, const char *value,
+  char *buffer, size_t buffer_size)
+{
+  size_t pos, value_size, tail_size;
+
+  // First we have to output the head, which is the whole string up to the
+  // beginning of the segment. This part of the path will just stay the same.
+  pos = cwk_path_output_sized(buffer, buffer_size, 0, segment->path,
+    segment->begin - segment->path);
+
+  // In order to trip the submitted value, we will skip any separator at the
+  // beginning of it and behave as if it was never there.
+  while (cwk_path_is_separator(value)) {
+    ++value;
+  }
+
+  // Now we determine the length of the value. In order to do that we first
+  // locate the '\0'.
+  value_size = 0;
+  while (value[value_size]) {
+    ++value_size;
+  }
+
+  // Since we trim separators at the beginning and in the end of the value we
+  // have to subtract from the size until there are either no more characters
+  // left or the last character is no separator.
+  while (value_size > 0 && cwk_path_is_separator(&value[value_size - 1])) {
+    --value_size;
+  }
+
+  // We also have to determine the tail size, which is the part of the string
+  // following the current segment. This part will not change.
+  tail_size = strlen(segment->end);
+
+  // Now we output the tail. We have to do that, because if the buffer and the
+  // source are overlapping we would override the tail if the value is
+  // increasing in length.
+  cwk_path_output_sized(buffer, buffer_size, pos + value_size, segment->end,
+    tail_size);
+
+  // Finally we can output the value in the middle of the head and the tail,
+  // where we have enough space to fit the whole trimmed value.
+  pos += cwk_path_output_sized(buffer, buffer_size, pos, value, value_size);
+
+  // Now we add the tail size to the current position and terminate the output -
+  // basically, ensure that there is a '\0' at the end of the buffer.
+  pos += tail_size;
+  cwk_path_terminate_output(buffer, buffer_size, pos);
+
+  // And now tell the caller how long the whole path would be.
+  return pos;
 }
 
 enum cwk_path_style cwk_path_guess_style(const char *path)

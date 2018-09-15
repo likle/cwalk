@@ -73,6 +73,9 @@ Moves to the previous segment.
 * **[cwk_path_get_segment_type]({{ site.baseurl }}{% link reference/cwk_path_get_segment_type.md %})**  
 Gets the type of the submitted path segment.
 
+* **[cwk_path_change_segment]({{ site.baseurl }}{% link reference/cwk_path_change_segment.md %})**  
+Changes the content of a segment.
+
 ## Style
 The path style describes how paths are generated and parsed. ``cwalk`` currently supports two path styles, ``CWK_STYLE_WINDOWS`` and ``CWK_STYLE_UNIX``.
 

@@ -13,6 +13,7 @@
  */
 struct cwk_segment
 {
+  const char *path;
   const char *segments;
   const char *begin;
   const char *end;
