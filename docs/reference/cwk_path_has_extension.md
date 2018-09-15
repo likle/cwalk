@@ -16,7 +16,7 @@ This function determines whether the submitted file path has an extension. This 
 ## Parameters
  * **path**: The path which will be inspected.
 
-## Return Vaue
+## Return Value
 Returns ``true`` if the path has an extension or ``false`` otherwise.
 
 ## Outcomes

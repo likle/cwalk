@@ -17,7 +17,7 @@ This function gets the last segment of a path. This function may return false if
  * **path**: The path which will be inspected.
  * **segment**: The segment which will be extracted.
 
-## Return Vaue
+## Return Value
 Returns ``true`` if there is a segment or ``false`` if there is none.
 
 ## Example

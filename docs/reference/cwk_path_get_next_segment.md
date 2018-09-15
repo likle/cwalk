@@ -16,7 +16,7 @@ This function advances the current segment to the next segment. If there are no 
 ## Parameters
  * **segment**: The current segment which will be advanced to the next one.
 
-## Return Vaue
+## Return Value
 Returns ``true`` if another segment was found or ``false`` otherwise.
 
 ## Example

@@ -16,7 +16,7 @@ This function inspects the contents of the segment and determines the type of it
 ## Parameters
  * **segment**: The segment which will be inspected.
 
-## Return Vaue
+## Return Value
 Returns the type of the segment.
 
 ## Example

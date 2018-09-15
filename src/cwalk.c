@@ -1127,6 +1127,54 @@ bool cwk_path_is_separator(const char *str)
   return false;
 }
 
+enum cwk_path_style cwk_path_guess_style(const char *path)
+{
+  const char *c;
+  size_t root_length;
+  struct cwk_segment segment;
+
+  // First we determine the root. Only windows roots can be longer than a single
+  // slash, so if we can determine that it starts with something like "C:", we
+  // know that this is a windows path.
+  cwk_path_get_root_windows(path, &root_length);
+  if (root_length > 1) {
+    return CWK_STYLE_WINDOWS;
+  }
+
+  // Next we check for slashes. Windows uses backslashes, while unix uses
+  // forward slashes. Windows actually supports both, but our best guess is to
+  // assume windows with backslashes and unix with forward slashes.
+  for (c = path; *c; ++c) {
+    if (*c == *separators[CWK_STYLE_UNIX]) {
+      return CWK_STYLE_UNIX;
+    } else if (*c == *separators[CWK_STYLE_WINDOWS]) {
+      return CWK_STYLE_WINDOWS;
+    }
+  }
+
+  // This path does not have any slashes. We grab the last segment (which
+  // actually must be the first one), and determine whether the segment starts
+  // with a dot. A dot is a hidden folder or file in the UNIX world, in that
+  // case we assume the path to have UNIX style.
+  cwk_path_get_last_segment(path, &segment);
+  if (*segment.begin == '.') {
+    return CWK_STYLE_UNIX;
+  }
+
+  // And finally we check whether the last segment contains a dot. If it
+  // contains a dot, that might be an extension. Windows is more likely to have
+  // file names with extensions, so our guess would be windows.
+  for (c = segment.begin; *c; ++c) {
+    if (*c == '.') {
+      return CWK_STYLE_WINDOWS;
+    }
+  }
+
+  // All our checks failed, so we will return a default value which is currently
+  // UNIX.
+  return CWK_STYLE_UNIX;
+}
+
 void cwk_path_set_style(enum cwk_path_style style)
 {
   // We can just set the global path style variable and then the behaviour for

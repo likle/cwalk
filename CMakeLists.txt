@@ -76,6 +76,13 @@ create_test(DEFAULT extension get_multiple)
 create_test(DEFAULT extension check_simple)
 create_test(DEFAULT extension check_empty)
 create_test(DEFAULT extension check_without)
+create_test(DEFAULT guess windows_root)
+create_test(DEFAULT guess unix_root)
+create_test(DEFAULT guess windows_separator)
+create_test(DEFAULT guess unix_separator)
+create_test(DEFAULT guess hidden_file)
+create_test(DEFAULT guess extension)
+create_test(DEFAULT guess unguessable)
 create_test(DEFAULT intersection simple)
 create_test(DEFAULT intersection trailing_separator)
 create_test(DEFAULT intersection double_separator)
@@ -184,6 +191,7 @@ add_executable(${TEST_TARGET}
   "${TEST_DIRECTORY}/basename_test.c"
   "${TEST_DIRECTORY}/dirname_test.c"
   "${TEST_DIRECTORY}/extension_test.c"
+  "${TEST_DIRECTORY}/guess_test.c"
   "${TEST_DIRECTORY}/intersection_test.c"
   "${TEST_DIRECTORY}/is_absolute_test.c"
   "${TEST_DIRECTORY}/is_relative_test.c"

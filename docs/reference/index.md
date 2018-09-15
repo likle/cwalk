@@ -77,8 +77,11 @@ Gets the type of the submitted path segment.
 The path style describes how paths are generated and parsed. ``cwalk`` currently supports two path styles, ``CWK_STYLE_WINDOWS`` and ``CWK_STYLE_UNIX``.
 
 ### Functions
+* **[cwk_path_guess_style]({{ site.baseurl }}{% link reference/cwk_path_guess_style.md %})**  
+Guesses the path style.
+
 * **[cwk_path_set_style]({{ site.baseurl }}{% link reference/cwk_path_set_style.md %})**  
 Configures which path style is used.
 
 * **[cwk_path_get_style]({{ site.baseurl }}{% link reference/cwk_path_get_style.md %})**  
-Gets the path style configuration..
+Gets the path style configuration.

@@ -355,6 +355,18 @@ size_t cwk_path_change_segment(struct cwk_segment *segment, const char *value,
 bool cwk_path_is_separator(const char *str);
 
 /**
+ * @brief Guesses the path style.
+ *
+ * This function guesses the path style based on a submitted path-string. The
+ * guessing will look at the root and the type of slashes contained in the path
+ * and return the style which is more likely used in the path.
+ *
+ * @param path The path which will be inspected.
+ * @return Returns the style which is most likely used for the path.
+ */
+enum cwk_path_style cwk_path_guess_style(const char *path);
+
+/**
  * @brief Configures which path style is used.
  *
  * This function configures which path style is used. The following styles are

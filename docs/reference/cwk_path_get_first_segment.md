@@ -18,7 +18,7 @@ This function finds the first segment of a path. The position of the segment is 
  * **path**: The path which will be inspected.
  * **segment**: The segment which will be extracted.
 
-## Return Vaue
+## Return Value
 Returns ``true`` if there is a segment or ``false`` if there is none.
 
 ## Example

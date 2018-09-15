@@ -16,7 +16,7 @@ This function moves the current segment to the previous segment. If the current 
 ## Parameters
  * **segment**: The current segment which will be moved to the previous one.
 
-## Return Vaue
+## Return Value
 Returns ``true`` if there is a segment before this one or ``false`` otherwise.
 
 ## Example
