@@ -19,7 +19,10 @@ original length. The output is truncated if the new path is larger than the
 submitted buffer size, but it is always null-terminated. The source of the
 segment and the submitted buffer may be the same.
 
-**Note:** This function does not normalize the resulting path.
+**Note:** This function does not normalize the resulting path. You can use 
+**[cwk_path_normalize]({{ site.baseurl }}{% link reference/cwk_path_normalize.md %})**
+to do so. Separators before and after the value will be trimmed. The value may 
+contain separators which will introduce new segments.
 
 ## Parameters
  * **segment**: The segment which will be modifier.
