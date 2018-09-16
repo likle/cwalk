@@ -19,6 +19,9 @@ Gets the dirname of a file path.
 * **[cwk_path_get_root]({{ site.baseurl }}{% link reference/cwk_path_get_root.md %})**  
 Determines the root of a path.
 
+* **[cwk_path_change_root]({{ site.baseurl }}{% link reference/cwk_path_change_root.md %})**  
+Changes the root of a path.
+
 * **[cwk_path_is_absolute]({{ site.baseurl }}{% link reference/cwk_path_is_absolute.md %})**  
 Determine whether the path is absolute or not.
 

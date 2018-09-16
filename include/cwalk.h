@@ -139,6 +139,26 @@ size_t cwk_path_join_multiple(const char **paths, char *buffer,
 void cwk_path_get_root(const char *path, size_t *length);
 
 /**
+ * @brief Changes the root of a path.
+ *
+ * This function changes the root of a path. It does not normalize the result.
+ * The result will be written to a buffer, which might be truncated if the
+ * buffer is not large enough to hold the full path. However, the truncated
+ * result will always be null-terminated. The returned value is the amount of
+ * characters which the resulting path would take if it was not truncated
+ * (excluding the null-terminating character).
+ *
+ * @param path The original path which will get a new root.
+ * @param new_root The new root which will be placed in the path.
+ * @param buffer The output buffer where the result is written to.
+ * @param buffer_size The size of the output buffer where the result is written
+ * to.
+ * @return Returns the total amount of characters of the new path.
+ */
+size_t cwk_path_change_root(const char *path, const char *new_root,
+  char *buffer, size_t buffer_size);
+
+/**
  * @brief Determine whether the path is absolute or not.
  *
  * This function checks whether the path is an absolute path or not. A path is
