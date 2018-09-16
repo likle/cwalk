@@ -3,6 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int root_change_without_root()
+{
+  size_t length;
+  char buffer[FILENAME_MAX] = "hello\\world.txt";
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  length = cwk_path_change_root(buffer, "D:\\", buffer,
+    sizeof(buffer));
+
+  if (length != 18) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "D:\\hello\\world.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int root_change_overlapping()
 {
   size_t length;

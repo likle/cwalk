@@ -22,8 +22,8 @@ characters which the resulting path would take if it was not truncated
 **Note:** This function does not normalize the resulting path. You can use 
 **[cwk_path_normalize]({{ site.baseurl }}{% link reference/cwk_path_normalize.md %})**
 to do so. The new root may contain separators which will introduce new segments. 
-If the submitted path does not have any segments, the basename will be appended 
-as a new segment.
+If the submitted path does not have any root, the new root will be prepended to 
+the path.
 
 ## Parameters
  * **path**: The original path which will get a new root.
