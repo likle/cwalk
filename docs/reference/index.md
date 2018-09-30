@@ -8,7 +8,7 @@ These are some basic, helpful functions available in the library. The basename i
 
 ### Functions
 * **[cwk_path_get_basename]({{ site.baseurl }}{% link reference/cwk_path_get_basename.md %})**  
-Gets the basename from a file path.
+Gets the basename of a file path.
 
 * **[cwk_path_change_basename]({{ site.baseurl }}{% link reference/cwk_path_change_basename.md %})**  
 Changes the basename of a file path.
@@ -55,7 +55,7 @@ Extensions are the portion of a path which come after a `.`. For instance, the f
 
 ### Functions
 * **[cwk_path_get_extension]({{ site.baseurl }}{% link reference/cwk_path_get_extension.md %})**  
-Gets the extension from a file path.
+Gets the extension of a file path.
 
 * **[cwk_path_has_extension]({{ site.baseurl }}{% link reference/cwk_path_has_extension.md %})**  
 Determines whether the file path has an extension.

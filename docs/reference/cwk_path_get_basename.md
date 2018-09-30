@@ -1,10 +1,10 @@
 ---
 title: cwk_path_get_basename
-description: Gets the basename from a file path.
+description: Gets the basename of a file path.
 ---
 
 _(since v1.0.0)_  
-Gets the basename from a file path.
+Gets the basename of a file path.
 
 ## Description
 ```c

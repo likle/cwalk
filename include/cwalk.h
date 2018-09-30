@@ -181,7 +181,7 @@ bool cwk_path_is_absolute(const char *path);
 bool cwk_path_is_relative(const char *path);
 
 /**
- * @brief Gets the basename from a file path.
+ * @brief Gets the basename of a file path.
  *
  * This function gets the basename of a file path. A pointer to the beginning of
  * the basename will be returned through the basename parameter. This pointer
@@ -231,9 +231,9 @@ size_t cwk_path_change_basename(const char *path, const char *new_basename,
 void cwk_path_get_dirname(const char *path, size_t *length);
 
 /**
- * @brief Gets the extension from a file path.
+ * @brief Gets the extension of a file path.
  *
- * This function extracts the extension portion from a file path. A pointer to
+ * This function extracts the extension portion of a file path. A pointer to
  * the beginning of the extension will be returned through the extension
  * parameter if an extension is found and true is returned. This pointer will be
  * positioned on the dot. The length of the extension name will be returned

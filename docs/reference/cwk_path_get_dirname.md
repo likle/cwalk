@@ -1,10 +1,10 @@
 ---
 title: cwk_path_get_dirname
-description: Gets the dirname from a file path.
+description: Gets the dirname of a file path.
 ---
 
 _(since v1.0.0)_  
-Gets the dirname from a file path.
+Gets the dirname of a file path.
 
 ## Description
 ```c
