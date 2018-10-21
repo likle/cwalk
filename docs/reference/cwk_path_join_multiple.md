@@ -22,7 +22,7 @@ This function generates a new path by joining multiple paths together. It will r
 Returns the total amount of characters of the full, combined path.
 
 ## Outcomes
-See [[cwk_path_join]] for examples how paths are joined together.
+See [cwk_path_join]({{ site.baseurl }}{% link reference/cwk_path_join.md %}) for examples how paths are joined together.
 
 ## Example
 ```c
