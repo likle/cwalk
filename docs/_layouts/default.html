@@ -9,11 +9,19 @@
     <link href="{{ site.baseurl }}/assets/css/default.css" rel="stylesheet" type="text/css">
     <link href="{{ site.baseurl }}/assets/css/monakai.css" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" href="{{ site.baseurl }}/assets/img/favicon.png">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127837944-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-127837944-1');
+    </script>
   </head>
   <body>
     <header>
       <div class="inner">
-      <a href="{{ site.baseurl }}{% link index.md %}" class="logo">cwalk</span>
+      <a href="{{ site.baseurl }}{% link index.md %}" class="logo">cwalk</a>  
       <nav>
         <a href="{{ site.baseurl }}{% link build.md %}">build</a>
         <a href="{{ site.baseurl }}{% link embed.md %}">embed</a>
