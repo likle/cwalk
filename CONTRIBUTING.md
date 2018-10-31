@@ -26,5 +26,5 @@ surrounding code.
 
 ## How to submit a new feature?
 You probably want to create an issue first to discuss the change. All 
-pull-requests will be considered though! Just Try to make sure that the code 
+pull-requests will be considered though! Just try to make sure that the code 
 style fits the surrounding code.
