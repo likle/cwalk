@@ -1,6 +1,6 @@
 ---
-title: Cross-Platform C/C++ Path Library
-description: cwalk is a lightweight C/C++ Path Library which focuses on file path manipulations. Using ``cwalk`` you can easily do things like combine paths, resolve relative paths, create relative paths based on absolute paths, canonicalize paths or read extension information from paths.
+title: C/C++ Path Library - Cross-Platform
+description: cwalk is a lightweight C/C++ Path Library which focuses on file path manipulations. Using cwalk you can easily do things like combine paths, resolve relative paths, create relative paths based on absolute paths, canonicalize paths or read extension information from paths.
 ---
 
 ## What is cwalk? 
