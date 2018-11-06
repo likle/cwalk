@@ -260,6 +260,29 @@ bool cwk_path_get_extension(const char *path, const char **extension,
 bool cwk_path_has_extension(const char *path);
 
 /**
+ * @brief Changes the extension of a file path.
+ *
+ * This function changes the extension of a file name. The function will append
+ * an extension if the basename does not have an extension, or use the extension
+ * as a basename if the path does not have a basename. This function will not
+ * write out more than the specified buffer can contain. However, the generated
+ * string is always null-terminated - even if not the whole path is written out.
+ * The function returns the total number of characters the complete buffer would
+ * have, even if it was not written out completely. The path may be the same
+ * memory address as the buffer.
+ *
+ * @param path The path which will be used to make the change.
+ * @param new_extension The extension which will be placed within the new path.
+ * @param buffer The output buffer where the result will be written to.
+ * @param buffer_size The size of the output buffer where the result will be
+ * written to.
+ * @return Returns the total size which the output would have if it was not
+ * truncated.
+ */
+size_t cwk_path_change_extension(const char *path, const char *new_extension,
+  char *buffer, size_t buffer_size);
+
+/**
  * @brief Creates a normalized version of the path.
  *
  * This function creates a normalized version of the path within the specified

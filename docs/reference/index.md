@@ -60,6 +60,9 @@ Gets the extension of a file path.
 * **[cwk_path_has_extension]({{ site.baseurl }}{% link reference/cwk_path_has_extension.md %})**  
 Determines whether the file path has an extension.
 
+* **[cwk_path_change_extension]({{ site.baseurl }}{% link reference/cwk_path_change_extension.md %})**  
+Changes the extension of a file path.
+
 ## Segments
 A segment represents a single component of a path. For instance, on linux a path might look like this ``/var/log/``, which consists of two segments ``var`` and ``log``.
 
