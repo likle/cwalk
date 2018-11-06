@@ -32,8 +32,7 @@ be ignored when the new extension is appended.
  * **path**: The path which will be used to make the change.
  * **new_extension**: The extension which will be placed within the new path.
  * **buffer**: The output buffer where the result will be written to.
- * **buffer_size**: The size of the output buffer where the result will be
- * written to.
+ * **buffer_size**: The size of the output buffer where the result will be written to.
 
 ## Return Value
 Returns the total size which the output would have if it was not truncated.
