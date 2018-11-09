@@ -36,7 +36,7 @@ This function determines the root of a path by finding it's length.  The root co
 ### Note
 The style is automatically chosen during compile time, which is 
 UNIX for macOS and linux and WINDOWS for windows. You can change the style
-using [[cwk_path_set_style]].
+using [cwk_path_set_style]({{ site.baseurl }}{% link reference/cwk_path_set_style.md %}).
 
 ## Example
 ```c
