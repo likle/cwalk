@@ -4,7 +4,7 @@ description: cwalk is a lightweight C/C++ Path Library which focuses on file pat
 ---
 
 ## What is cwalk? 
-``cwalk`` is a lightweight C/C++ library which focuses on file path manipulations. Using ``cwalk`` you can easily do things like combine paths, resolve relative paths, create relative paths based on absolute paths, canonicalize paths or read extension information from paths.
+**cwalk** is a lightweight C/C++ library which focuses on file path manipulations. Using **cwalk** you can easily do things like combine paths, resolve relative paths, create relative paths based on absolute paths, canonicalize paths or read extension information from paths.
 
 ## Example
 Here is a simple example of one thing (normalization) cwalk can do for you. However, there are more features available.

@@ -12,7 +12,7 @@ git clone -b stable git@github.com:likle/cwalk.git
 Visual Studio 2017 is recommended, then you can just open the source using ``File -> Open -> CMake...``. You can use Visual Studio to compile the source and debug the code. Make sure you have the CMake and C/C++ features enabled.
 
 ## Using Ubuntu
-You will need [CMake](https://cmake.org/download/) and either gcc or clang installed. On Ubuntu you can use the following to compile ``cwalk``:
+You will need [CMake](https://cmake.org/download/) and either gcc or clang installed. On Ubuntu you can use the following to compile **cwalk**:
 ```bash
 sudo apt-get install build-essential cmake
 mkdir cwalk/build
@@ -22,7 +22,7 @@ make
 ```
 
 ## Using MacOS
-You will need [CMake](https://cmake.org/download/) and either gcc or clang installed. On MacOS you can use the following to compile ``cwalk``:
+You will need [CMake](https://cmake.org/download/) and either gcc or clang installed. On MacOS you can use the following to compile **cwalk**:
 ```
 brew install cmake gcc
 mkdir cwalk/build
@@ -31,7 +31,7 @@ cmake ..
 make
 ```
 # Running Tests
-After building ``cwalk`` you can run tests to ensure everything is fine. In order to do that, make sure that you are in the build folder and then execute the test program:
+After building **cwalk** you can run tests to ensure everything is fine. In order to do that, make sure that you are in the build folder and then execute the test program:
 
 ```bash
 ./cwalktest

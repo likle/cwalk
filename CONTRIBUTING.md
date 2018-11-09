@@ -1,5 +1,5 @@
 # Contributing
-All your contributions to ``cwalk`` are very welcome! ``cwalk`` is especially happy to
+All your contributions to **cwalk** are very welcome! **cwalk** is especially happy to
 receive contributions like:
 
  * general **bugfixes**
