@@ -8,6 +8,9 @@ In order to build the source, you will have to download it. You can do so using 
 git clone -b stable git@github.com:likle/cwalk.git
 ```
 
+**Note**: The *stable* branch points to the latest stable version. You should 
+always use a stable version in production code.
+
 ## Using Windows
 Visual Studio 2017 is recommended, then you can just open the source using ``File -> Open -> CMake...``. You can use Visual Studio to compile the source and debug the code. Make sure you have the CMake and C/C++ features enabled.
 

@@ -3,7 +3,15 @@ title: Embedding
 description: A guide on how to embed the cwalk path library for C/C++.
 ---
 
-Before you embed `cwalk` you might have to [build]({{ site.baseurl }}{% link build.md %}) it first.
+
+In order to embed **cmake**, you will have to download it.
+You can do so using git (or download it from [here](https://github.com/likle/cwalk/archive/stable.zip)).  
+
+```bash
+git clone -b stable git@github.com:likle/cwalk.git
+```
+**Note**: The *stable* branch points to the latest stable version. You should 
+always use a stable version in production code.
 
 ## Using CMake
 If you are using CMake it is fairly easy to embed **cwalk**. 
