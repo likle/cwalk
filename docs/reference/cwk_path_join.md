@@ -39,7 +39,7 @@ Returns the total amount of characters of the full, combined path.
 ### Note
 The style is automatically chosen during compile time, which is 
 UNIX for macOS and linux and WINDOWS for windows. You can change the style
-using [[cwk_path_set_style]].
+using [cwk_path_join]({{ site.baseurl }}{% link reference/cwk_path_join.md %}).
 
 ## Example
 ```c

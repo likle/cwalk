@@ -13,7 +13,7 @@ git clone -b stable git@github.com:likle/cwalk.git
 **Note**: The *stable* branch points to the latest stable version. You should 
 always use a stable version in production code.
 
-## Using CMake
+## Using CMake to embed cwalk
 If you are using CMake it is fairly easy to embed **cwalk**. 
 This only requires two lines, you don't even have to specify the include directories.
 The following example shows how to do so:
@@ -37,7 +37,7 @@ After that, you should be able to use cwalk in your source code:
 #include <cwalk.h>
 ```
 
-## Direct Embedding
+## Directly embed cwalk in your source
 If you don't use CMake and would like to embed **cwalk** directly, you could 
 just add the two files ``src/cwalk.c`` and ``ìnclude/cwalk.h`` to your project.
 The folder containing ``cwalk.h`` has to be in your include directories 
