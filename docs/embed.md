@@ -4,7 +4,7 @@ description: A guide on how to embed the cwalk path library for C/C++.
 ---
 
 
-In order to embed **cmake**, you will have to download it.
+In order to embed **cwalk**, you will have to download it.
 You can do so using git (or download it from [here](https://github.com/likle/cwalk/archive/stable.zip)).  
 
 ```bash
