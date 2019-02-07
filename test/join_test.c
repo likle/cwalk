@@ -69,6 +69,26 @@ int join_back_after_root()
   return EXIT_SUCCESS;
 }
 
+int join_with_two_roots()
+{
+  char buffer[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  length = cwk_path_join("C:\\this\\path", "C:\\is\\a\\test\\", buffer,
+    sizeof(buffer));
+
+  if (length != 25) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "C:\\this\\path\\C:\\is\\a\\test") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int join_two_unc()
 {
   char buffer[FILENAME_MAX];

@@ -32,14 +32,20 @@ Returns the total amount of characters of the full, combined path.
 | UNIX    | ``hello``             | ``..``                  | ``.``                                  |
 | UNIX    | ``hello/there``       | ``..``                  | ``hello``                              |
 | UNIX    | ``hello``             | ``there``               | ``hello/there``                        |
-| WINDOWS | ``this\``             | ``C:\..\..\is\a\test\`` | ``is\\a\\test``                        |
+| WINDOWS | ``this\``             | ``C:\..\..\is\a\test\`` | ``is\a\test``                          |
+| WINDOWS | ``C:\this\path``      | ``C:\is\a\test\``       | ``C:\this\path\C:\is\a\test``          |   
 | WINDOWS | ``C:\this\path``      | ``C:\..\is\a\test\``    | ``C:\this\path\is\a\test``             |
 | WINDOWS | ``\\s1\unc\path``     | ``\\s2\unc\pa``         | ``\\s1\unc\pa\s2\unc\path``            |
 
-### Note
+### Style
 The style is automatically chosen during compile time, which is 
 UNIX for macOS and linux and WINDOWS for windows. You can change the style
 using [cwk_path_join]({{ site.baseurl }}{% link reference/cwk_path_join.md %}).
+
+### Result
+The **path_b** parameter will always be treated as a relative path, so even if 
+a driver letter is submitted on a windows style path, it will be treated as a 
+folder.
 
 ## Example
 ```c
