@@ -32,7 +32,7 @@ enum cwk_segment_type
 {
   CWK_NORMAL,
   CWK_CURRENT,
-  CWK_BACK,
+  CWK_BACK
 };
 
 /**
