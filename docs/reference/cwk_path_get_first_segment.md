@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   }
 
   printf("Segment length is '%zu'.\n", segment.size);
-  printf("The segment is '%.*s'.", segment.size, segment.begin);
+  printf("The segment is '%.*s'.", (int)segment.size, segment.begin);
 
   return EXIT_SUCCESS;
 }

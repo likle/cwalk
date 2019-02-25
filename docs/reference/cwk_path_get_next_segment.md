@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   }
   
   do {
-    printf("Current segment is '%.*s'.\n", segment.size, segment.begin);
+    printf("Current segment is '%.*s'.\n", (int)segment.size, segment.begin);
   } while(cwk_path_get_next_segment(&segment));
   
   return EXIT_SUCCESS;
@@ -48,7 +48,7 @@ Ouput:
 Current segment is 'my'.
 Current segment is 'funny'.
 Current segment is 'test'.
-Current segment is 'path'.
+Current segment is 'path.txt'.
 ```
 
 ## Changelog
