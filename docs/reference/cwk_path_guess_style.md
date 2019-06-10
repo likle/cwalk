@@ -74,4 +74,5 @@ WINDOWS.
 
 | Version    | Description                                            |
 |------------|--------------------------------------------------------|
+| **v1.2.1** | Fixed crash on call with empty string.                 |
 | **v1.2.0** | The function is introduced.                            |

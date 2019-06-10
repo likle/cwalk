@@ -1,6 +1,15 @@
 #include <cwalk.h>
 #include <stdlib.h>
 
+int guess_empty_string()
+{
+  if (cwk_path_guess_style("") != CWK_STYLE_UNIX) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int guess_unguessable()
 {
   if (cwk_path_guess_style("myfile") != CWK_STYLE_UNIX) {

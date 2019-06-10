@@ -1383,7 +1383,12 @@ enum cwk_path_style cwk_path_guess_style(const char *path)
   // actually must be the first one), and determine whether the segment starts
   // with a dot. A dot is a hidden folder or file in the UNIX world, in that
   // case we assume the path to have UNIX style.
-  cwk_path_get_last_segment(path, &segment);
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    // We couldn't find any segments, so we default to a UNIX path style since
+    // there is no way to make any assumptions.
+    return CWK_STYLE_UNIX;
+  }
+
   if (*segment.begin == '.') {
     return CWK_STYLE_UNIX;
   }
