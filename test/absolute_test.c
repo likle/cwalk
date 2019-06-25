@@ -12,7 +12,7 @@ int absolute_check()
     "./simple", ".././simple"};
   const char *absolute_paths[] = {"/", "/test", "/../test/", "/../another_test",
     "/./simple", "/.././simple"};
-  int i;
+  size_t i;
 
   cwk_path_set_style(CWK_STYLE_UNIX);
 
