@@ -1,11 +1,13 @@
-# Project
-project('cwalk', 'c')
+project('cwalk', 'c',
+  license: 'MIT',
+  meson_version: '>= 0.45.1'
+)
 
-# Library
-cwalk = shared_library(	'cwalk', 'src/cwalk.c',
-						install: true,
-						include_directories: 'include',
-						soversion: 1, version: '1.0.0'
+cwalk_inc = include_directories('include')
+
+cwalk = library('cwalk', 'src/cwalk.c',
+  install: true,
+  include_directories: cwalk_inc
 )
 
 install_headers('include/cwalk.h')
