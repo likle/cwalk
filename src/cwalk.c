@@ -21,8 +21,10 @@ static enum cwk_path_style path_style = CWK_STYLE_UNIX;
  * multiple separators, but it generally outputs just a backslash. The output
  * will always use the first character for the output.
  */
-static const char *separators[] = {[CWK_STYLE_WINDOWS] = "\\/",
-  [CWK_STYLE_UNIX] = "/"};
+static const char *separators[] = {
+  "\\/", // CWK_STYLE_WINDOWS
+  "/"    // CWK_STYLE_UNIX
+};
 
 /**
  * A joined path represents multiple path strings which are concatenated, but
