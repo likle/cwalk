@@ -6,6 +6,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+
 /**
  * A segment represents a single component of a path. For instance, on linux a
  * path might look like this "/var/log/", which consists of two segments "var"
@@ -453,5 +458,9 @@ void cwk_path_set_style(enum cwk_path_style style);
  * @return Returns the current path style configuration.
  */
 enum cwk_path_style cwk_path_get_style(void);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
