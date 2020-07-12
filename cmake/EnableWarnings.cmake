@@ -1,6 +1,7 @@
 # enable warnings
 function(enable_warnings target)
   if(MSVC)
+    target_compile_definitions(${target} PRIVATE _CRT_SECURE_NO_WARNINGS)
     target_compile_options(${target} PRIVATE /W4)
     target_compile_options(${target} PRIVATE /WX)
   elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
