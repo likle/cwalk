@@ -21,8 +21,10 @@ static enum cwk_path_style path_style = CWK_STYLE_UNIX;
  * multiple separators, but it generally outputs just a backslash. The output
  * will always use the first character for the output.
  */
-static const char *separators[] = {[CWK_STYLE_WINDOWS] = "\\/",
-  [CWK_STYLE_UNIX] = "/"};
+static const char *separators[] = {
+  "\\/", // CWK_STYLE_WINDOWS
+  "/"    // CWK_STYLE_UNIX
+};
 
 /**
  * A joined path represents multiple path strings which are concatenated, but
@@ -208,7 +210,7 @@ static bool cwk_path_get_first_segment_without_root(const char *path,
 
   // And finally, calculate the size of the segment by subtracting the position
   // from the end.
-  segment->size = segments - segment->begin;
+  segment->size = (size_t)(segments - segment->begin);
   segment->end = segments;
 
   // Tell the caller that we found a segment.
@@ -522,7 +524,7 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
     }
 
     // Finally, calculate the size of the root.
-    *length = c - path;
+    *length = (size_t)(c - path);
     return;
   }
 
@@ -976,7 +978,7 @@ void cwk_path_get_dirname(const char *path, size_t *length)
 
   // We can now return the length from the beginning of the string up to the
   // beginning of the last segment.
-  *length = segment.begin - path;
+  *length = (size_t)(segment.begin - path);
 }
 
 bool cwk_path_get_extension(const char *path, const char **extension,
@@ -998,7 +1000,7 @@ bool cwk_path_get_extension(const char *path, const char **extension,
     if (*c == '.') {
       // Okay, we found an extension. We can stop looking now.
       *extension = c;
-      *length = segment.end - c;
+      *length = (size_t)(segment.end - c);
       return true;
     }
   }
@@ -1055,7 +1057,7 @@ size_t cwk_path_change_extension(const char *path, const char *new_extension,
   }
 
   pos = cwk_path_output_sized(buffer, buffer_size, 0, segment.path,
-    old_extension - segment.path);
+    (size_t)(old_extension - segment.path));
 
   // If the new extension starts with a dot, we will skip that dot. We always
   // output exactly one dot before the extension. If the extension contains
@@ -1154,7 +1156,7 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
           base.segment.size)) {
       // So the content of those two segments are not equal. We will return the
       // size up to the beginning.
-      return end - path_base;
+      return (size_t)(end - path_base);
     }
 
     // Remember the end of the previous segment before we go to the next one.
@@ -1164,7 +1166,7 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
 
   // Now we calculate the length up to the last point where our paths pointed to
   // the same place.
-  return end - path_base;
+  return (size_t)(end - path_base);
 }
 
 bool cwk_path_get_first_segment(const char *path, struct cwk_segment *segment)
@@ -1233,7 +1235,7 @@ bool cwk_path_get_next_segment(struct cwk_segment *segment)
   // the caller as well.
   c = cwk_path_find_next_stop(c);
   segment->end = c;
-  segment->size = c - segment->begin;
+  segment->size = (size_t)(c - segment->begin);
 
   // Tell the caller that we found a segment.
   return true;
@@ -1265,7 +1267,7 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
   // the previous separator and did not reach the segment path beginning.
   segment->end = c + 1;
   segment->begin = cwk_path_find_previous_stop(segment->segments, c);
-  segment->size = segment->end - segment->begin;
+  segment->size = (size_t)(segment->end - segment->begin);
 
   return true;
 }
@@ -1309,7 +1311,7 @@ size_t cwk_path_change_segment(struct cwk_segment *segment, const char *value,
   // First we have to output the head, which is the whole string up to the
   // beginning of the segment. This part of the path will just stay the same.
   pos = cwk_path_output_sized(buffer, buffer_size, 0, segment->path,
-    segment->begin - segment->path);
+    (size_t)(segment->begin - segment->path));
 
   // In order to trip the submitted value, we will skip any separator at the
   // beginning of it and behave as if it was never there.
@@ -1383,7 +1385,12 @@ enum cwk_path_style cwk_path_guess_style(const char *path)
   // actually must be the first one), and determine whether the segment starts
   // with a dot. A dot is a hidden folder or file in the UNIX world, in that
   // case we assume the path to have UNIX style.
-  cwk_path_get_last_segment(path, &segment);
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    // We couldn't find any segments, so we default to a UNIX path style since
+    // there is no way to make any assumptions.
+    return CWK_STYLE_UNIX;
+  }
+
   if (*segment.begin == '.') {
     return CWK_STYLE_UNIX;
   }
