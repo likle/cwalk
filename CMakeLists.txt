@@ -233,4 +233,5 @@ target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})
 target_include_directories(${TEST_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
 
 # enable warnings
+enable_warnings(${TEST_TARGET})
 enable_warnings(${LIBRARY_TARGET})
