@@ -7,8 +7,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   margin: auto;
   padding: 20px;
-  background: #00A1AF radial-gradient(#FFFFFF, #FAFAFA);
-  background-repeat: no-repeat;
+  background: #FAFAFA;
   padding: 0;
   display: flex;
   flex-flow: column;
