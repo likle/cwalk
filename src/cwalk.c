@@ -503,7 +503,7 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
       return;
     }
 
-    // We will grab anything up to the next stop. The next top might be a '\0'
+    // We will grab anything up to the next stop. The next stop might be a '\0'
     // or another separator. That will be the server name.
     c = cwk_path_find_next_stop(c);
 

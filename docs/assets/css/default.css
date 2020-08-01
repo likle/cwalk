@@ -5,6 +5,8 @@ body {
   background: #00A1AF radial-gradient(#FFFFFF, #FAFAFA);
   background-repeat: no-repeat;
   padding: 0;
+  display: flex;
+  flex-flow: column;
 }
 
 header {
@@ -44,6 +46,10 @@ header a {
   font-size: 18pt;
   overflow: auto;
   color: #078e3d;;
+}
+
+.main {
+  flex: 1;
 }
 
 footer {
