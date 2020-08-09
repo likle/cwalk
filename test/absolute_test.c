@@ -5,7 +5,6 @@
 #include <string.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-#define PATHSIZE 256
 
 int absolute_check()
 {
