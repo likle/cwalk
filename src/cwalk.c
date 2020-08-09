@@ -599,6 +599,10 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
       continue;
     }
 
+    if (has_segment_output) {
+      pos += cwk_path_output_separator(buffer, buffer_size, pos);
+    }
+
     // Remember that we have segment output, so we can handle the trailing slash
     // later on. This is necessary since we might have segments but they are all
     // removed.
@@ -609,14 +613,11 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
     // here.
     pos += cwk_path_output_sized(buffer, buffer_size, pos, sj.segment.begin,
       sj.segment.size);
-    pos += cwk_path_output_separator(buffer, buffer_size, pos);
   } while (cwk_path_get_next_segment_joined(&sj));
 
   // Remove the trailing slash, but only if we have segment output. We don't
   // want to remove anything from the root.
-  if (has_segment_output) {
-    --pos;
-  } else if (pos == 0) {
+  if (!has_segment_output && pos == 0) {
     // This may happen if the path is absolute and all segments have been
     // removed. We can not have an empty output - and empty output means we stay
     // in the current directory. So we will output a ".".

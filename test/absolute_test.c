@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+#define PATHSIZE 256
 
 int absolute_check()
 {
@@ -147,4 +148,38 @@ int absolute_simple()
   }
 
   return EXIT_SUCCESS;
+}
+
+
+int absolute_buffer_reuse()
+{
+  char path[FILENAME_MAX] = {0};
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  cwk_path_get_absolute(path, "/", path, FILENAME_MAX);
+  if (strcmp(path, "/") != 0) {
+    return EXIT_FAILURE;
+  }
+  cwk_path_get_absolute(path, "see", path, FILENAME_MAX);
+  if (strcmp(path, "/see") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_get_absolute(path, "dog", path, FILENAME_MAX);
+  if (strcmp(path, "/see/dog") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_get_absolute(path, "..", path, FILENAME_MAX);
+  if (strcmp(path, "/see") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  cwk_path_get_absolute(path, "cat", path, FILENAME_MAX);
+  if (strcmp(path, "/see/cat") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return 0;
 }
