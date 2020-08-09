@@ -152,7 +152,10 @@ int absolute_simple()
 
 int absolute_buffer_reuse()
 {
-  char path[FILENAME_MAX] = {0};
+  char path[FILENAME_MAX];
+
+  memset(path, 1, FILENAME_MAX);
+  path[0] = '\0';
 
   cwk_path_set_style(CWK_STYLE_UNIX);
 
