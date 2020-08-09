@@ -599,6 +599,10 @@ static size_t cwk_path_join_and_normalize_multiple(const char **paths,
       continue;
     }
 
+    // We add a separator if we previously wrote a segment. The last segment
+    // must not have a trailing separator. This must happen before the segment
+    // output, since we would override the null terminating character with
+    // reused buffers if this was done afterwards.
     if (has_segment_output) {
       pos += cwk_path_output_separator(buffer, buffer_size, pos);
     }

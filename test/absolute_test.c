@@ -181,5 +181,5 @@ int absolute_buffer_reuse()
     return EXIT_FAILURE;
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
