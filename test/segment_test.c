@@ -425,6 +425,150 @@ int segment_previous_absolute()
   return EXIT_SUCCESS;
 }
 
+int segment_previous_relative_one_character_first()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  path = "n/hello_world/abc/";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "abc", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "hello_world", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "n", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+  
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "t\\cool\\path\\";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "path", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "cool", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "t", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int segment_previous_absolute_one_character_first()
+{
+  const char *path;
+  struct cwk_segment segment;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  path = "/n/hello_world/abc/";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "abc", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "hello_world", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "n", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+  
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  path = "C:\\t\\cool\\path\\";
+
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "path", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "cool", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (!cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(segment.begin, "t", segment.size) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_get_previous_segment(&segment)) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int segment_next_too_far()
 {
   const char *path;
