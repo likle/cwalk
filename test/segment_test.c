@@ -425,7 +425,7 @@ int segment_previous_absolute()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_relative_one_character_first()
+int segment_previous_relative_one_char_first()
 {
   const char *path;
   struct cwk_segment segment;
@@ -497,7 +497,7 @@ int segment_previous_relative_one_character_first()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_absolute_one_character_first()
+int segment_previous_absolute_one_char_first()
 {
   const char *path;
   struct cwk_segment segment;

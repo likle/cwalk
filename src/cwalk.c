@@ -1259,15 +1259,14 @@ bool cwk_path_get_previous_segment(struct cwk_segment *segment)
 
   // We move towards the beginning of the path until we either reached the
   // beginning or the character is no separator anymore.
-  --c;
-  while (cwk_path_is_separator(c)) {
-    if (c <= segment->segments) {
+  do {
+    --c;
+    if (c < segment->segments) {
       // So we reached the beginning here and there is no segment. So we return
       // false and don't change the segment structure submitted by the caller.
       return false;
     }
-    --c;
-  }
+  } while (cwk_path_is_separator(c));
 
   // We are guaranteed now that there is another segment, since we moved before
   // the previous separator and did not reach the segment path beginning.
