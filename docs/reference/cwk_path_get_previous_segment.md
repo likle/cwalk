@@ -31,12 +31,12 @@ int main(int argc, char *argv[])
   struct cwk_segment segment;
 
   if(!cwk_path_get_last_segment("/my/funny/test/path.txt", &segment)) {
-    printf("Path doesn't have any segments.");
+    printf("Path doesn't have any segments.\n");
     return EXIT_FAILURE;
   }
   
   do {
-    printf("Current segment is '%.*s'.\n", segment.size, segment.begin);
+    printf("Current segment is '%.*s'.\n", (int)segment.size, segment.begin);
   } while(cwk_path_get_previous_segment(&segment));
   
   return EXIT_SUCCESS;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
 Ouput:
 ```
-Current segment is 'path'.
+Current segment is 'path.txt'.
 Current segment is 'test'.
 Current segment is 'funny'.
 Current segment is 'my'.
