@@ -62,7 +62,7 @@ enum cwk_path_style
  * resulting path would take if it was not truncated (excluding the
  * null-terminating character).
  *
- * @param base The base path on which the relative path will be applied.
+ * @param base The absolute base path on which the relative path will be applied.
  * @param path The relative path which will be applied on the base path.
  * @param buffer The buffer where the result will be written to.
  * @param buffer_size The size of the result buffer.

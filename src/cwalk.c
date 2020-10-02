@@ -650,6 +650,9 @@ size_t cwk_path_get_absolute(const char *base, const char *path, char *buffer,
   // root at the beginning.
   if (cwk_path_is_absolute(base)) {
     i = 0;
+  } else if (path_style == CWK_STYLE_WINDOWS) {
+    paths[0] = "\\";
+    i = 1;
   } else {
     paths[0] = "/";
     i = 1;

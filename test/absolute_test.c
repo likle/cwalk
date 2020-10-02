@@ -91,7 +91,7 @@ int absolute_mixed()
   return EXIT_SUCCESS;
 }
 
-int absolute_relative_base()
+int absolute_unix_relative_base()
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -104,6 +104,25 @@ int absolute_relative_base()
   }
 
   if (strcmp(buffer, "/hello/there/test") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int absolute_windows_relative_base()
+{
+  char buffer[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+  length = cwk_path_get_absolute("hello\\there", "test", buffer, sizeof(buffer));
+
+  if (length != 17) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(buffer, "\\hello\\there\\test") != 0) {
     return EXIT_FAILURE;
   }
 
