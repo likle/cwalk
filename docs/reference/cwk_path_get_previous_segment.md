@@ -55,4 +55,5 @@ Current segment is 'my'.
 
 | Version    | Description                                            |
 |------------|--------------------------------------------------------|
+| **v1.2.4** | Bugfix for single char segments.                       |
 | **v1.0.0** | The function is introduced.                            |

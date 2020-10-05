@@ -61,5 +61,6 @@ The absolute path is: /hello/there/world
 
 | Version    | Description                                            |
 |------------|--------------------------------------------------------|
+| **v1.2.4** | Fix for relative base path fallback on windows.        |
 | **v1.2.3** | Fix for path generation when reusing buffers.          |
 | **v1.0.0** | The function is introduced.                            |
