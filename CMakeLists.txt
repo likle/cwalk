@@ -56,7 +56,8 @@ endif()
 if(ENABLE_TESTS)
   message("-- Tests enabled")
   enable_testing()
-  
+
+  create_test_list(DEFAULT cwalktest)
   create_test(DEFAULT absolute simple)
   create_test(DEFAULT absolute absolute_path)
   create_test(DEFAULT absolute unix_relative_base)
@@ -229,7 +230,7 @@ if(ENABLE_TESTS)
   create_test(DEFAULT windows intersection_case)
   create_test(DEFAULT windows root_backslash)
   create_test(DEFAULT windows root_empty)
-  create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
+  write_test_file(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
   add_executable(cwalktest
     "${TEST_DIRECTORY}/main.c"
