@@ -21,7 +21,7 @@ compiler:
 before_script:
 - mkdir build
 - cd build
-- cmake -DENABLE_COVERAGE=1 ..
+- cmake -DENABLE_COVERAGE=1 -DENABLE_TESTS=1 ..
 
 script:
  - make
