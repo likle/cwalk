@@ -17,8 +17,6 @@ include(CMakePackageConfigHelpers)
 set(CMAKE_C_STANDARD 11)
 
 # setup target and directory names
-set(LIBRARY_TARGET "cwalk")
-set(TEST_TARGET "cwalktest")
 set(INCLUDE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
