@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.9.2)
 
 # set project name
 project(cwalk
+  VERSION 1.2.4
   DESCRIPTION "A simple path library"
   LANGUAGES C)
 
@@ -10,6 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(EnableWarnings)
 include(CTest)
 include(CreateTestList)
+include(CMakePackageConfigHelpers)
 
 # configure requirements
 set(CMAKE_C_STANDARD 11)
@@ -36,17 +38,20 @@ if(ENABLE_SANITIZER)
 endif()
 
 # add the main executable
-add_library(${LIBRARY_TARGET}
+add_library(cwalk
   "${INCLUDE_DIRECTORY}/cwalk.h"
   "${SOURCE_DIRECTORY}/cwalk.c")
-enable_warnings(${LIBRARY_TARGET})
-target_include_directories(${LIBRARY_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
-set_target_properties(${LIBRARY_TARGET} PROPERTIES PUBLIC_HEADER "${INCLUDE_DIRECTORY}/cwalk.h")
-set_target_properties(${LIBRARY_TARGET} PROPERTIES DEFINE_SYMBOL CWK_EXPORTS)
+enable_warnings(cwalk)
+target_include_directories(cwalk PUBLIC
+  $<BUILD_INTERFACE:${INCLUDE_DIRECTORY}>
+  $<INSTALL_INTERFACE:include>
+)
+set_target_properties(cwalk PROPERTIES PUBLIC_HEADER "${INCLUDE_DIRECTORY}/cwalk.h")
+set_target_properties(cwalk PROPERTIES DEFINE_SYMBOL CWK_EXPORTS)
 
 # add shared library macro
 if(BUILD_SHARED_LIBS)
-  target_compile_definitions(${LIBRARY_TARGET} PUBLIC CWK_SHARED)
+  target_compile_definitions(cwalk PUBLIC CWK_SHARED)
 endif()
 
 # enable tests
@@ -228,7 +233,7 @@ if(ENABLE_TESTS)
   create_test(DEFAULT windows root_empty)
   create_test_list(DEFAULT "${TEST_DIRECTORY}/tests.h")
 
-  add_executable(${TEST_TARGET}
+  add_executable(cwalktest
     "${TEST_DIRECTORY}/main.c"
     "${TEST_DIRECTORY}/absolute_test.c"
     "${TEST_DIRECTORY}/basename_test.c"
@@ -244,14 +249,26 @@ if(ENABLE_TESTS)
     "${TEST_DIRECTORY}/root_test.c"
     "${TEST_DIRECTORY}/segment_test.c"
     "${TEST_DIRECTORY}/windows_test.c")
-  enable_warnings(${TEST_TARGET})
+  enable_warnings(cwalktest)
     
-  target_link_libraries(${TEST_TARGET} PUBLIC ${LIBRARY_TARGET})
-  target_include_directories(${TEST_TARGET} PUBLIC "${INCLUDE_DIRECTORY}")
+  target_link_libraries(cwalktest PRIVATE cwalk)
 endif()
 
-install(TARGETS ${LIBRARY_TARGET} 
+write_basic_package_version_file("CwalkConfigVersion.cmake"
+  VERSION ${cwalk_VERSION}
+  COMPATIBILITY SameMajorVersion)
+
+install(TARGETS cwalk
+  EXPORT CwalkTargets
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   PUBLIC_HEADER DESTINATION include)
+
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CwalkConfig.cmake"
+  DESTINATION lib/cmake/cwalk)
+
+install(EXPORT CwalkTargets
+  FILE CwalkTargets.cmake
+  DESTINATION lib/cmake/cwalk)
