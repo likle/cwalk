@@ -6,6 +6,46 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
+int relative_root_path_windows()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  length = cwk_path_get_relative("C:\\this\\is\\path_one", "C:\\", result,
+    sizeof(result));
+  if (length != 8) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "..\\..\\..") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int relative_root_path_unix()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/this/is/path_one", "/", result,
+    sizeof(result));
+  if (length != 8) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "../../..") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_check()
 {
   const char *relative_paths[] = {"..", "test", "test/test", "../another_test",
@@ -38,11 +78,19 @@ int relative_different_roots()
 
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
+  *result = 1;
+
   length = cwk_path_get_relative("C:/path/same", "D:/path/same", result,
     sizeof(result));
+
   if (length != 0) {
     return EXIT_FAILURE;
   }
+
+  if (*result != '\0') {
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }
 
@@ -219,46 +267,6 @@ int relative_relative()
   }
 
   if (strcmp(result, "../path_two") != 0) {
-    return EXIT_FAILURE;
-  }
-
-  return EXIT_SUCCESS;
-}
-
-int relative_root_path_unix()
-{
-  char result[FILENAME_MAX];
-  size_t length;
-
-  cwk_path_set_style(CWK_STYLE_UNIX);
-
-  length = cwk_path_get_relative("/this/is/path_one", "/", result,
-                                 sizeof(result));
-  if (length != 8) {
-    return EXIT_FAILURE;
-  }
-
-  if (strcmp(result, "../../..") != 0) {
-    return EXIT_FAILURE;
-  }
-
-  return EXIT_SUCCESS;
-}
-
-int relative_root_path_windows()
-{
-  char result[FILENAME_MAX];
-  size_t length;
-
-  cwk_path_set_style(CWK_STYLE_WINDOWS);
-
-  length = cwk_path_get_relative("C:\\this\\is\\path_one", "C:\\", result,
-                                 sizeof(result));
-  if (length != 8) {
-    return EXIT_FAILURE;
-  }
-
-  if (strcmp(result, "..\\..\\..") != 0) {
     return EXIT_FAILURE;
   }
 
