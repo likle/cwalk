@@ -71,6 +71,28 @@ int relative_check()
   return EXIT_SUCCESS;
 }
 
+int relative_relative_and_absolute()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  *result = 1;
+
+  length = cwk_path_get_relative("./foo", "/bar", result, sizeof(result));
+
+  if (length != 0) {
+    return EXIT_FAILURE;
+  }
+
+  if (*result != '\0') {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_different_roots()
 {
   char result[FILENAME_MAX];

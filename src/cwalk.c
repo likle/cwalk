@@ -729,7 +729,8 @@ size_t cwk_path_get_relative(const char *base_directory, const char *path,
   // different roots.
   cwk_path_get_root(base_directory, &base_root_length);
   cwk_path_get_root(path, &path_root_length);
-  if (!cwk_path_is_string_equal(base_directory, path, base_root_length)) {
+  if (base_root_length != path_root_length ||
+      !cwk_path_is_string_equal(base_directory, path, base_root_length)) {
     cwk_path_terminate_output(buffer, buffer_size, pos);
     return pos;
   }
