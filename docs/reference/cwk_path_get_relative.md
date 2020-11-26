@@ -66,4 +66,6 @@ The relative path is: ../world
 
 | Version    | Description                                            |
 |------------|--------------------------------------------------------|
+| **v1.2.5** | Fixed calls with path without segments.                |
+| **v1.2.5** | Fixed calls with unequal roots in paths.               |
 | **v1.0.0** | The function is introduced.                            |
