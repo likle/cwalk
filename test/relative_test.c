@@ -225,6 +225,46 @@ int relative_relative()
   return EXIT_SUCCESS;
 }
 
+int relative_root_path_unix()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/this/is/path_one", "/", result,
+                                 sizeof(result));
+  if (length != 8) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "../../..") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int relative_root_path_windows()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  length = cwk_path_get_relative("C:\\this\\is\\path_one", "C:\\", result,
+                                 sizeof(result));
+  if (length != 8) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "..\\..\\..") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_simple()
 {
   char result[FILENAME_MAX];

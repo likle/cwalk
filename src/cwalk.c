@@ -184,10 +184,13 @@ static bool cwk_path_get_first_segment_without_root(const char *path,
   // why this has to be done first.
   segment->path = path;
   segment->segments = segments;
+  segment->begin = segments;
+  segment->end = segments;
 
   // Now let's check whether this is an empty string. An empty string has no
   // segment it could use.
   if (*segments == '\0') {
+    segment->size = 0;
     return false;
   }
 
@@ -197,6 +200,7 @@ static bool cwk_path_get_first_segment_without_root(const char *path,
   while (cwk_path_is_separator(segments)) {
     ++segments;
     if (*segments == '\0') {
+      segment->size = 0;
       return false;
     }
   }
