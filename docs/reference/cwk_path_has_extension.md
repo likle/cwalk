@@ -11,7 +11,9 @@ Determines whether the file path has an extension.
 bool cwk_path_has_extension(const char *path);
 ```
 
-This function determines whether the submitted file path has an extension. This will evaluate to true if the last segment of the path contains a dot. In order to read more information about the extension see [[cwk_path_get_extension]].
+This function determines whether the submitted file path has an extension. This 
+will evaluate to true if the last segment of the path contains a dot. In order 
+to read more information about the extension see **[cwk_path_get_extension]({{ site.baseurl }}{% link reference/cwk_path_get_extension.md %})**.
 
 ## Parameters
  * **path**: The path which will be inspected.
