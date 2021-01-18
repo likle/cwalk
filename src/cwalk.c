@@ -466,8 +466,6 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
   const char *c;
   bool is_device_path;
 
-  is_device_path = false;
-
   // We can not determine the root if this is an empty string. So we set the
   // root to NULL and the length to zero and cancel the whole thing.
   c = path;
