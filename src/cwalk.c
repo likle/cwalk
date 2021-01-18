@@ -466,8 +466,6 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
   const char *c;
   bool is_device_path;
 
-  // A device path is a path which starts with "\\." or "\\?". A device path can
-  // be a UNC path as well, in which case it will take up one more segment.
   is_device_path = false;
 
   // We can not determine the root if this is an empty string. So we set the
@@ -492,10 +490,13 @@ static void cwk_path_get_root_windows(const char *path, size_t *length)
       return;
     }
 
-    // Yes, this is a network or device path. Skip the previous separator. Now
-    // we need to determine whether this is a device path. We might advance one
-    // character here if the server name starts with a '?' or a '.', but that's
-    // fine since we will search for a separator afterwards anyway.
+    // A device path is a path which starts with "\\." or "\\?". A device path
+    // can be a UNC path as well, in which case it will take up one more
+    // segment. So, this is a network or device path. Skip the previous
+    // separator. Now we need to determine whether this is a device path. We
+    // might advance one character here if the server name starts with a '?' or
+    // a '.', but that's fine since we will search for a separator afterwards
+    // anyway.
     ++c;
     is_device_path = (*c == '?' || *c == '.') && cwk_path_is_separator(++c);
     if (is_device_path) {
