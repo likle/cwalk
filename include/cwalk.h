@@ -490,6 +490,29 @@ CWK_PUBLIC void cwk_path_set_style(enum cwk_path_style style);
  */
 CWK_PUBLIC enum cwk_path_style cwk_path_get_style(void);
 
+#if defined(_WIN32)      || defined(__APPLE__)  || defined(__linux__)     || \
+    defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__) || \
+    defined(__sun)
+/**
+ * @brief Gets the path to the executable calling this function, with all
+ * aliases and symlinks resolved.
+ *
+ * Since this function relies on OS-dependent APIs, it is only available on the
+ * following platforms: Windows, MacOS, Linux, FreeBSD, NetBSD, DragonFlyBSD,
+ * and Solaris.
+ *
+ * @param buffer The buffer where the path to the executable will be written.
+ * On return, the string will be null-terminated.
+ * @param buffer_size The size of the buffer.
+ * @param is_truncated If the buffer is too small to hold the entire path, the
+ * value that this pointer points to will be set to true. If this pointer is
+ * null, no change will occur.
+ * @return The length of the string written to the buffer.
+ */
+CWK_PUBLIC size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
+                                               bool * is_truncated);
+#endif
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
