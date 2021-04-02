@@ -1476,7 +1476,7 @@ size_t resolve_symbolic_link(const char *to_resolve, char * buffer,
   }
 
   // readlink will never write more than buffer_size bytes
-  assert(bytes_written < buffer_size);
+  assert(bytes_written <= buffer_size);
 
   // Is there enough space in the buffer to add a null terminal?
   if (bytes_written == buffer_size) {

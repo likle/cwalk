@@ -256,6 +256,11 @@ if(ENABLE_TESTS)
   target_link_libraries(cwalktest PRIVATE cwalk)
 endif()
 
+add_executable(cwalktest_exe_path
+        "${TEST_DIRECTORY}/executable_path_test.c")
+enable_warnings(cwalktest_exe_path)
+target_link_libraries(cwalktest_exe_path PRIVATE cwalk)
+
 write_basic_package_version_file("CwalkConfigVersion.cmake"
   VERSION ${cwalk_VERSION}
   COMPATIBILITY SameMajorVersion)
