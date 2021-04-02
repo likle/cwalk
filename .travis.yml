@@ -28,7 +28,7 @@ script:
  - make test
 
  # Run tests for get_executable_path
- - bash ../test/test_executable_paths.sh cwalktest_exe_path
+ - bash ../test/test_executable_paths.sh ./cwalktest_exe_path
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
