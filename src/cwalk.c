@@ -1508,7 +1508,7 @@ size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
   // the last error to ERROR_INSUFFICIENT_BUFFER.
   // On failure for any other reason, it returns 0.
 
-  bytes_written = GetModuleFileNameA(nullptr, lp_buffer, buffer_size);
+  bytes_written = GetModuleFileNameA(NULL, lp_buffer, (DWORD)buffer_size);
 
   // Did an error occur?
   if (!bytes_written) {
