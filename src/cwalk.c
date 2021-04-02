@@ -12,7 +12,7 @@
 #include <windows.h>            // GetModuleFileNameA
 #elif defined(__APPLE__)
 #include <stdint.h>             // uint32_t
-#include <mach-o/dyld.h>	// _NSGetExecutablePath
+#include <mach-o/dyld.h>        // _NSGetExecutablePath
 #elif defined(__FreeBSD__)
 #include <sys/sysctl.h>         // sysctl
 #elif defined(__sun)
@@ -1449,6 +1449,46 @@ enum cwk_path_style cwk_path_get_style(void)
   return path_style;
 }
 
+#if defined(__linux__)  || defined(__DragonFly__) || \
+    defined(__NetBSD__) || defined(__APPLE__)
+size_t resolve_symbolic_link(const char *to_resolve, char * buffer,
+                             size_t buffer_size, bool * is_truncated)
+{
+  size_t bytes_written;
+
+  // From readlink manpage at https://linux.die.net/man/3/readlink:
+  // readlink() places the contents of the symbolic link pathname in the buffer
+  // buffer, which has size buffer_size. readlink() does not append a
+  // terminating null byte to buffer. It will (silently) truncate the contents
+  // (to a length of buffer_size characters), in case the buffer is too small
+  // to hold all of the contents.
+
+  // On success, readlink returns the number of bytes placed in buffer. If the
+  // returned value equals buffer_size, then truncation may have occurred.
+  // On error, -1 is returned and errno is set to indicate the error.
+  bytes_written = (size_t) readlink(to_resolve, buffer, buffer_size);
+
+  // If bytes_written is negative, the call failed and errno contains the error
+  if ((ssize_t)bytes_written < 0) {
+    buffer[0] = '\0';
+    return 0;
+  }
+
+  // readlink will never write more than buffer_size bytes
+  assert(bytes_written < buffer_size);
+
+  // Is there enough space in the buffer to add a null terminal?
+  if (bytes_written == buffer_size) {
+    if (is_truncated) { *is_truncated = true; }
+    buffer[0] = '\0';
+    return 0;
+  }
+  // Otherwise, add the null-terminal and return.
+  buffer[bytes_written] = '\0';
+  return bytes_written;
+}
+#endif
+
 #if defined(_WIN32)
 size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
                                     bool * is_truncated)
@@ -1491,8 +1531,21 @@ size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
 size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
                                     bool * is_truncated)
 {
+  // First, we will query _NSGetExecutablePath for a path to the main
+  // executable. We will need a second buffer for this.
+  // Second, we will use readlink to resolve symlinks that could have been
+  // returned by _NSGetExecutablePath. The result will be written to the output
+  // buffer.
+
   uint32_t len;
+  char * unresolved_link;   // Intermediate buffer
+
   len = buffer_size;
+  unresolved_link = (char*)malloc(buffer_size * sizeof(char));
+  if (!unresolved_link) {
+    buffer[0] = '\0';
+    return 0;
+  }
 
   // From docs at https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
   // _NSGetExecutablePath() copies the path of the main executable into the
@@ -1503,60 +1556,35 @@ size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
   // "a path" to the executable not a "real path" to the executable.  That is,
   // the path may be a symbolic link and not the real file. With deep
   // directories the total bufsize needed could be more than MAXPATHLEN.
-  if (_NSGetExecutablePath(buffer, &len) != 0) {
+  if (_NSGetExecutablePath(unresolved_link, &len) != 0) {
     if (is_truncated) { *is_truncated = true; }
+    free(unresolved_link);
     buffer[0] = '\0';
     return 0;
   }
-  // TODO: call readlink to resolve symbolic links; should just reuse linux code
-  return len;
+
+  size_t result = resolve_symbolic_link(unresolved_link, buffer, buffer_size,
+                                        is_truncated);
+  free(unresolved_link);
+  return result;
 }
-#elif defined(__linux__) || defined(__NetBSD__) || defined(__DragonFly__)
-
-// We will use readlink to determine executable path
-#if defined(__linux__)
-#define CWK_READLINK_PATH "/proc/self/exe"
-#elif defined(__NetBSD__)
-#define CWK_READLINK_PATH "/proc/curproc/exe"
-#elif defined(__DragonFly__)
-#define CWK_READLINK_PATH "/proc/curproc/file"
-#endif
-
+#elif defined(__linux__)
 size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
-                                    bool * is_truncated)
-{
-  size_t bytes_written;
-
-  // From readlink manpage at https://linux.die.net/man/3/readlink:
-  // readlink() places the contents of the symbolic link pathname in the buffer
-  // buffer, which has size buffer_size. readlink() does not append a
-  // terminating null byte to buffer. It will (silently) truncate the contents
-  // (to a length of buffer_size characters), in case the buffer is too small
-  // to hold all of the contents.
-
-  // On success, readlink returns the number of bytes placed in buffer. If the
-  // returned value equals buffer_size, then truncation may have occurred.
-  // On error, -1 is returned and errno is set to indicate the error.
-  bytes_written = (size_t) readlink(CWK_READLINK_PATH, buffer, buffer_size);
-
-  // If bytes_written is negative, the call failed and errno contains the error
-  if ((ssize_t)bytes_written < 0) {
-    buffer[0] = '\0';
-    return 0;
-  }
-
-  // readlink will never write more than buffer_size bytes
-  assert(bytes_written < buffer_size);
-
-  // Is there enough space in the buffer to add a null terminal?
-  if (bytes_written == buffer_size) {
-    if (is_truncated) { *is_truncated = true; }
-    buffer[0] = '\0';
-    return 0;
-  }
-  // Otherwise, add the null-terminal and return.
-  buffer[bytes_written] = '\0';
-  return bytes_written;
+                                    bool * is_truncated) {
+  return resolve_symbolic_link("/proc/self/exe", buffer, buffer_size,
+                               is_truncated);
+}
+#elif defined(__NetBSD__)
+size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
+                                    bool * is_truncated) {
+  return resolve_symbolic_link("/proc/curproc/exe", buffer, buffer_size,
+                               is_truncated);
+}
+#elif defined(__DragonFly__)
+size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
+                                    bool * is_truncated) {
+  return resolve_symbolic_link("/proc/curproc/file", buffer, buffer_size,
+                               is_truncated);
 }
 #elif defined(__FreeBSD__)
 size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
