@@ -5,14 +5,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#if defined(__linux__)  || defined(__DragonFly__) || \
-    defined(__NetBSD__) || defined(__APPLE__)
+#if defined(__linux__)  || defined(__DragonFly__) || defined(__NetBSD__)
 #include <unistd.h>             // readlink
 #elif defined(_WIN32)
 #include <windows.h>            // GetModuleFileNameA
 #elif defined(__APPLE__)
+#include <stdlib.h>             // malloc/free
 #include <stdint.h>             // uint32_t
 #include <mach-o/dyld.h>        // _NSGetExecutablePath
+#include <unistd.h>             // readlink
 #elif defined(__FreeBSD__)
 #include <sys/sysctl.h>         // sysctl
 #elif defined(__sun)
