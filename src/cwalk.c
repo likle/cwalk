@@ -1525,7 +1525,7 @@ size_t resolve_if_symlink(char * buffer, size_t buffer_size,
 
   // If the buffer's too short, return failure
   if ((size_t)sb.st_size + 1 > buffer_size) {
-    *is_truncated = true;
+    if (is_truncated) { *is_truncated = true; }
     buffer[0] = '\0';
     return 0;
   }
