@@ -254,12 +254,15 @@ if(ENABLE_TESTS)
   enable_warnings(cwalktest)
     
   target_link_libraries(cwalktest PRIVATE cwalk)
-endif()
 
-add_executable(cwalktest_exe_path
-        "${TEST_DIRECTORY}/executable_path_test.c")
-enable_warnings(cwalktest_exe_path)
-target_link_libraries(cwalktest_exe_path PRIVATE cwalk)
+  add_executable(cwalktest_exe_path "${TEST_DIRECTORY}/executable_path_test.c")
+  enable_warnings(cwalktest_exe_path)
+  target_link_libraries(cwalktest_exe_path PRIVATE cwalk)
+
+  create_shellscript_test(executable_path
+          "${TEST_DIRECTORY}/test_executable_paths.sh"
+          "${CMAKE_CURRENT_BINARY_DIR}/cwalktest_exe_path")
+endif()
 
 write_basic_package_version_file("CwalkConfigVersion.cmake"
   VERSION ${cwalk_VERSION}

@@ -13,3 +13,17 @@ function(create_test list_name unit_name test_name)
   set(TEST_LIST_CONTENT_${list_name} "${TEST_LIST_CONTENT_${list_name}}  XX(${unit_name},${test_name}) \\\n" PARENT_SCOPE)
   add_test(NAME "${unit_name}_${test_name}" COMMAND ${TEST_LIST_TARGET_${list_name}} ${unit_name} ${test_name})
 endfunction()
+
+function(create_shellscript_test unit_name script_path script_arg)
+  if (WIN32)
+    find_program(SHELL_CMD bash.exe REQUIRED
+            PATHS "C:\\Program Files\\Git\\bin" "C:\\Program Files (x86)\\Git\\bin")
+  else()
+    set(SHELL_CMD "/bin/sh")
+  endif()
+
+  add_test(
+          NAME "shellscript_${unit_name}"
+          COMMAND "${SHELL_CMD}" "${script_path}" ${script_arg}
+          COMMAND_EXPAND_LISTS)
+endfunction()
