@@ -26,4 +26,4 @@ build:
   verbosity: minimal
 
 test_script:
-  - cmd: c:\projects\cwalk\build.win\Release\cwalktest.exe
+  - cmd: ctest -C Release
