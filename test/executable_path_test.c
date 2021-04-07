@@ -6,6 +6,14 @@
 #define adequate_buffer_len 4096
 #define inadequate_buffer_len 2
 
+int compare_normalized_paths(const char *a, const char *b)
+{
+  char normal_a[adequate_buffer_len], normal_b[adequate_buffer_len];
+  cwk_path_normalize(a, normal_a, sizeof(normal_a));
+  cwk_path_normalize(b, normal_b, sizeof(normal_b));
+  return strcmp(normal_a, normal_b);
+}
+
 int executable_path_adequate_buffer(const char * expected_exe_path)
 {
   char buffer[adequate_buffer_len];
@@ -13,7 +21,7 @@ int executable_path_adequate_buffer(const char * expected_exe_path)
   if (cwk_path_get_executable_path(buffer, adequate_buffer_len, &is_trunc) == 0) {
     return EXIT_FAILURE;
   }
-  if (strcmp(buffer, expected_exe_path) != 0) {
+  if (compare_normalized_paths(buffer, expected_exe_path) != 0) {
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;

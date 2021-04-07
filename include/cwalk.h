@@ -495,7 +495,9 @@ CWK_PUBLIC enum cwk_path_style cwk_path_get_style(void);
     defined(__sun)
 /**
  * @brief Gets the path to the executable calling this function, with all
- * aliases and symlinks resolved.
+ * aliases and symlinks resolved. The path returned in the buffer is not
+ * necessarily normalized; use cwk_path_normalize to normalize the result.
+ * The buffer will always be null-terminated.
  *
  * Since this function relies on OS-dependent APIs, it is only available on the
  * following platforms: Windows, MacOS, Linux, FreeBSD, NetBSD, DragonFlyBSD,
@@ -506,7 +508,7 @@ CWK_PUBLIC enum cwk_path_style cwk_path_get_style(void);
  * @param buffer_size The size of the buffer.
  * @param is_truncated If the buffer is too small to hold the entire path, the
  * value that this pointer points to will be set to true. If this pointer is
- * null, no change will occur.
+ * null, no change will occur.`
  * @return The length of the string written to the buffer.
  */
 CWK_PUBLIC size_t cwk_path_get_executable_path(char * buffer, size_t buffer_size,
