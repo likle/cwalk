@@ -235,6 +235,26 @@ int relative_equal()
   return EXIT_SUCCESS;
 }
 
+int relative_same_base()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  length = cwk_path_get_relative("/dir/dir", "/dir/dir3/file", result,
+    sizeof(result));
+  if (length != 12) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "../dir3/file") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_long_target()
 {
   char result[FILENAME_MAX];

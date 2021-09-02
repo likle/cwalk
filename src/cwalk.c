@@ -122,30 +122,35 @@ static void cwk_path_terminate_output(char *buffer, size_t buffer_size,
 }
 
 static bool cwk_path_is_string_equal(const char *first, const char *second,
-  size_t n)
+  size_t first_size, size_t second_size)
 {
+  // THe two strings are not equal if the sizes are not equal.
+  if (first_size != second_size) {
+    return false;
+  }
+
   // If the path style is UNIX, we will compare case sensitively. This can be
   // done easily using strncmp.
   if (path_style == CWK_STYLE_UNIX) {
-    return strncmp(first, second, n) == 0;
+    return strncmp(first, second, first_size) == 0;
   }
 
   // However, if this is windows we will have to compare case insensitively.
   // Since there is no standard method to do that we will have to do it on our
   // own.
-  while (*first && *second && n > 0) {
+  while (*first && *second && first_size > 0) {
     // We can consider the string to be not equal if the two lowercase
     // characters are not equal.
     if (tolower(*first++) != tolower(*second++)) {
       return false;
     }
 
-    --n;
+    --first_size;
   }
 
-  // We can consider the string to be equal if we either reached n == 0 or both
-  // cursors point to a null character.
-  return n == 0 || (*first == '\0' && *second == '\0');
+  // The string must be equal since they both have the same length and all the
+  // characters are the same.
+  return true;
 }
 
 static const char *cwk_path_find_next_stop(const char *c)
@@ -437,9 +442,7 @@ cwk_path_segment_will_be_removed(const struct cwk_segment_joined *sj,
   // First we check whether this is a CWK_CURRENT or CWK_BACK segment, since
   // those will always be dropped.
   type = cwk_path_get_segment_type(&sj->segment);
-  if (type == CWK_CURRENT) {
-    return true;
-  } else if (type == CWK_BACK && absolute) {
+  if (type == CWK_CURRENT || (type == CWK_BACK && absolute)) {
     return true;
   } else if (type == CWK_BACK) {
     return cwk_path_segment_back_will_be_removed(&sjc);
@@ -701,7 +704,7 @@ static void cwk_path_skip_segments_until_diverge(struct cwk_segment_joined *bsj,
     // Compare the content of both segments. We are done if they are not equal,
     // since they diverge.
     if (!cwk_path_is_string_equal(bsj->segment.begin, osj->segment.begin,
-          bsj->segment.size)) {
+          bsj->segment.size, osj->segment.size)) {
       break;
     }
 
@@ -729,7 +732,8 @@ size_t cwk_path_get_relative(const char *base_directory, const char *path,
   cwk_path_get_root(base_directory, &base_root_length);
   cwk_path_get_root(path, &path_root_length);
   if (base_root_length != path_root_length ||
-      !cwk_path_is_string_equal(base_directory, path, base_root_length)) {
+      !cwk_path_is_string_equal(base_directory, path, base_root_length,
+        path_root_length)) {
     cwk_path_terminate_output(buffer, buffer_size, pos);
     return pos;
   }
@@ -1126,7 +1130,8 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
   // absolute.
   cwk_path_get_root(path_base, &base_root_length);
   cwk_path_get_root(path_other, &other_root_length);
-  if (!cwk_path_is_string_equal(path_base, path_other, base_root_length)) {
+  if (!cwk_path_is_string_equal(path_base, path_other, base_root_length,
+        other_root_length)) {
     return 0;
   }
 
@@ -1165,7 +1170,7 @@ size_t cwk_path_get_intersection(const char *path_base, const char *path_other)
     }
 
     if (!cwk_path_is_string_equal(base.segment.begin, other.segment.begin,
-          base.segment.size)) {
+          base.segment.size, other.segment.size)) {
       // So the content of those two segments are not equal. We will return the
       // size up to the beginning.
       return (size_t)(end - path_base);
