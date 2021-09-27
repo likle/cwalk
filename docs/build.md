@@ -34,8 +34,12 @@ cmake ..
 make
 ```
 # Running Tests
-After building **cwalk** you can run tests to ensure everything is fine. In order to do that, make sure that you are in the build folder and then execute the test program:
+In order to run tests, cwalk needs to be built with tests enabled. There is a ``ENABLE_TESTS`` flag for that. It can be passed to the cmake command like this:
+```
+cmake .. -DENABLE_TESTS=1
+```
 
+After building **cwalk** you can run tests to ensure everything is fine. In order to do that, make sure that you are in the build folder and then execute the test program:
 ```bash
 ./cwalktest
 ```

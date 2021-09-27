@@ -9,3 +9,4 @@ builddir
 .vs
 .vscode
 docs/_site
+docs/.jekyll-cache
