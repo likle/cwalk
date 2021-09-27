@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   size_t length;
 
   path = "/this/is/a/test";
-  length = cwk_path_get_intersection(path, "/this/is/a/string") 
+  length = cwk_path_get_intersection(path, "/this/is/a/string");
   printf("The common portion is: '%.*s'", length, path);
 
   return EXIT_SUCCESS;
