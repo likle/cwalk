@@ -143,3 +143,23 @@ int is_absolute_absolute()
 
   return EXIT_SUCCESS;
 }
+
+int is_absolute_root()
+{
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  if (!cwk_path_is_absolute("/")) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int is_absolute_dir()
+{
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  if (!cwk_path_is_absolute("/dir")) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
