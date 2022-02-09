@@ -920,7 +920,9 @@ void cwk_path_get_basename(const char *path, const char **basename,
   // to NULL and the length to 0.
   if (!cwk_path_get_last_segment(path, &segment)) {
     *basename = NULL;
-    *length = 0;
+    if (length) {
+      *length = 0;
+    }
     return;
   }
 
@@ -928,7 +930,9 @@ void cwk_path_get_basename(const char *path, const char **basename,
   // There might be trailing separators after the basename, but the size does
   // not include those.
   *basename = segment.begin;
-  *length = segment.size;
+  if (length) {
+    *length = segment.size;
+  }
 }
 
 size_t cwk_path_change_basename(const char *path, const char *new_basename,
