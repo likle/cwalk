@@ -1,6 +1,6 @@
 <img style="width:100%;" src="/banner.png">
 
-[![Travis Build](https://img.shields.io/travis/likle/cwalk/master.svg?maxAge=2592000&label=Linux%20%26%20MacOS)](https://travis-ci.org/likle/cwalk)
+[![Travis Build](https://img.shields.io/travis/likle/cwalk/master.svg?maxAge=2592000&label=Linux%20%26%20MacOS)](https://travis-ci.com/likle/cwalk)
 [![Appveyor Build](https://img.shields.io/appveyor/ci/likle/cwalk/master.svg?label=Windows)](https://ci.appveyor.com/project/likle/cwalk) 
 [![codecov](https://img.shields.io/codecov/c/github/likle/cwalk/master.svg?label=Coverage)](https://codecov.io/gh/likle/cwalk)
 [![Language Grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/likle/cwalk.svg?label=Code%20Quality)](https://lgtm.com/projects/g/likle/cwalk/context:cpp)

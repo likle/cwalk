@@ -68,6 +68,7 @@ Output:
 
 ## Changelog
 
-| Version    | Description                                            |
-|------------|--------------------------------------------------------|
-| **v1.0.0** | The function is introduced.                            |
+| Version    | Description                                       |
+|------------|---------------------------------------------------|
+| **v1.2.7** | Fixed windows paths with forward slashes in root. |
+| **v1.0.0** | The function is introduced.                       |

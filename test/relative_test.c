@@ -6,6 +6,26 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
+int relative_root_forward_slashes()
+{
+  char result[FILENAME_MAX];
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_WINDOWS);
+
+  length = cwk_path_get_relative("C:\\foo\\bar\\baz\\", "C:/foo/bar/file.txt",
+    result, sizeof(result));
+  if (length != 11) {
+    return EXIT_FAILURE;
+  }
+
+  if (strcmp(result, "..\\file.txt") != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int relative_root_path_windows()
 {
   char result[FILENAME_MAX];

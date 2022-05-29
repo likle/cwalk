@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9.2)
 
 # set project name
 project(cwalk
-  VERSION 1.2.5
+  VERSION 1.2.7
   DESCRIPTION "A simple path library"
   LANGUAGES C)
 
@@ -175,6 +175,7 @@ if(ENABLE_TESTS)
   create_test(DEFAULT normalize empty)
   create_test(DEFAULT normalize only_separators)
   create_test(DEFAULT normalize back_after_root)
+  create_test(DEFAULT normalize forward_slashes)
   create_test(DEFAULT relative simple)
   create_test(DEFAULT relative relative)
   create_test(DEFAULT relative long_base)
@@ -191,6 +192,7 @@ if(ENABLE_TESTS)
   create_test(DEFAULT relative check)
   create_test(DEFAULT relative root_path_unix)
   create_test(DEFAULT relative root_path_windows)
+  create_test(DEFAULT relative root_forward_slashes)
   create_test(DEFAULT root absolute)
   create_test(DEFAULT root unc)
   create_test(DEFAULT root device_unc)
