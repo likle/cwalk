@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.9.2)
 
+file(READ "VERSION.txt" VERSION)
+
 # set project name
 project(cwalk
-  VERSION 1.2.7
+  VERSION ${VERSION}
   DESCRIPTION "A simple path library"
   LANGUAGES C)
 
