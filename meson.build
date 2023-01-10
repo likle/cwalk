@@ -1,6 +1,7 @@
 project('cwalk', 'c',
   license: 'MIT',
-  meson_version: '>= 0.45.1'
+  version: files('VERSION.txt'),
+  meson_version: '>= 0.57.0'
 )
 
 cwalk_inc = include_directories('include')
