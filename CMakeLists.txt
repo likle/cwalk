@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.9.2)
 
-file(READ "VERSION.txt" VERSION)
-
 # set project name
 project(cwalk
-  VERSION ${VERSION}
+  VERSION 1.2.7
   DESCRIPTION "A simple path library"
+  HOMEPAGE_URL "https://likle.github.io/cwalk/"
   LANGUAGES C)
 
 # include utilities
@@ -259,13 +258,15 @@ if(ENABLE_TESTS)
     "${TEST_DIRECTORY}/segment_test.c"
     "${TEST_DIRECTORY}/windows_test.c")
   enable_warnings(cwalktest)
-    
+
   target_link_libraries(cwalktest PRIVATE cwalk)
 endif()
 
 write_basic_package_version_file("CwalkConfigVersion.cmake"
   VERSION ${cwalk_VERSION}
   COMPATIBILITY SameMajorVersion)
+
+configure_file(cwalk.pc.in ${PROJECT_BINARY_DIR}/cwalk.pc @ONLY)
 
 install(TARGETS cwalk
   EXPORT CwalkTargets
@@ -277,6 +278,10 @@ install(TARGETS cwalk
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CwalkConfig.cmake"
   DESTINATION lib/cmake/cwalk)
+
+install(FILES
+  ${PROJECT_BINARY_DIR}/cwalk.pc
+  DESTINATION lib/pkgconfig/)
 
 install(EXPORT CwalkTargets
   FILE CwalkTargets.cmake
