@@ -24,6 +24,14 @@ option(ENABLE_SANITIZER "Sanitzier testing")
 option(BUILD_SHARED_LIBS "Build shared library")
 option(ENABLE_TESTS "Build test executables")
 
+# Rpath options necessary for shared library install to work correctly in user projects
+set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_FULL_LIBDIR})
+set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR})
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+
+# Necessary for shared library with Visual Studio / Windows oneAPI
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
+
 # configure requirements
 set(CMAKE_C_STANDARD 11)
 
