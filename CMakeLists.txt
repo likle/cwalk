@@ -241,7 +241,7 @@ if(ENABLE_TESTS)
   create_test(DEFAULT windows intersection_case)
   create_test(DEFAULT windows root_backslash)
   create_test(DEFAULT windows root_empty)
-  write_test_file(DEFAULT test/tests.h)
+  write_test_file(DEFAULT ${CMAKE_CURRENT_BINARY_DIR}/tests.h)
 
   add_executable(cwalktest
     test/main.c
@@ -259,6 +259,7 @@ if(ENABLE_TESTS)
     test/root_test.c
     test/segment_test.c
     test/windows_test.c)
+  target_include_directories(cwalktest PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
   enable_warnings(cwalktest)
 
   target_link_libraries(cwalktest PRIVATE cwalk)
@@ -283,3 +284,8 @@ install(FILES
 install(EXPORT CwalkTargets
   FILE CwalkTargets.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cwalk)
+
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()

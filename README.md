@@ -1,6 +1,6 @@
 <img style="width:100%;" src="/banner.png">
 
-[![ci](https://github.com/scivision/cwalk/actions/workflows/ci.yml/badge.svg)](https://github.com/scivision/cwalk/actions/workflows/ci.yml)
+[![ci](https://github.com/likle/cwalk/actions/workflows/ci.yml/badge.svg)](https://github.com/likle/cwalk/actions/workflows/ci.yml)
 [![Appveyor Build](https://img.shields.io/appveyor/ci/likle/cwalk/master.svg?label=Windows)](https://ci.appveyor.com/project/likle/cwalk)
 [![codecov](https://img.shields.io/codecov/c/github/likle/cwalk/master.svg?label=Coverage)](https://codecov.io/gh/likle/cwalk)
 
