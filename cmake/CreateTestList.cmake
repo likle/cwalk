@@ -11,5 +11,9 @@ endfunction()
 
 function(create_test list_name unit_name test_name)
   set(TEST_LIST_CONTENT_${list_name} "${TEST_LIST_CONTENT_${list_name}}  XX(${unit_name},${test_name}) \\\n" PARENT_SCOPE)
-  add_test(NAME "${unit_name}_${test_name}" COMMAND ${TEST_LIST_TARGET_${list_name}} ${unit_name} ${test_name})
+
+  add_test(NAME "${unit_name}_${test_name}"
+  COMMAND ${TEST_LIST_TARGET_${list_name}} ${unit_name} ${test_name}
+  )
+  set_property(TEST "${unit_name}_${test_name}" PROPERTY LABELS ${unit_name})
 endfunction()
