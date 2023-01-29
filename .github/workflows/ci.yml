@@ -11,7 +11,7 @@ on:
 jobs:
 
   core:
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -38,3 +38,20 @@ jobs:
 
     - name: install package
       run: cmake --install build
+
+
+  windows-msvc:
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: config
+      run: cmake -Bbuild
+
+    - name: build
+      run: cmake --build build --parallel
+
+    - name: test
+      run: ctest --test-dir build --parallel 4 -C Debug
