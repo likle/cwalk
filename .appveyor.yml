@@ -1,6 +1,13 @@
 version: 0.1.0.{build}
 image: Visual Studio 2022
 
+only_commits:
+  files:
+    - "**/*.c"
+    - "**/*.cmake"
+    - "**/CMakeLists.txt"
+    - ".appveyor.yml"
+
 platform:
   - Win32
   - x64
