@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    paths:
+      - "**.c"
+      - "**.cmake"
+      - "**/CMakeLists.txt"
+      - ".github/workflows/ci.yml"
+
+jobs:
+
+  core:
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        shared: [true, false]
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: configure shared=${{ matrix.shared }}
+      run: >-
+        cmake -Bbuild
+        -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
+        --install-prefix ${{ runner.temp }}
+
+    - name: build
+      run: cmake --build build --parallel
+
+    - name: test
+      run: ctest --test-dir build --parallel 4
+
+    - name: install package
+      run: cmake --install build

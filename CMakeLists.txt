@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9.2)
+cmake_minimum_required(VERSION 3.14)
 
 # set project name
 project(cwalk
@@ -7,46 +7,49 @@ project(cwalk
   HOMEPAGE_URL "https://likle.github.io/cwalk/"
   LANGUAGES C)
 
+message(STATUS "CMake ${CMAKE_VERSION} ${PROJECT_NAME} ${PROJECT_VERSION}
+Install Prefix: ${CMAKE_INSTALL_PREFIX}
+Generator: ${CMAKE_GENERATOR} ${CMAKE_GENERATOR_PLATFORM}")
+
 # include utilities
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(GNUInstallDirs)
 include(EnableWarnings)
-include(CTest)
 include(CreateTestList)
 include(CMakePackageConfigHelpers)
+enable_testing()
+
+option(ENABLE_COVERAGE "Coverage testing")
+option(ENABLE_SANITIZER "Sanitzier testing")
+option(BUILD_SHARED_LIBS "Build shared library")
+option(ENABLE_TESTS "Build test executables")
 
 # configure requirements
 set(CMAKE_C_STANDARD 11)
 
-# setup target and directory names
-set(INCLUDE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
-
 # enable coverage if requested
 if(ENABLE_COVERAGE)
-  message("-- Coverage enabled")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+  message(STATUS "Coverage enabled")
+  add_compile_options(-fprofile-arcs -ftest-coverage)
+  add_link_options(--coverage)
 endif()
 
 # enable sanitizer
 if(ENABLE_SANITIZER)
-  message("-- Sanitizer enabled")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
+  message(STATUS "Sanitizer enabled")
+  add_compile_options(-fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER})
+  add_link_options(-fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER})
 endif()
 
 # add the main executable
-add_library(cwalk
-  "${INCLUDE_DIRECTORY}/cwalk.h"
-  "${SOURCE_DIRECTORY}/cwalk.c")
+add_library(cwalk include/cwalk.h src/cwalk.c)
 enable_warnings(cwalk)
 target_include_directories(cwalk PUBLIC
-  $<BUILD_INTERFACE:${INCLUDE_DIRECTORY}>
-  $<INSTALL_INTERFACE:include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-set_target_properties(cwalk PROPERTIES PUBLIC_HEADER "${INCLUDE_DIRECTORY}/cwalk.h")
-set_target_properties(cwalk PROPERTIES DEFINE_SYMBOL CWK_EXPORTS)
+set_property(TARGET cwalk PROPERTY PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/cwalk.h)
+target_compile_definitions(cwalk PRIVATE CWK_EXPORTS)
 
 # add shared library macro
 if(BUILD_SHARED_LIBS)
@@ -55,8 +58,7 @@ endif()
 
 # enable tests
 if(ENABLE_TESTS)
-  message("-- Tests enabled")
-  enable_testing()
+  message(STATUS "Tests enabled")
 
   create_test_list(DEFAULT cwalktest)
   create_test(DEFAULT absolute simple)
@@ -239,24 +241,24 @@ if(ENABLE_TESTS)
   create_test(DEFAULT windows intersection_case)
   create_test(DEFAULT windows root_backslash)
   create_test(DEFAULT windows root_empty)
-  write_test_file(DEFAULT "${TEST_DIRECTORY}/tests.h")
+  write_test_file(DEFAULT test/tests.h)
 
   add_executable(cwalktest
-    "${TEST_DIRECTORY}/main.c"
-    "${TEST_DIRECTORY}/absolute_test.c"
-    "${TEST_DIRECTORY}/basename_test.c"
-    "${TEST_DIRECTORY}/dirname_test.c"
-    "${TEST_DIRECTORY}/extension_test.c"
-    "${TEST_DIRECTORY}/guess_test.c"
-    "${TEST_DIRECTORY}/intersection_test.c"
-    "${TEST_DIRECTORY}/is_absolute_test.c"
-    "${TEST_DIRECTORY}/is_relative_test.c"
-    "${TEST_DIRECTORY}/join_test.c"
-    "${TEST_DIRECTORY}/normalize_test.c"
-    "${TEST_DIRECTORY}/relative_test.c"
-    "${TEST_DIRECTORY}/root_test.c"
-    "${TEST_DIRECTORY}/segment_test.c"
-    "${TEST_DIRECTORY}/windows_test.c")
+    test/main.c
+    test/absolute_test.c
+    test/basename_test.c
+    test/dirname_test.c
+    test/extension_test.c
+    test/guess_test.c
+    test/intersection_test.c
+    test/is_absolute_test.c
+    test/is_relative_test.c
+    test/join_test.c
+    test/normalize_test.c
+    test/relative_test.c
+    test/root_test.c
+    test/segment_test.c
+    test/windows_test.c)
   enable_warnings(cwalktest)
 
   target_link_libraries(cwalktest PRIVATE cwalk)
@@ -268,21 +270,16 @@ write_basic_package_version_file("CwalkConfigVersion.cmake"
 
 configure_file(cwalk.pc.in ${PROJECT_BINARY_DIR}/cwalk.pc @ONLY)
 
-install(TARGETS cwalk
-  EXPORT CwalkTargets
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include)
+install(TARGETS cwalk EXPORT CwalkTargets)
 
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CwalkConfig.cmake"
-  DESTINATION lib/cmake/cwalk)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cwalk)
 
 install(FILES
   ${PROJECT_BINARY_DIR}/cwalk.pc
-  DESTINATION lib/pkgconfig/)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 install(EXPORT CwalkTargets
   FILE CwalkTargets.cmake
-  DESTINATION lib/cmake/cwalk)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cwalk)
