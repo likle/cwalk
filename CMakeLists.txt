@@ -13,6 +13,7 @@ include(EnableWarnings)
 include(CTest)
 include(CreateTestList)
 include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 
 # configure requirements
 set(CMAKE_C_STANDARD 11)
@@ -269,15 +270,11 @@ write_basic_package_version_file("CwalkConfigVersion.cmake"
 configure_file(cwalk.pc.in ${PROJECT_BINARY_DIR}/cwalk.pc @ONLY)
 
 install(TARGETS cwalk
-  EXPORT CwalkTargets
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include)
+  EXPORT CwalkTargets)
 
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CwalkConfig.cmake"
-  DESTINATION lib/cmake/cwalk)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cwalk)
 
 install(FILES
   ${PROJECT_BINARY_DIR}/cwalk.pc
@@ -285,4 +282,4 @@ install(FILES
 
 install(EXPORT CwalkTargets
   FILE CwalkTargets.cmake
-  DESTINATION lib/cmake/cwalk)
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cwalk)
