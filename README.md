@@ -1,7 +1,9 @@
 <img style="width:100%;" src="/banner.png">
 
-[![Travis Build](https://img.shields.io/travis/com/likle/cwalk/master.svg?maxAge=2592000&label=Linux%20%26%20MacOS)](https://travis-ci.com/likle/cwalk)
-[![Appveyor Build](https://img.shields.io/appveyor/ci/likle/cwalk/master.svg?label=Windows)](https://ci.appveyor.com/project/likle/cwalk) 
+[![Build Pipeline](https://github.com/likle/cwalk/actions/workflows/build-linux.yml/badge.svg)](https://github.com/likle/cwalk/actions/workflows/build-linux.yml)
+[![Build Pipeline](https://github.com/likle/cwalk/actions/workflows/build-freebsd.yml/badge.svg)](https://github.com/likle/cwalk/actions/workflows/build-freebsd.yml)
+[![Build Pipeline](https://github.com/likle/cwalk/actions/workflows/build-macos.yml/badge.svg)](https://github.com/likle/cwalk/actions/workflows/build-macos.yml)
+[![Build Pipeline](https://github.com/likle/cwalk/actions/workflows/build-win.yml/badge.svg)](https://github.com/likle/cwalk/actions/workflows/build-win.yml)
 [![codecov](https://img.shields.io/codecov/c/github/likle/cwalk/master.svg?label=Coverage)](https://codecov.io/gh/likle/cwalk)
 
 # libcwalk - path library for C/C++
