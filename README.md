@@ -8,7 +8,7 @@
 
 # libcwalk - path library for C/C++
 This is a lighweight C path manipulation library. It is currently compiled and 
-tested under **Windows**, **MacOS** and **Linux**. It supports UNIX and Windows 
+tested under **Linux**, **FreeBSD**, **Windows** and **MacOS**. It supports UNIX and Windows 
 path styles on all platforms.
 
 ## Features
@@ -16,7 +16,7 @@ Please have a look at the
 **[reference](https://likle.github.io/cwalk/reference/)** for detailed 
 information. Some features this library includes:
 
- * **cross-platform** on windows, linux and macOS
+ * **cross-platform** on Linux, FreeBSD, Windows and MacOS
  * **simple interface** - just one header 
  * **combine paths** together
  * **basename, dirname and extension** parsing
