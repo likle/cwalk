@@ -2,7 +2,7 @@
 #include <memory.h>
 #include <stdlib.h>
 
-int dirname_relative()
+int dirname_relative(void)
 {
   const char *path;
   size_t length;
@@ -18,7 +18,7 @@ int dirname_relative()
   return EXIT_SUCCESS;
 }
 
-int dirname_three_segments()
+int dirname_three_segments(void)
 {
   const char *path;
   size_t length;
@@ -34,7 +34,7 @@ int dirname_three_segments()
   return EXIT_SUCCESS;
 }
 
-int dirname_root()
+int dirname_root(void)
 {
   const char *path;
   size_t length;
@@ -50,7 +50,7 @@ int dirname_root()
   return EXIT_SUCCESS;
 }
 
-int dirname_special_directories()
+int dirname_special_directories(void)
 {
   const char *path;
   size_t length;
@@ -73,7 +73,7 @@ int dirname_special_directories()
   return EXIT_SUCCESS;
 }
 
-int dirname_no_separators()
+int dirname_no_separators(void)
 {
   const char *path;
   size_t length;
@@ -89,7 +89,7 @@ int dirname_no_separators()
   return EXIT_SUCCESS;
 }
 
-int dirname_trailing_separators()
+int dirname_trailing_separators(void)
 {
   const char *path;
   size_t length;
@@ -105,7 +105,7 @@ int dirname_trailing_separators()
   return EXIT_SUCCESS;
 }
 
-int dirname_trailing_separator()
+int dirname_trailing_separator(void)
 {
   const char *path;
   size_t length;
@@ -121,7 +121,7 @@ int dirname_trailing_separator()
   return EXIT_SUCCESS;
 }
 
-int dirname_empty()
+int dirname_empty(void)
 {
   const char *path;
   size_t length;
@@ -137,7 +137,7 @@ int dirname_empty()
   return EXIT_SUCCESS;
 }
 
-int dirname_simple()
+int dirname_simple(void)
 {
   const char *path;
   size_t length;

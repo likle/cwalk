@@ -1,7 +1,7 @@
 #include <cwalk.h>
 #include <stdlib.h>
 
-int is_relative_relative_windows()
+int is_relative_relative_windows(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -12,7 +12,7 @@ int is_relative_relative_windows()
   return EXIT_SUCCESS;
 }
 
-int is_relative_relative_drive()
+int is_relative_relative_drive(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -23,7 +23,7 @@ int is_relative_relative_drive()
   return EXIT_SUCCESS;
 }
 
-int is_relative_device_question_mark()
+int is_relative_device_question_mark(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -34,7 +34,7 @@ int is_relative_device_question_mark()
   return EXIT_SUCCESS;
 }
 
-int is_relative_device_dot()
+int is_relative_device_dot(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
   cwk_path_is_absolute("\\\\.\\mydevice\\test");
@@ -46,7 +46,7 @@ int is_relative_device_dot()
   return EXIT_SUCCESS;
 }
 
-int is_relative_device_unc()
+int is_relative_device_unc(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -57,7 +57,7 @@ int is_relative_device_unc()
   return EXIT_SUCCESS;
 }
 
-int is_relative_unc()
+int is_relative_unc(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -68,7 +68,7 @@ int is_relative_unc()
   return EXIT_SUCCESS;
 }
 
-int is_relative_absolute_drive()
+int is_relative_absolute_drive(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -79,7 +79,7 @@ int is_relative_absolute_drive()
   return EXIT_SUCCESS;
 }
 
-int is_relative_unix_drive()
+int is_relative_unix_drive(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -90,7 +90,7 @@ int is_relative_unix_drive()
   return EXIT_SUCCESS;
 }
 
-int is_relative_unix_backslash()
+int is_relative_unix_backslash(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -101,7 +101,7 @@ int is_relative_unix_backslash()
   return EXIT_SUCCESS;
 }
 
-int is_relative_windows_slash()
+int is_relative_windows_slash(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -112,7 +112,7 @@ int is_relative_windows_slash()
   return EXIT_SUCCESS;
 }
 
-int is_relative_windows_backslash()
+int is_relative_windows_backslash(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -123,7 +123,7 @@ int is_relative_windows_backslash()
   return EXIT_SUCCESS;
 }
 
-int is_relative_relative()
+int is_relative_relative(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -134,7 +134,7 @@ int is_relative_relative()
   return EXIT_SUCCESS;
 }
 
-int is_relative_absolute()
+int is_relative_absolute(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_is_relative("/test.txt")) {

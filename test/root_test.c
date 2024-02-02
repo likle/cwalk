@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int root_change_without_root()
+int root_change_without_root(void)
 {
   size_t length;
   char buffer[FILENAME_MAX] = "hello\\world.txt";
@@ -24,7 +24,7 @@ int root_change_without_root()
   return EXIT_SUCCESS;
 }
 
-int root_change_overlapping()
+int root_change_overlapping(void)
 {
   size_t length;
   char buffer[FILENAME_MAX] = "C:\\hello\\world.txt";
@@ -44,7 +44,7 @@ int root_change_overlapping()
   return EXIT_SUCCESS;
 }
 
-int root_change_separators()
+int root_change_separators(void)
 {
   size_t length;
   char buffer[FILENAME_MAX];
@@ -64,7 +64,7 @@ int root_change_separators()
   return EXIT_SUCCESS;
 }
 
-int root_change_empty()
+int root_change_empty(void)
 {
   size_t length;
   char buffer[FILENAME_MAX];
@@ -84,7 +84,7 @@ int root_change_empty()
   return EXIT_SUCCESS;
 }
 
-int root_change_simple()
+int root_change_simple(void)
 {
   size_t length;
   char buffer[FILENAME_MAX];
@@ -104,7 +104,7 @@ int root_change_simple()
   return EXIT_SUCCESS;
 }
 
-int root_relative_windows()
+int root_relative_windows(void)
 {
   size_t length;
 
@@ -118,7 +118,7 @@ int root_relative_windows()
   return EXIT_SUCCESS;
 }
 
-int root_relative_drive()
+int root_relative_drive(void)
 {
   size_t length;
 
@@ -132,7 +132,7 @@ int root_relative_drive()
   return EXIT_SUCCESS;
 }
 
-int root_device_question_mark()
+int root_device_question_mark(void)
 {
   size_t length;
 
@@ -146,7 +146,7 @@ int root_device_question_mark()
   return EXIT_SUCCESS;
 }
 
-int root_device_dot()
+int root_device_dot(void)
 {
   size_t length;
 
@@ -160,7 +160,7 @@ int root_device_dot()
   return EXIT_SUCCESS;
 }
 
-int root_device_unc()
+int root_device_unc(void)
 {
   size_t length;
 
@@ -174,7 +174,7 @@ int root_device_unc()
   return EXIT_SUCCESS;
 }
 
-int root_unc()
+int root_unc(void)
 {
   size_t length;
 
@@ -188,7 +188,7 @@ int root_unc()
   return EXIT_SUCCESS;
 }
 
-int root_absolute_drive()
+int root_absolute_drive(void)
 {
   size_t length;
 
@@ -202,7 +202,7 @@ int root_absolute_drive()
   return EXIT_SUCCESS;
 }
 
-int root_unix_drive()
+int root_unix_drive(void)
 {
   size_t length;
 
@@ -216,7 +216,7 @@ int root_unix_drive()
   return EXIT_SUCCESS;
 }
 
-int root_unix_backslash()
+int root_unix_backslash(void)
 {
   size_t length;
 
@@ -230,7 +230,7 @@ int root_unix_backslash()
   return EXIT_SUCCESS;
 }
 
-int root_windows_slash()
+int root_windows_slash(void)
 {
   size_t length;
 
@@ -244,7 +244,7 @@ int root_windows_slash()
   return EXIT_SUCCESS;
 }
 
-int root_windows_backslash()
+int root_windows_backslash(void)
 {
   size_t length;
 
@@ -258,7 +258,7 @@ int root_windows_backslash()
   return EXIT_SUCCESS;
 }
 
-int root_relative()
+int root_relative(void)
 {
   size_t length;
 
@@ -272,7 +272,7 @@ int root_relative()
   return EXIT_SUCCESS;
 }
 
-int root_absolute()
+int root_absolute(void)
 {
   size_t length;
 

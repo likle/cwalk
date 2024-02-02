@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int segment_change_overlap()
+int segment_change_overlap(void)
 {
   char buffer[FILENAME_MAX] = "C:\\this\\cool\\path\\";
   struct cwk_segment segment;
@@ -28,7 +28,7 @@ int segment_change_overlap()
   return EXIT_SUCCESS;
 }
 
-int segment_change_with_separator()
+int segment_change_with_separator(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -54,7 +54,7 @@ int segment_change_with_separator()
   return EXIT_SUCCESS;
 }
 
-int segment_change_empty()
+int segment_change_empty(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -80,7 +80,7 @@ int segment_change_empty()
   return EXIT_SUCCESS;
 }
 
-int segment_change_trim()
+int segment_change_trim(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -106,7 +106,7 @@ int segment_change_trim()
   return EXIT_SUCCESS;
 }
 
-int segment_change_last()
+int segment_change_last(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -139,7 +139,7 @@ int segment_change_last()
   return EXIT_SUCCESS;
 }
 
-int segment_change_first()
+int segment_change_first(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -172,7 +172,7 @@ int segment_change_first()
   return EXIT_SUCCESS;
 }
 
-int segment_change_simple()
+int segment_change_simple(void)
 {
   const char *path;
   char buffer[FILENAME_MAX];
@@ -198,7 +198,7 @@ int segment_change_simple()
   return EXIT_SUCCESS;
 }
 
-int segment_back_with_root()
+int segment_back_with_root(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -229,7 +229,7 @@ int segment_back_with_root()
   return EXIT_SUCCESS;
 }
 
-int segment_type()
+int segment_type(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -281,7 +281,7 @@ int segment_type()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_too_far_root()
+int segment_previous_too_far_root(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -313,7 +313,7 @@ int segment_previous_too_far_root()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_too_far()
+int segment_previous_too_far(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -345,7 +345,7 @@ int segment_previous_too_far()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_relative()
+int segment_previous_relative(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -385,7 +385,7 @@ int segment_previous_relative()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_absolute()
+int segment_previous_absolute(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -425,7 +425,7 @@ int segment_previous_absolute()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_relative_one_char_first()
+int segment_previous_relative_one_char_first(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -497,7 +497,7 @@ int segment_previous_relative_one_char_first()
   return EXIT_SUCCESS;
 }
 
-int segment_previous_absolute_one_char_first()
+int segment_previous_absolute_one_char_first(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -569,7 +569,7 @@ int segment_previous_absolute_one_char_first()
   return EXIT_SUCCESS;
 }
 
-int segment_next_too_far()
+int segment_next_too_far(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -597,7 +597,7 @@ int segment_next_too_far()
   return EXIT_SUCCESS;
 }
 
-int segment_next()
+int segment_next(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -629,7 +629,7 @@ int segment_next()
   return EXIT_SUCCESS;
 }
 
-int segment_last()
+int segment_last(void)
 {
   const char *path;
   struct cwk_segment segment;
@@ -659,7 +659,7 @@ int segment_last()
   return EXIT_SUCCESS;
 }
 
-int segment_first()
+int segment_first(void)
 {
   const char *path;
   struct cwk_segment segment;

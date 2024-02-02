@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int extension_change_with_trailing_slash()
+int extension_change_with_trailing_slash(void)
 {
   char buffer[FILENAME_MAX] = "/folder/file.txt/";
   size_t n;
@@ -23,7 +23,7 @@ int extension_change_with_trailing_slash()
   return EXIT_SUCCESS;
 }
 
-int extension_change_hidden_file()
+int extension_change_hidden_file(void)
 {
   char buffer[FILENAME_MAX] = "/folder/.hidden_file.txt";
   size_t n;
@@ -42,7 +42,7 @@ int extension_change_hidden_file()
   return EXIT_SUCCESS;
 }
 
-int extension_change_overlap_long()
+int extension_change_overlap_long(void)
 {
   char buffer[FILENAME_MAX] = "/test.txt/";
   size_t n;
@@ -61,7 +61,7 @@ int extension_change_overlap_long()
   return EXIT_SUCCESS;
 }
 
-int extension_change_overlap()
+int extension_change_overlap(void)
 {
   char buffer[FILENAME_MAX] = "/test.txt/";
   size_t n;
@@ -80,7 +80,7 @@ int extension_change_overlap()
   return EXIT_SUCCESS;
 }
 
-int extension_change_with_dot()
+int extension_change_with_dot(void)
 {
   char buffer[FILENAME_MAX];
   size_t n;
@@ -99,7 +99,7 @@ int extension_change_with_dot()
   return EXIT_SUCCESS;
 }
 
-int extension_change_remove()
+int extension_change_remove(void)
 {
   char buffer[FILENAME_MAX];
   size_t n;
@@ -118,7 +118,7 @@ int extension_change_remove()
   return EXIT_SUCCESS;
 }
 
-int extension_change_no_extension()
+int extension_change_no_extension(void)
 {
   char buffer[FILENAME_MAX] = "C:\\file";
   size_t n;
@@ -137,7 +137,7 @@ int extension_change_no_extension()
   return EXIT_SUCCESS;
 }
 
-int extension_change_no_basename()
+int extension_change_no_basename(void)
 {
   char buffer[FILENAME_MAX] = "C:\\";
   size_t n;
@@ -156,7 +156,7 @@ int extension_change_no_basename()
   return EXIT_SUCCESS;
 }
 
-int extension_change_simple()
+int extension_change_simple(void)
 {
   char buffer[FILENAME_MAX];
   size_t n;
@@ -175,7 +175,7 @@ int extension_change_simple()
   return EXIT_SUCCESS;
 }
 
-int extension_check_without()
+int extension_check_without(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_has_extension("/my/path")) {
@@ -185,7 +185,7 @@ int extension_check_without()
   return EXIT_SUCCESS;
 }
 
-int extension_check_empty()
+int extension_check_empty(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_has_extension("")) {
@@ -195,7 +195,7 @@ int extension_check_empty()
   return EXIT_SUCCESS;
 }
 
-int extension_check_simple()
+int extension_check_simple(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (!cwk_path_has_extension("/my/path.txt")) {
@@ -205,7 +205,7 @@ int extension_check_simple()
   return EXIT_SUCCESS;
 }
 
-int extension_get_multiple()
+int extension_get_multiple(void)
 {
   const char *path, *extension;
   size_t length;
@@ -227,7 +227,7 @@ int extension_get_multiple()
   return EXIT_SUCCESS;
 }
 
-int extension_get_last()
+int extension_get_last(void)
 {
   const char *path, *extension;
   size_t length;
@@ -249,7 +249,7 @@ int extension_get_last()
   return EXIT_SUCCESS;
 }
 
-int extension_get_first()
+int extension_get_first(void)
 {
   const char *path, *extension;
   size_t length;
@@ -271,7 +271,7 @@ int extension_get_first()
   return EXIT_SUCCESS;
 }
 
-int extension_get_without()
+int extension_get_without(void)
 {
   const char *path, *extension;
   size_t length;
@@ -285,7 +285,7 @@ int extension_get_without()
   return EXIT_SUCCESS;
 }
 
-int extension_get_simple()
+int extension_get_simple(void)
 {
   const char *path, *extension;
   size_t length;

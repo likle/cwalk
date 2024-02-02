@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int basename_change_trim_only_root()
+int basename_change_trim_only_root(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -24,7 +24,7 @@ int basename_change_trim_only_root()
   return EXIT_SUCCESS;
 }
 
-int basename_change_trim()
+int basename_change_trim(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -44,7 +44,7 @@ int basename_change_trim()
   return EXIT_SUCCESS;
 }
 
-int basename_change_relative()
+int basename_change_relative(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -64,7 +64,7 @@ int basename_change_relative()
   return EXIT_SUCCESS;
 }
 
-int basename_change_empty_basename()
+int basename_change_empty_basename(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -83,7 +83,7 @@ int basename_change_empty_basename()
   return EXIT_SUCCESS;
 }
 
-int basename_change_only_root()
+int basename_change_only_root(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -102,7 +102,7 @@ int basename_change_only_root()
   return EXIT_SUCCESS;
 }
 
-int basename_change_empty_path()
+int basename_change_empty_path(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -121,7 +121,7 @@ int basename_change_empty_path()
   return EXIT_SUCCESS;
 }
 
-int basename_change_simple()
+int basename_change_simple(void)
 {
   size_t n;
   char buffer[FILENAME_MAX];
@@ -141,7 +141,7 @@ int basename_change_simple()
   return EXIT_SUCCESS;
 }
 
-int basename_windows()
+int basename_windows(void)
 {
   const char *path, *basename;
   size_t length;
@@ -161,7 +161,7 @@ int basename_windows()
   return EXIT_SUCCESS;
 }
 
-int basename_root()
+int basename_root(void)
 {
   const char *path, *basename;
   size_t length;
@@ -181,7 +181,7 @@ int basename_root()
   return EXIT_SUCCESS;
 }
 
-int basename_special_directories()
+int basename_special_directories(void)
 {
   const char *path, *basename;
   size_t length;
@@ -212,7 +212,7 @@ int basename_special_directories()
   return EXIT_SUCCESS;
 }
 
-int basename_no_separators()
+int basename_no_separators(void)
 {
   const char *path, *basename;
   size_t length;
@@ -232,7 +232,7 @@ int basename_no_separators()
   return EXIT_SUCCESS;
 }
 
-int basename_trailing_separators()
+int basename_trailing_separators(void)
 {
   const char *path, *basename;
   size_t length;
@@ -252,7 +252,7 @@ int basename_trailing_separators()
   return EXIT_SUCCESS;
 }
 
-int basename_trailing_separator()
+int basename_trailing_separator(void)
 {
   const char *path, *basename;
   size_t length;
@@ -272,7 +272,7 @@ int basename_trailing_separator()
   return EXIT_SUCCESS;
 }
 
-int basename_empty()
+int basename_empty(void)
 {
   const char *path, *basename;
   size_t length;
@@ -292,7 +292,7 @@ int basename_empty()
   return EXIT_SUCCESS;
 }
 
-int basename_simple()
+int basename_simple(void)
 {
   const char *path, *basename;
   size_t length;

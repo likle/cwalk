@@ -6,7 +6,7 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
-int absolute_check()
+int absolute_check(void)
 {
   const char *relative_paths[] = {"..", "test", "test/test", "../another_test",
     "./simple", ".././simple"};
@@ -31,7 +31,7 @@ int absolute_check()
   return EXIT_SUCCESS;
 }
 
-int absolute_too_far()
+int absolute_too_far(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -51,7 +51,7 @@ int absolute_too_far()
   return EXIT_SUCCESS;
 }
 
-int absolute_normalization()
+int absolute_normalization(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -71,7 +71,7 @@ int absolute_normalization()
   return EXIT_SUCCESS;
 }
 
-int absolute_mixed()
+int absolute_mixed(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -91,7 +91,7 @@ int absolute_mixed()
   return EXIT_SUCCESS;
 }
 
-int absolute_unix_relative_base()
+int absolute_unix_relative_base(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -110,7 +110,7 @@ int absolute_unix_relative_base()
   return EXIT_SUCCESS;
 }
 
-int absolute_windows_relative_base()
+int absolute_windows_relative_base(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -129,7 +129,7 @@ int absolute_windows_relative_base()
   return EXIT_SUCCESS;
 }
 
-int absolute_absolute_path()
+int absolute_absolute_path(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -149,7 +149,7 @@ int absolute_absolute_path()
   return EXIT_SUCCESS;
 }
 
-int absolute_simple()
+int absolute_simple(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -169,7 +169,7 @@ int absolute_simple()
 }
 
 
-int absolute_buffer_reuse()
+int absolute_buffer_reuse(void)
 {
   char path[FILENAME_MAX];
 

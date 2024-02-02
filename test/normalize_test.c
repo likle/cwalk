@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int normalize_forward_slashes()
+int normalize_forward_slashes(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -25,7 +25,7 @@ int normalize_forward_slashes()
   return EXIT_SUCCESS;
 }
 
-int normalize_back_after_root()
+int normalize_back_after_root(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -44,7 +44,7 @@ int normalize_back_after_root()
   return EXIT_SUCCESS;
 }
 
-int normalize_only_separators()
+int normalize_only_separators(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -63,7 +63,7 @@ int normalize_only_separators()
   return EXIT_SUCCESS;
 }
 
-int normalize_empty()
+int normalize_empty(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -82,7 +82,7 @@ int normalize_empty()
   return EXIT_SUCCESS;
 }
 
-int normalize_overlap()
+int normalize_overlap(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -101,7 +101,7 @@ int normalize_overlap()
   return EXIT_SUCCESS;
 }
 
-int normalize_mixed()
+int normalize_mixed(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -119,7 +119,7 @@ int normalize_mixed()
   return EXIT_SUCCESS;
 }
 
-int normalize_remove_current()
+int normalize_remove_current(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -137,7 +137,7 @@ int normalize_remove_current()
   return EXIT_SUCCESS;
 }
 
-int normalize_double_separator()
+int normalize_double_separator(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -155,7 +155,7 @@ int normalize_double_separator()
   return EXIT_SUCCESS;
 }
 
-int normalize_terminated()
+int normalize_terminated(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -188,7 +188,7 @@ int normalize_terminated()
   return EXIT_SUCCESS;
 }
 
-int normalize_relative_too_far()
+int normalize_relative_too_far(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -206,7 +206,7 @@ int normalize_relative_too_far()
   return EXIT_SUCCESS;
 }
 
-int normalize_absolute_too_far()
+int normalize_absolute_too_far(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -224,7 +224,7 @@ int normalize_absolute_too_far()
   return EXIT_SUCCESS;
 }
 
-int normalize_navigate_back()
+int normalize_navigate_back(void)
 {
   size_t count;
   char result[FILENAME_MAX];
@@ -242,7 +242,7 @@ int normalize_navigate_back()
   return EXIT_SUCCESS;
 }
 
-int normalize_do_nothing()
+int normalize_do_nothing(void)
 {
   size_t count;
   char result[FILENAME_MAX];

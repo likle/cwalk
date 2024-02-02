@@ -6,7 +6,7 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
-int relative_root_forward_slashes()
+int relative_root_forward_slashes(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -26,7 +26,7 @@ int relative_root_forward_slashes()
   return EXIT_SUCCESS;
 }
 
-int relative_root_path_windows()
+int relative_root_path_windows(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -46,7 +46,7 @@ int relative_root_path_windows()
   return EXIT_SUCCESS;
 }
 
-int relative_root_path_unix()
+int relative_root_path_unix(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -66,7 +66,7 @@ int relative_root_path_unix()
   return EXIT_SUCCESS;
 }
 
-int relative_check()
+int relative_check(void)
 {
   const char *relative_paths[] = {"..", "test", "test/test", "../another_test",
     "./simple", ".././simple"};
@@ -91,7 +91,7 @@ int relative_check()
   return EXIT_SUCCESS;
 }
 
-int relative_relative_and_absolute()
+int relative_relative_and_absolute(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -113,7 +113,7 @@ int relative_relative_and_absolute()
   return EXIT_SUCCESS;
 }
 
-int relative_different_roots()
+int relative_different_roots(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -136,7 +136,7 @@ int relative_different_roots()
   return EXIT_SUCCESS;
 }
 
-int relative_skip_all()
+int relative_skip_all(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -155,7 +155,7 @@ int relative_skip_all()
   return EXIT_SUCCESS;
 }
 
-int relative_target_div_skipped_end()
+int relative_target_div_skipped_end(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -175,7 +175,7 @@ int relative_target_div_skipped_end()
   return EXIT_SUCCESS;
 }
 
-int relative_base_div_skipped_end()
+int relative_base_div_skipped_end(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -195,7 +195,7 @@ int relative_base_div_skipped_end()
   return EXIT_SUCCESS;
 }
 
-int relative_target_skipped_end()
+int relative_target_skipped_end(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -215,7 +215,7 @@ int relative_target_skipped_end()
   return EXIT_SUCCESS;
 }
 
-int relative_base_skipped_end()
+int relative_base_skipped_end(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -235,7 +235,7 @@ int relative_base_skipped_end()
   return EXIT_SUCCESS;
 }
 
-int relative_equal()
+int relative_equal(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -255,7 +255,7 @@ int relative_equal()
   return EXIT_SUCCESS;
 }
 
-int relative_same_base()
+int relative_same_base(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -275,7 +275,7 @@ int relative_same_base()
   return EXIT_SUCCESS;
 }
 
-int relative_long_target()
+int relative_long_target(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -295,7 +295,7 @@ int relative_long_target()
   return EXIT_SUCCESS;
 }
 
-int relative_long_base()
+int relative_long_base(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -315,7 +315,7 @@ int relative_long_base()
   return EXIT_SUCCESS;
 }
 
-int relative_relative()
+int relative_relative(void)
 {
   char result[FILENAME_MAX];
   size_t length;
@@ -335,7 +335,7 @@ int relative_relative()
   return EXIT_SUCCESS;
 }
 
-int relative_simple()
+int relative_simple(void)
 {
   char result[FILENAME_MAX];
   size_t length;

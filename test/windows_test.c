@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int windows_root_empty()
+int windows_root_empty(void)
 {
   size_t size;
   cwk_path_set_style(CWK_STYLE_WINDOWS);
@@ -16,7 +16,7 @@ int windows_root_empty()
   return EXIT_SUCCESS;
 }
 
-int windows_root_backslash()
+int windows_root_backslash(void)
 {
   size_t size;
   cwk_path_set_style(CWK_STYLE_WINDOWS);
@@ -29,7 +29,7 @@ int windows_root_backslash()
   return EXIT_SUCCESS;
 }
 
-int windows_intersection_case()
+int windows_intersection_case(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -41,7 +41,7 @@ int windows_intersection_case()
   return EXIT_SUCCESS;
 }
 
-int windows_get_root_relative()
+int windows_get_root_relative(void)
 {
   size_t size;
   cwk_path_set_style(CWK_STYLE_WINDOWS);
@@ -54,7 +54,7 @@ int windows_get_root_relative()
   return EXIT_SUCCESS;
 }
 
-int windows_get_root_separator()
+int windows_get_root_separator(void)
 {
   size_t size;
   cwk_path_set_style(CWK_STYLE_WINDOWS);
@@ -67,7 +67,7 @@ int windows_get_root_separator()
   return EXIT_SUCCESS;
 }
 
-int windows_get_unc_root()
+int windows_get_unc_root(void)
 {
   size_t size;
 
@@ -81,7 +81,7 @@ int windows_get_unc_root()
   return EXIT_SUCCESS;
 }
 
-int windows_get_root()
+int windows_get_root(void)
 {
   size_t size;
 
@@ -95,7 +95,7 @@ int windows_get_root()
   return EXIT_SUCCESS;
 }
 
-int windows_change_style()
+int windows_change_style(void)
 {
   enum cwk_path_style style;
 

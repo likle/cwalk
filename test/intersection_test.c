@@ -1,7 +1,7 @@
 #include <cwalk.h>
 #include <stdlib.h>
 
-int intersection_skipped_end()
+int intersection_skipped_end(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -12,7 +12,7 @@ int intersection_skipped_end()
   return EXIT_SUCCESS;
 }
 
-int intersection_relative_other()
+int intersection_relative_other(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -23,7 +23,7 @@ int intersection_relative_other()
   return EXIT_SUCCESS;
 }
 
-int intersection_relative_base()
+int intersection_relative_base(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -35,7 +35,7 @@ int intersection_relative_base()
   return EXIT_SUCCESS;
 }
 
-int intersection_one_root_only()
+int intersection_one_root_only(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -46,7 +46,7 @@ int intersection_one_root_only()
   return EXIT_SUCCESS;
 }
 
-int intersection_same_roots()
+int intersection_same_roots(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -57,7 +57,7 @@ int intersection_same_roots()
   return EXIT_SUCCESS;
 }
 
-int intersection_relative_absolute_mix()
+int intersection_relative_absolute_mix(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -68,7 +68,7 @@ int intersection_relative_absolute_mix()
   return EXIT_SUCCESS;
 }
 
-int intersection_unequal_roots()
+int intersection_unequal_roots(void)
 {
   cwk_path_set_style(CWK_STYLE_WINDOWS);
 
@@ -79,7 +79,7 @@ int intersection_unequal_roots()
   return EXIT_SUCCESS;
 }
 
-int intersection_empty()
+int intersection_empty(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
 
@@ -90,7 +90,7 @@ int intersection_empty()
   return EXIT_SUCCESS;
 }
 
-int intersection_double_separator()
+int intersection_double_separator(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this///is/a//test", "/this//is/a///file") !=
@@ -101,7 +101,7 @@ int intersection_double_separator()
   return EXIT_SUCCESS;
 }
 
-int intersection_trailing_separator()
+int intersection_trailing_separator(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a/") != 10) {
@@ -111,7 +111,7 @@ int intersection_trailing_separator()
   return EXIT_SUCCESS;
 }
 
-int intersection_truncated()
+int intersection_truncated(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a") != 10) {
@@ -121,7 +121,7 @@ int intersection_truncated()
   return EXIT_SUCCESS;
 }
 
-int intersection_simple()
+int intersection_simple(void)
 {
   cwk_path_set_style(CWK_STYLE_UNIX);
   if (cwk_path_get_intersection("/this/is/a/test", "/this/is/a/string") != 10) {

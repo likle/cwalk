@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int join_multiple()
+int join_multiple(void)
 {
   char buffer[FILENAME_MAX];
   const char *paths[3];
@@ -29,7 +29,7 @@ int join_multiple()
   return EXIT_SUCCESS;
 }
 
-int join_relative_back_after_root()
+int join_relative_back_after_root(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -49,7 +49,7 @@ int join_relative_back_after_root()
   return EXIT_SUCCESS;
 }
 
-int join_back_after_root()
+int join_back_after_root(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -69,7 +69,7 @@ int join_back_after_root()
   return EXIT_SUCCESS;
 }
 
-int join_with_two_roots()
+int join_with_two_roots(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -89,7 +89,7 @@ int join_with_two_roots()
   return EXIT_SUCCESS;
 }
 
-int join_two_unc()
+int join_two_unc(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -109,7 +109,7 @@ int join_two_unc()
   return EXIT_SUCCESS;
 }
 
-int join_two_absolute()
+int join_two_absolute(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -128,7 +128,7 @@ int join_two_absolute()
   return EXIT_SUCCESS;
 }
 
-int join_empty()
+int join_empty(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -147,7 +147,7 @@ int join_empty()
   return EXIT_SUCCESS;
 }
 
-int join_navigate_back()
+int join_navigate_back(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
@@ -166,7 +166,7 @@ int join_navigate_back()
   return EXIT_SUCCESS;
 }
 
-int join_simple()
+int join_simple(void)
 {
   char buffer[FILENAME_MAX];
   size_t length;
