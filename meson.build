@@ -1,6 +1,6 @@
 project('cwalk', 'c',
   license: 'MIT',
-  version: files('VERSION.txt'),
+  version: '1.2.8',
   meson_version: '>= 0.57.0'
 )
 
