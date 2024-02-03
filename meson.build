@@ -18,3 +18,6 @@ cwalk_dep = declare_dependency(include_directories: 'include', link_with: cwalk)
 if get_option('ENABLE_TESTS')
   subdir('test')
 endif
+
+pkg = import('pkgconfig')
+pkg.generate(cwalk)
