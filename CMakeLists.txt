@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9.2)
 
 # set project name
 project(cwalk
-  VERSION 1.2.8
+  VERSION 1.2.9
   DESCRIPTION "A simple path library"
   HOMEPAGE_URL "https://likle.github.io/cwalk/"
   LANGUAGES C)
