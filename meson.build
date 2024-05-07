@@ -7,7 +7,7 @@ project('cwalk', 'c',
 cwalk_inc = include_directories('include')
 
 cwalk_c_args = []
-if get_option('default_library') == 'shared'
+if get_option('default_library') != 'static'
   cwalk_c_args += '-DCWK_SHARED'
 endif
 
