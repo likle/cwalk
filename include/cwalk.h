@@ -229,6 +229,21 @@ CWK_PUBLIC void cwk_path_get_basename(const char *path, const char **basename,
   size_t *length);
 
 /**
+ * @brief Gets the basename without the extension of a file path.
+ *
+ * This is identical to cwk_path_get_basename(), except that the returned
+ * length does not account for the file extension if there is one. If there is
+ * no extension, the result is identical to cwk_path_get_basename().
+ *
+ * @param path The path which will be inspected.
+ * @param basename The output of the basename pointer.
+ * @param length The output of the length of the basename not accounting for
+ * the extension. This may be null if not required.
+ */
+CWK_PUBLIC void cwk_path_get_basename_wout_extension(const char *path,
+  const char **basename, size_t *length);
+
+/**
  * @brief Changes the basename of a file path.
  *
  * This function changes the basename of a file path. This function will not
