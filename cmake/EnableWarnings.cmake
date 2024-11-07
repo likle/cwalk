@@ -1,4 +1,6 @@
 # enable warnings
+option(IGNORE_WARNINGS "Disable -Werror" OFF)
+
 function(enable_warnings target)
   if(MSVC)
     target_compile_definitions(${target} PRIVATE _CRT_SECURE_NO_WARNINGS)
