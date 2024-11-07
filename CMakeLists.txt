@@ -23,6 +23,7 @@ set(INCLUDE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
 
+option(ENABLE_COVERAGE "Enable -ftest-converage" OFF)
 # enable coverage if requested
 if(ENABLE_COVERAGE)
   message("-- Coverage enabled")
@@ -50,11 +51,13 @@ set_target_properties(cwalk PROPERTIES PUBLIC_HEADER "${INCLUDE_DIRECTORY}/cwalk
 set_target_properties(cwalk PROPERTIES DEFINE_SYMBOL CWK_EXPORTS)
 
 # add shared library macro
+option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 if(BUILD_SHARED_LIBS)
   target_compile_definitions(cwalk PUBLIC CWK_SHARED)
 endif()
 
 # enable tests
+option(ENABLE_TESTS "enable unit tests" OFF)
 if(ENABLE_TESTS)
   message("-- Tests enabled")
   enable_testing()
