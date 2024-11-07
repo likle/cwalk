@@ -452,7 +452,7 @@ CWK_PUBLIC size_t cwk_path_change_segment(struct cwk_segment *segment,
  * separator). The function will return true if it is a separator, or false
  * otherwise.
  *
- * @param symbol A pointer to a string.
+ * @param str A pointer to a string.
  * @return Returns true if it is a separator, or false otherwise.
  */
 CWK_PUBLIC bool cwk_path_is_separator(const char *str);
