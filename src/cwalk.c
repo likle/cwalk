@@ -969,6 +969,37 @@ void cwk_path_get_basename(const char *path, const char **basename,
   }
 }
 
+void cwk_path_get_basename_wout_extension(const char *path,
+  const char **basename, size_t *length)
+{
+  struct cwk_segment segment;
+  const char *c;
+
+  // We get the last segment of the path. The last segment will contain the
+  // basename if there is any. If there are no segments we will set the basename
+  // to NULL and the length to 0.
+  if (!cwk_path_get_last_segment(path, &segment)) {
+    *basename = NULL;
+    if (length) {
+      *length = 0;
+    }
+    return;
+  }
+
+  *basename = segment.begin;
+  if (length) {
+    *length = segment.size;
+
+    for (c = segment.end; c >= segment.begin; --c) {
+      if (*c == '.') {
+        // Okay, we found an extension. We can stop looking now.
+        *length = (size_t)(c - segment.begin);
+        return;
+      }
+    }
+  }
+}
+
 size_t cwk_path_change_basename(const char *path, const char *new_basename,
   char *buffer, size_t buffer_size)
 {

@@ -232,6 +232,26 @@ int basename_no_separators(void)
   return EXIT_SUCCESS;
 }
 
+int basename_no_separators_wout_extension(void)
+{
+  const char *path, *basename;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  path = "file_name";
+  cwk_path_get_basename_wout_extension(path, &basename, &length);
+
+  if (length != 9) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(basename, "file_name", length) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 int basename_trailing_separators(void)
 {
   const char *path, *basename;
@@ -246,6 +266,26 @@ int basename_trailing_separators(void)
   }
 
   if (strncmp(basename, "path.txt", length) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_trailing_separators_wout_extension(void)
+{
+  const char *path, *basename;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  path = "/my/path.txt////";
+  cwk_path_get_basename_wout_extension(path, &basename, &length);
+
+  if (length != 4) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(basename, "path", length) != 0) {
     return EXIT_FAILURE;
   }
 
@@ -306,6 +346,26 @@ int basename_simple(void)
   }
 
   if (strncmp(basename, "path.txt", length) != 0) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
+int basename_simple_wout_extension(void)
+{
+  const char *path, *basename;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+  path = "/my/path.txt";
+  cwk_path_get_basename_wout_extension(path, &basename, &length);
+
+  if (length != 4) {
+    return EXIT_FAILURE;
+  }
+
+  if (strncmp(basename, "path", length) != 0) {
     return EXIT_FAILURE;
   }
 
