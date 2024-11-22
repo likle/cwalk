@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9.2)
+cmake_minimum_required(VERSION 3.14)
 
 # set project name
 project(cwalk
@@ -6,6 +6,11 @@ project(cwalk
   DESCRIPTION "A simple path library"
   HOMEPAGE_URL "https://likle.github.io/cwalk/"
   LANGUAGES C)
+
+option(ENABLE_COVERAGE "Coverage testing")
+option(BUILD_SHARED_LIBS "Build shared library")
+option(ENABLE_TESTS "Build test executables")
+option(IGNORE_WARNINGS "Ignore warnings")
 
 # include utilities
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -25,16 +30,16 @@ set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
 
 # enable coverage if requested
 if(ENABLE_COVERAGE)
-  message("-- Coverage enabled")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+  message(STATUS "Coverage enabled")
+  add_compile_options("$<$<COMPILE_LANGUAGE:C>:-fprofile-arcs;-ftest-coverage>")
+  add_link_options("$<$<COMPILE_LANGUAGE:C>:--coverage>")
 endif()
 
 # enable sanitizer
 if(ENABLE_SANITIZER)
-  message("-- Sanitizer enabled")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
+  message(STATUS "Sanitizer enabled")
+  add_compile_options("$<$<COMPILE_LANGUAGE:C>:-fno-omit-frame-pointer;-fsanitize=${ENABLE_SANITIZER}>")
+  add_link_options("$<$<COMPILE_LANGUAGE:C>:-fno-omit-frame-pointer;-fsanitize=${ENABLE_SANITIZER}>")
 endif()
 
 # add the main executable
@@ -56,7 +61,7 @@ endif()
 
 # enable tests
 if(ENABLE_TESTS)
-  message("-- Tests enabled")
+  message(STATUS "Tests enabled")
   enable_testing()
 
   create_test_list(DEFAULT cwalktest)
