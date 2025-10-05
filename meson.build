@@ -21,7 +21,7 @@ install_headers('include/cwalk.h')
 
 cwalk_dep = declare_dependency(include_directories: 'include', link_with: cwalk)
 
-if get_option('ENABLE_TESTS')
+if get_option('CWK_ENABLE_TESTS')
   subdir('test')
 endif
 

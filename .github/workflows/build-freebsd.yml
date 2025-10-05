@@ -17,6 +17,6 @@ jobs:
         prepare: |
           pkg install -y cmake
         run: |
-          cmake -B build -S ${{github.workspace}} -DENABLE_TESTS=1
+          cmake -B build -S ${{github.workspace}} -DCWK_ENABLE_TESTS=1
           cmake --build build
           ctest --test-dir build

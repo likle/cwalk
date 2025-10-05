@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9.2)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 # set project name
 project(cwalk
@@ -6,6 +6,19 @@ project(cwalk
   DESCRIPTION "A simple path library"
   HOMEPAGE_URL "https://likle.github.io/cwalk/"
   LANGUAGES C)
+
+# configure default options
+option(CWK_BUILD_SHARED "Builds as a shared library" "${BUILD_SHARED_LIBS}")
+option(CWK_ENABLE_COVERAGE "Enables runtime code coverage" "${ENABLE_COVERAGE}")
+option(CWK_ENABLE_TESTS "Enables building test executables" "${ENABLE_TESTS}")
+option(CWK_IGNORE_WARNINGS "Allows compilation to continue with compiler warnings" "${IGNORE_WARNINGS}")
+
+set(CWK_ENABLE_SANITIZER "${ENABLE_SANITIZER}" CACHE STRING "Enables the specified sanitizer")
+
+# set variables corresponding to options
+if(CWK_BUILD_SHARED)
+  set(BUILD_SHARED_LIBS ON)
+endif()
 
 # include utilities
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -24,20 +37,20 @@ set(SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(TEST_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test")
 
 # enable coverage if requested
-if(ENABLE_COVERAGE)
+if(CWK_ENABLE_COVERAGE)
   message("-- Coverage enabled")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 endif()
 
 # enable sanitizer
-if(ENABLE_SANITIZER)
+if(CWK_ENABLE_SANITIZER)
   message("-- Sanitizer enabled")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=${ENABLE_SANITIZER}")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=${CWK_ENABLE_SANITIZER}")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=${CWK_ENABLE_SANITIZER}")
 endif()
 
-# add the main executable
+# add the main library
 add_library(cwalk
   "${INCLUDE_DIRECTORY}/cwalk.h"
   "${SOURCE_DIRECTORY}/cwalk.c")
@@ -50,12 +63,12 @@ set_target_properties(cwalk PROPERTIES PUBLIC_HEADER "${INCLUDE_DIRECTORY}/cwalk
 set_target_properties(cwalk PROPERTIES DEFINE_SYMBOL CWK_EXPORTS)
 
 # add shared library macro
-if(BUILD_SHARED_LIBS)
+if(CWK_BUILD_SHARED)
   target_compile_definitions(cwalk PUBLIC CWK_SHARED)
 endif()
 
 # enable tests
-if(ENABLE_TESTS)
+if(CWK_ENABLE_TESTS)
   message("-- Tests enabled")
   enable_testing()
 
