@@ -27,7 +27,7 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DCMAKE_C_FLAGS=/wd5105
-        -DENABLE_TESTS=1
+        -DCWK_ENABLE_TESTS=1
         -S ${{ github.workspace }}
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}

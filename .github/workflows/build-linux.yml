@@ -27,9 +27,9 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DENABLE_TESTS=1
-        -DENABLE_COVERAGE=1
-        -DENABLE_SANITIZER=${{ matrix.sanitizers }}
+        -DCWK_ENABLE_TESTS=1
+        -DCWK_ENABLE_COVERAGE=1
+        -DCWK_ENABLE_SANITIZER=${{ matrix.sanitizers }}
         -S ${{ github.workspace }}
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
