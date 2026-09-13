@@ -306,3 +306,40 @@ int extension_get_simple(void)
 
   return EXIT_SUCCESS;
 }
+
+int extension_get_special_directories(void)
+{
+  const char *path, *extension;
+  size_t length;
+
+  cwk_path_set_style(CWK_STYLE_UNIX);
+
+  // The current and back segments are made up entirely of dots, but they are
+  // still just directory references. They must never be reported as having
+  // an extension, no matter where they show up in the path.
+  path = "..";
+  if (cwk_path_get_extension(path, &extension, &length)) {
+    return EXIT_FAILURE;
+  }
+
+  path = ".";
+  if (cwk_path_get_extension(path, &extension, &length)) {
+    return EXIT_FAILURE;
+  }
+
+  path = "/some/folder/..";
+  if (cwk_path_get_extension(path, &extension, &length)) {
+    return EXIT_FAILURE;
+  }
+
+  path = "/some/folder/.";
+  if (cwk_path_get_extension(path, &extension, &length)) {
+    return EXIT_FAILURE;
+  }
+
+  if (cwk_path_has_extension("..") || cwk_path_has_extension(".")) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}

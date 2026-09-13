@@ -1047,6 +1047,14 @@ bool cwk_path_get_extension(const char *path, const char **extension,
     return false;
   }
 
+  // The current and back segments ("." and "..") are made up entirely of
+  // dots, but they refer to directories and never carry an extension of
+  // their own. Without this check the loop below would happily report a "."
+  // extension for a path ending in one of those segments.
+  if (cwk_path_get_segment_type(&segment) != CWK_NORMAL) {
+    return false;
+  }
+
   // Now we search for a dot within the segment. If there is a dot, we consider
   // the rest of the segment the extension. We do this from the end towards the
   // beginning, since we want to find the last dot.
